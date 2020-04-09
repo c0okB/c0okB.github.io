@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>maccms8.x命令执行漏洞 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言maccms8.x命令执行漏洞分析现场….. 先放上POC  漏洞分析根据POC,来到index.php  然后跟进be()  也就是说通过get请求发送$m 再将$m打散成$par 先看$par[0]  我们跟到vod.php然后这个’search’为method之一.看看wd在search中是怎么用的  然后这里的$wd可以通过任何形式的请求获得. 知道了$m的作用,然后我们回到index">
+<meta property="og:type" content="article">
+<meta property="og:title" content="maccms8.x命令执行漏洞">
+<meta property="og:url" content="http://yoursite.com/2019/12/27/maccms8-x%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言maccms8.x命令执行漏洞分析现场….. 先放上POC  漏洞分析根据POC,来到index.php  然后跟进be()  也就是说通过get请求发送$m 再将$m打散成$par 先看$par[0]  我们跟到vod.php然后这个’search’为method之一.看看wd在search中是怎么用的  然后这里的$wd可以通过任何形式的请求获得. 知道了$m的作用,然后我们回到index">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//9.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="og:image" content="http://yoursite.com/.com//16.png">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="article:published_time" content="2019-12-27T01:37:59.000Z">
+<meta property="article:modified_time" content="2019-12-27T01:04:40.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-maccms8-x命令执行漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/27/maccms8-x%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="article-date">
+  <time datetime="2019-12-27T01:37:59.000Z" itemprop="datePublished">2019-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      maccms8.x命令执行漏洞
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>maccms8.x命令执行漏洞分析现场…..</p>
+<p>先放上POC</p>
+<p><img src="/.com//1.png" alt="1577410950946"></p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>根据POC,来到index.php</p>
+<p><img src="/.com//2.png" alt="1577415436599"></p>
+<p>然后跟进be()</p>
+<p><img src="/.com//3.png" alt="1577415497594"></p>
+<p>也就是说通过get请求发送$m</p>
+<p>再将$m打散成$par</p>
+<p>先看$par[0]</p>
+<p><img src="/.com//4.png" alt="1577417995966"></p>
+<p>我们跟到vod.php然后这个’search’为method之一.看看wd在search中是怎么用的</p>
+<p><img src="/.com//5.png" alt="1577418115496"></p>
+<p>然后这里的$wd可以通过任何形式的请求获得.</p>
+<p>知道了$m的作用,然后我们回到index.php,看看这里是如何解析$wd</p>
+<p>跟进到<code>$tpl-&gt;ifex();</code></p>
+<p><img src="/.com//6.png" alt="1577419875384"></p>
+<p>这里指定一个匹配规则:<strong>{if-([\s\S]<em>?):([\s\S]+?)}([\s\S]</em>?){endif-\1}</strong></p>
+<p>$this-&gt;H在vod.php中可以找到:</p>
+<p><img src="/.com//7.png" alt="1577420035092"></p>
+<p>所以实际上,</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">preg_match_all($labelRule,<span class="keyword">$this</span>-&gt;H,$iar);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码是在匹配获得我们输入参数后的html页面的符合匹配规则的字符串放入$iar中.</p>
+<p>这里的正则匹配如果看不懂了,建议debug动态调试一下,有助于理解</p>
+<p><img src="/.com//8.png" alt="1577435355736"></p>
+<p>进入一个for循环</p>
+<p><img src="/.com//9.png" alt="1577435470475"></p>
+<p>底下的代码可以看到一堆eval()</p>
+<p><img src="/.com//11.png" alt="1577435707430"></p>
+<p>这个就是漏洞的触发点,要做的就是绕过限制,触发命令执行.</p>
+<p>找到912行处,这里对eval的限制最少.</p>
+<p><img src="/.com//10.png" alt="1577435634473"></p>
+<p>所以最终我们输入的wd参数带有{if-就可以绕过,因为最前面有这么一行代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!strpos(<span class="string">","</span>.<span class="keyword">$this</span>-&gt;H,<span class="string">"&#123;if-"</span>)) &#123; <span class="keyword">return</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//12.png" alt="1577436193836"></p>
+<p>然后还要满足匹配规则:<strong>{if-([\s\S]<em>?):([\s\S]+?)}([\s\S]</em>?){endif-\1}</strong></p>
+<p>所以构造payload:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="keyword">if</span>-A:(phpinfo())&#125;&#123;<span class="keyword">endif</span>-A&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个漏洞不难,根据POC,也能很快的分析出来.</p>
+<p>就是中间发现原来自己对<strong>preg_match_all()</strong>这个函数的用法一直没有理解通透.</p>
+<p><img src="/.com//13.png" alt="1577436696011"></p>
+<p>学长和我说正则匹配出的数组中存储的信息,要看它正则表达式是怎么写的:</p>
+<p>表达式:<strong>{if-([\s\S]<em>?):([\s\S]+?)}([\s\S]</em>?){endif-\1}</strong></p>
+<p>所以他匹配的结果就是一个二维数组$iar</p>
+<p>以下是$iar[0]的内容:</p>
+<p><img src="/.com//14.png" alt="1577437015203"></p>
+<p>这是根据正则规则,匹配出的所有字符串</p>
+<p>以下是$iar[2]的内容:</p>
+<p><img src="/.com//15.png" alt="1577437094309"></p>
+<p>发现没有$iar[2]的内容就是第二个[\s\S]的匹配内容</p>
+<p>以下分别是$iar[1]和$iar[3]的内容</p>
+<p><img src="/.com//16.png" alt="1577437348282"></p>
+<p><img src="/.com//17.png" alt="1577437390748"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/12/27/maccms8-x%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" data-id="ck8sqr5jt0010kou54yyx2ig0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/28/maccms8%E5%89%8D%E5%8F%B0sql%E6%B3%A8%E5%85%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          maccms8前台sql注入
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/11/SWPUCTF-web2019/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SWPUCTF-web2019</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>RSA原理解析[转载] | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言前几天的一个比赛，让我这个没怎么学过密码学，平时都只是套套脚本的人很受打击，决意好好研究一下RSA.希望在往后的比赛里，也能通过密码学拿拿分，顺便拓展一下知识面，以后吹牛有的吹…. 计算公钥和私钥RSA中的公钥和私钥需要结合在一起工作。公钥用来对数据块加密，之后 ，只有对应的私钥才能用来解密。生成密钥时，需要遵循几个步骤以确保公钥和私钥的这种关系能够正常工作。这些步骤也确保没有实际方法能够从一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSA原理解析[转载]">
+<meta property="og:url" content="http://yoursite.com/2020/02/25/RSA%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言前几天的一个比赛，让我这个没怎么学过密码学，平时都只是套套脚本的人很受打击，决意好好研究一下RSA.希望在往后的比赛里，也能通过密码学拿拿分，顺便拓展一下知识面，以后吹牛有的吹…. 计算公钥和私钥RSA中的公钥和私钥需要结合在一起工作。公钥用来对数据块加密，之后 ，只有对应的私钥才能用来解密。生成密钥时，需要遵循几个步骤以确保公钥和私钥的这种关系能够正常工作。这些步骤也确保没有实际方法能够从一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-25T15:37:24.000Z">
+<meta property="article:modified_time" content="2020-02-26T07:09:48.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-RSA原理解析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/25/RSA%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" class="article-date">
+  <time datetime="2020-02-25T15:37:24.000Z" itemprop="datePublished">2020-02-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RSA原理解析[转载]
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前几天的一个比赛，让我这个没怎么学过密码学，平时都只是套套脚本的人很受打击，决意好好研究一下RSA.希望在往后的比赛里，也能通过密码学拿拿分，顺便拓展一下知识面，以后吹牛有的吹….</p>
+<h1 id="计算公钥和私钥"><a href="#计算公钥和私钥" class="headerlink" title="计算公钥和私钥"></a>计算公钥和私钥</h1><p>RSA中的公钥和私钥需要结合在一起工作。公钥用来对数据块加密，之后 ，只有对应的私钥才能用来解密。生成密钥时，需要遵循几个步骤以确保公钥和私钥的这种关系能够正常工作。这些步骤也确保没有实际方法能够从一个密钥推出另一个。</p>
+<p>开始前，首先要选择两个大的素数，记为p和q。根据当今求解大数因子的技术水平，这两个数应该至少有200位，这们在实践中才可以认为是安全的。</p>
+<p>然后，开始计算n:</p>
+<p><strong>n = pq</strong></p>
+<p>接下来，选择一个小的奇数e，它将成为公钥的一部分。选择e最需要考虑的重点是它与(p-1)(q-1)不能有相同的因子。换句话说，e与(p-1)(q-1)是互为素数关系的。比如，如果p=11而q=19，那么n=11 X 19=209。这里选择e=17，因为(p-1)(q-1)=10 X 18 =180，而17和180没有相同的因子。通常选择3、17、65、537作为e的值。使用这些值不会对RSA的安全性造成影响，因为解密数据还需要用到私钥。</p>
+<p>一旦为e选择了一个值，接下来开始计算相对应的值d，d将成为私钥的一部分。d的值就是计算e的倒数对(p-1)(q-1)的取模结果，公式如下：</p>
+<p><strong>d = e-1 mod (p-1)(q-1)</strong></p>
+<p>这里d和e是模乘法逆元的关系。</p>
+<p>思考一下这个问题：当d为多少时可以满足ed mod (p-1)(q-1) = 1 ?比如在等式 17d mod 180 = 1中，d的一个可能值是53。其他的可能值是233、413、593等。在实践中，可以利用欧几里德算法来计算模乘法逆元。这里就不再展开。</p>
+<p>现在有了e和d的值，<strong>将(e,n)作为公钥P</strong>，<strong>将(d,n)作为私钥S</strong>并保持其不可见。表示为：</p>
+<p><strong>P = (e,n) , S = (d,n)</strong></p>
+<p>加密方使用P来加密数据，解密方使用S来解密。<strong>为了防止就算有人知道了P也无法推算出S，必须保证p和q的值绝对不能暴露</strong>。</p>
+<p>P和S结合在一起提供的安全性来自于一个事实，那就是乘法是一种很好的单向函数。</p>
+<p><strong>欧拉函数记为φ(n)，定义所有小于n的正整数里和n互素的整数的个数</strong>。</p>
+<p>只有当两个整数的唯一公因子为1时，才说这两个整数是互素的。例如，φ（8）=4，因为一共只用4个比8小的整数是互素的，它们是1，3，5，7。</p>
+<p>欧拉方程有<strong>两个性质</strong>对RSA算法来说是特别重要的。</p>
+<p> 第一，当n是素数时，φ（n）=n-1。这是由于n的唯一因子是1和n，因此，n与之前的所有n-1个正整数都是互素的。</p>
+<p>另一个有趣的性质是对于任意小于n且与n互素的正整数a，都有aφ(n) mod n = 1。例如，14 mod 8 = 1, 34 mod 8 = 1, 54 mod 8 = 1, 74 mod 8 = 1。对上述方程两边都乘以a，得到：</p>
+<p><strong>(a)(aφ(n) mod n)=a，或者aφ(n)+1 mod n = a</strong></p>
+<p>因此，可以得到15 mod 8 = 1, 35 mod 8 = 3, 55 mod 8 = 5, 75 mod 8 = 7。</p>
+<p>调整之后得到的等式非常强大。<strong>因为对于某些等式c = me mod n，该等于可以让我们找出一个d的值，使得cd mod n = m。</strong></p>
+<p>这就是RSA算法中允许加密数据，之后再解密回原文的恒等式。可以按照如下方式表示：</p>
+<p><strong>cd mod n = (me)d mod n = med mod n = mφ(n)+1 mod n = m mod n</strong></p>
+<p>欧拉函数和指数间的关系保证了加密的任意数据都能够唯一地解密回来。为了找出d的值，解方程d = e-1 φ(n) +1。不巧的是，对于方程d = e-1φ(n)+1不一定总是有整数解。为了解决这种问题，转而计算</p>
+<p>d mod φ(n)的值。换句话说，d = (e-1 φ(n) + 1) mod φ(n)，可以简化为：</p>
+<p><strong>d = e-1 mod φ(n)</strong></p>
+<p>我们可以得到这样的简化形式，因为(φ(n)+1) mod φ(n) = (φ(n)+1) - φ(n) = 1。可以用任意的正整数替代φ(n)来证明等式成立。注意这个方程式同之前计算密钥的过程中得出d的推导式之间的相似之处。这提供了一种通过e和n来计算d的方法。当然了，e和n是公开的，对于攻击者来说是事先可知的，因此就有人问，这难道不是给了攻击者相同的机会来计算出私钥吗？讨论到这里，是时候来探讨一下RSA算法安全性保障的由来了。</p>
+<p><strong>RSA算法的安全性保障来自一个重要的事实，那就是欧拉函数是乘法性质的</strong>。这意味着如果p和q是互素的，那么有φ(pq)=φ(p)φ(q)。因此，如果有两个素数p和q，且n=p*q，则φ(n)=(p-1)(q-1)，而且最重要的是：</p>
+<p><strong>d = e-1 mod (p-1)(q-1)</strong></p>
+<p><strong>因此，尽管攻击者可能知道了e和n的值，为了计算出d必须知道φ(n)，而这又必须同时得到p和q的值才能办到</strong>。由于p和q是不可知的，因此攻击者只能计算n的因子，只要给出的p和q的值足够大，这就是一个相当耗费时间的过程。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>参考:<a href="https://www.cnblogs.com/idreamo/p/9411265.html" target="_blank" rel="noopener"><a href="https://www.cnblogs.com/idreamo/p/9411265.html" target="_blank" rel="noopener">https://www.cnblogs.com/idreamo/p/9411265.html</a></a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/25/RSA%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" data-id="ck8sqr5io000jkou5fc303qrl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/26/GYCTF2020/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          GYCTF2020
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/25/pumpkinGarden-Raise-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">pumpkinGarden&amp;Raise-vulnhub渗透测试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

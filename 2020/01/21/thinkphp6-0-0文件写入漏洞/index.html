@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>thinkphp6.0.0文件写入漏洞 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言影响：thinkphp6.0.0-6.0.1 漏洞成因：在写入sessionid时，对sessionid没有做过滤处理，对session写入的内容也未作过滤处理，在开启session功能的情况下，将会导致文件写入漏洞。 漏洞分析定位漏洞文件vendor&#x2F;topthink&#x2F;framework&#x2F;src&#x2F;think&#x2F;session&#x2F;Store.php:254  save()函数用于保存session">
+<meta property="og:type" content="article">
+<meta property="og:title" content="thinkphp6.0.0文件写入漏洞">
+<meta property="og:url" content="http://yoursite.com/2020/01/21/thinkphp6-0-0%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言影响：thinkphp6.0.0-6.0.1 漏洞成因：在写入sessionid时，对sessionid没有做过滤处理，对session写入的内容也未作过滤处理，在开启session功能的情况下，将会导致文件写入漏洞。 漏洞分析定位漏洞文件vendor&#x2F;topthink&#x2F;framework&#x2F;src&#x2F;think&#x2F;session&#x2F;Store.php:254  save()函数用于保存session">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="article:published_time" content="2020-01-21T03:06:20.000Z">
+<meta property="article:modified_time" content="2020-01-20T19:09:16.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-thinkphp6-0-0文件写入漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/21/thinkphp6-0-0%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E6%BC%8F%E6%B4%9E/" class="article-date">
+  <time datetime="2020-01-21T03:06:20.000Z" itemprop="datePublished">2020-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      thinkphp6.0.0文件写入漏洞
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>影响：thinkphp6.0.0-6.0.1</p>
+<p>漏洞成因：在写入sessionid时，对sessionid没有做过滤处理，对session写入的内容也未作过滤处理，在开启session功能的情况下，将会导致文件写入漏洞。</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>定位漏洞文件<code>vendor/topthink/framework/src/think/session/Store.php:254</code></p>
+<p><img src="/.com//1.png" alt="image-20200116151346725"></p>
+<p><code>save()</code>函数用于保存session数据的。</p>
+<p><code>$sessionId</code>来自于<code>$this-&gt;getId()</code>，然后这里调用了<code>write()</code>函数</p>
+<p>该函数在<code>vendor/topthink/framework/src/think/session/driver/File.php:210</code></p>
+<p><img src="/.com//2.png" alt="image-20200116152030099"></p>
+<p>调用<code>writeFile()</code>,跟进一下。</p>
+<p>这里的<code>file_put_content()</code>将session的数据写入<code>sessionId</code>指定的文件名</p>
+<p><img src="/.com//3.png" alt="image-20200116152317516"></p>
+<p>回头看一下，文件名哪里来的</p>
+<p>在<code>save()</code>中一个<code>getId()</code>，那么就会有一个<code>setId()</code></p>
+<p><img src="/.com//4.png" alt="image-20200116152747140"></p>
+<p>调用<code>setId</code>的地方有<code>vendor/topthink/framework/src/think/middleware/SessionInit.php:46</code></p>
+<p><img src="/.com//5.png" alt="image-20200116153548042"></p>
+<p>那么在store.php中<code>$cookieName</code>为</p>
+<p><img src="/.com//6.png" alt="image-20200116153859756"></p>
+<p>这样子文件名就是可控的。写入内容，一般网站，都会把用户的信息的，记录在sessIon文件中。实际攻击，我们可以在把用户名写成一句话木马等。</p>
+<p><img src="/.com//7.png" alt="image-20200116154137395"></p>
+<h2 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h2><p><img src="/.com//8.png" alt="image-20200116161317856"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/21/thinkphp6-0-0%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E6%BC%8F%E6%B4%9E/" data-id="ck8sqr5k9001fkou50gdsgodz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          dusk-vulnhub渗透测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">WeCenterv3.3.4前台SQL注入及前台RCE[复现]</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>onethink1.0缓存文件getshell(复现) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言这实际上是i春秋的一道题，上网搜到POC后，我就直接一把梭地打过去,没有去深究漏洞产生的原因。 这里利用的是缓存文件没有合理过滤造成的漏洞，从而前台getshell了。因为没有遇到过这种情况，所以这里也就复现一下这个漏洞。 php5.6+deepin5.11 onethink1.0 代码审计这套cms是基于thinkphp3进行的二次开发 .&#x2F;Application&#x2F;Home&#x2F;Model&#x2F;Me">
+<meta property="og:type" content="article">
+<meta property="og:title" content="onethink1.0缓存文件getshell(复现)">
+<meta property="og:url" content="http://yoursite.com/2019/11/19/onethink1-0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell-%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言这实际上是i春秋的一道题，上网搜到POC后，我就直接一把梭地打过去,没有去深究漏洞产生的原因。 这里利用的是缓存文件没有合理过滤造成的漏洞，从而前台getshell了。因为没有遇到过这种情况，所以这里也就复现一下这个漏洞。 php5.6+deepin5.11 onethink1.0 代码审计这套cms是基于thinkphp3进行的二次开发 .&#x2F;Application&#x2F;Home&#x2F;Model&#x2F;Me">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/%EF%BC%91.png">
+<meta property="og:image" content="http://yoursite.com/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/2.png">
+<meta property="og:image" content="http://yoursite.com/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/3.png">
+<meta property="article:published_time" content="2019-11-19T12:46:33.000Z">
+<meta property="article:modified_time" content="2019-12-13T18:44:14.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="代码审计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/%EF%BC%91.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-onethink1-0缓存文件getshell-复现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/19/onethink1-0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell-%E5%A4%8D%E7%8E%B0/" class="article-date">
+  <time datetime="2019-11-19T12:46:33.000Z" itemprop="datePublished">2019-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      onethink1.0缓存文件getshell(复现)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这实际上是i春秋的一道题，上网搜到<code>POC</code>后，我就直接一把梭地打过去,没有去深究漏洞产生的原因。</p>
+<p>这里利用的是缓存文件没有合理过滤造成的漏洞，从而前台<code>getshell</code>了。因为没有遇到过这种情况，所以这里也就复现一下这个漏洞。</p>
+<p><code>php5.6+deepin5.11</code></p>
+<p><code>onethink1.0</code></p>
+<h3 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h3><p>这套<code>cms</code>是基于<code>thinkphp3</code>进行的二次开发</p>
+<p><code>./Application/Home/Model/MemberModel.class.php--function login() line 35</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   　 <span class="comment">/**</span></span><br><span class="line"><span class="comment"> 　* 登录指定用户</span></span><br><span class="line"><span class="comment">　 * <span class="doctag">@param</span>  integer $uid 用户ID</span></span><br><span class="line"><span class="comment">　 * <span class="doctag">@return</span> boolean      ture-登录成功，false-登录失败</span></span><br><span class="line"><span class="comment">　 */</span>    </span><br><span class="line">　　　　<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">login</span><span class="params">($uid)</span></span>&#123;</span><br><span class="line">    <span class="comment">/* 检测是否在当前应用注册 */</span></span><br><span class="line">    $user = <span class="keyword">$this</span>-&gt;field(<span class="keyword">true</span>)-&gt;find($uid);</span><br><span class="line">    <span class="keyword">if</span>(!$user)&#123; <span class="comment">//未注册</span></span><br><span class="line">        <span class="comment">/* 在当前应用中注册用户 */</span></span><br><span class="line">    	$Api = <span class="keyword">new</span> UserApi();</span><br><span class="line">    	$info = $Api-&gt;info($uid);</span><br><span class="line">        $user = <span class="keyword">$this</span>-&gt;create(<span class="keyword">array</span>(<span class="string">'nickname'</span> =&gt; $info[<span class="number">1</span>], <span class="string">'status'</span> =&gt; <span class="number">1</span>));</span><br><span class="line">        $user[<span class="string">'uid'</span>] = $uid;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">$this</span>-&gt;add($user))&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;error = <span class="string">'前台用户信息注册失败，请重试！'</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">elseif</span>(<span class="number">1</span> != $user[<span class="string">'status'</span>]) &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;error = <span class="string">'用户未激活或已禁用！'</span>; <span class="comment">//应用级别禁用</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 登录用户 */</span></span><br><span class="line">    <span class="keyword">$this</span>-&gt;autoLogin($user);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//记录行为</span></span><br><span class="line">    action_log(<span class="string">'user_login'</span>, <span class="string">'member'</span>, $uid, $uid);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数是用于登录指定用户时被调用的，由于我们之前已经将注册过了，所以用户信息已经被存入数据库中。</p>
+<p><img src="/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/%EF%BC%91.png" alt></p>
+<p><code>login()</code>的参数是<code>$uid</code>，这个参数来自于数据库中的记录，在数据库中查找该用户的id，正确情况下跟踪到函数<code>$this-&gt;autoLogin($user);</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">autoLogin</span><span class="params">($user)</span></span>&#123;</span><br><span class="line">        <span class="comment">/* 更新登录信息 */</span></span><br><span class="line">        $data = <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'uid'</span>             =&gt; $user[<span class="string">'uid'</span>],</span><br><span class="line">            <span class="string">'login'</span>           =&gt; <span class="keyword">array</span>(<span class="string">'exp'</span>, <span class="string">'`login`+1'</span>),</span><br><span class="line">            <span class="string">'last_login_time'</span> =&gt; NOW_TIME,</span><br><span class="line">            <span class="string">'last_login_ip'</span>   =&gt; get_client_ip(<span class="number">1</span>),</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">$this</span>-&gt;save($data);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 记录登录SESSION和COOKIES */</span></span><br><span class="line">        $auth = <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">'uid'</span>             =&gt; $user[<span class="string">'uid'</span>],</span><br><span class="line">            <span class="string">'username'</span>        =&gt; get_username($user[<span class="string">'uid'</span>]),</span><br><span class="line">            <span class="string">'last_login_time'</span> =&gt; $user[<span class="string">'last_login_time'</span>],</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        session(<span class="string">'user_auth'</span>, $auth);</span><br><span class="line">        session(<span class="string">'user_auth_sign'</span>, data_auth_sign($auth));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用函数<code>get_username()</code>，跟踪这个函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据用户ID获取用户名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>  integer $uid 用户ID</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> string       用户名</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_username</span><span class="params">($uid = <span class="number">0</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> $list;</span><br><span class="line">    <span class="keyword">if</span>(!($uid &amp;&amp; is_numeric($uid)))&#123; <span class="comment">//获取当前登录用户名</span></span><br><span class="line">        <span class="keyword">return</span> session(<span class="string">'user_auth.username'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 获取缓存数据 */</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">empty</span>($list))&#123;</span><br><span class="line">        $list = S(<span class="string">'sys_active_user_list'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 查找用户信息 */</span></span><br><span class="line">    $key = <span class="string">"u&#123;$uid&#125;"</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($list[$key]))&#123; <span class="comment">//已缓存，直接使用</span></span><br><span class="line">        $name = $list[$key];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">//调用接口获取用户信息</span></span><br><span class="line">        $User = <span class="keyword">new</span> User\Api\UserApi();</span><br><span class="line">        $info = $User-&gt;info($uid);</span><br><span class="line">        <span class="keyword">if</span>($info &amp;&amp; <span class="keyword">isset</span>($info[<span class="number">1</span>]))&#123;</span><br><span class="line">            $name = $list[$key] = $info[<span class="number">1</span>];</span><br><span class="line">            <span class="comment">/* 缓存用户 */</span></span><br><span class="line">            $count = count($list);</span><br><span class="line">            $max   = C(<span class="string">'USER_MAX_CACHE'</span>);</span><br><span class="line">            <span class="keyword">while</span> ($count-- &gt; $max) &#123;</span><br><span class="line">                array_shift($list);</span><br><span class="line">            &#125;</span><br><span class="line">            S(<span class="string">'sys_active_user_list'</span>, $list);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            $name = <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键代码如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$User = <span class="keyword">new</span> User\Api\UserApi();</span><br><span class="line">$info = $User-&gt;info($uid);</span><br><span class="line"><span class="keyword">if</span>($info &amp;&amp; <span class="keyword">isset</span>($info[<span class="number">1</span>]))&#123;</span><br><span class="line">    $name = $list[$key] = $info[<span class="number">1</span>];</span><br><span class="line">    <span class="comment">/* 缓存用户 */</span></span><br><span class="line">    $count = count($list);</span><br><span class="line">    $max   = C(<span class="string">'USER_MAX_CACHE'</span>);</span><br><span class="line">    <span class="keyword">while</span> ($count-- &gt; $max) &#123;</span><br><span class="line">        array_shift($list);</span><br><span class="line">    &#125;</span><br><span class="line">    S(<span class="string">'sys_active_user_list'</span>, $list);</span><br></pre></td></tr></table></figure>
+
+<p>这里调用了<code>S()</code>函数,可以看到<code>$name=&gt;&#39;sys_active_user_list&#39;,$value=&gt;$list=&gt;$info[1]</code>，其中<code>$info[1]</code></p>
+<p>来自数据库查询的结果，查询结果中的<code>nickname</code>。可以看到这里调用了函数<code>set()</code>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">S</span><span class="params">($name,$value=<span class="string">''</span>,$options=null)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> $cache   =   <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">if</span>(is_array($options) &amp;&amp; <span class="keyword">empty</span>($cache))&#123;</span><br><span class="line">        <span class="comment">// 缓存操作的同时初始化</span></span><br><span class="line">        $type       =   <span class="keyword">isset</span>($options[<span class="string">'type'</span>])?$options[<span class="string">'type'</span>]:<span class="string">''</span>;</span><br><span class="line">        $cache      =   Think\Cache::getInstance($type,$options);</span><br><span class="line">    &#125;<span class="keyword">elseif</span>(is_array($name)) &#123; <span class="comment">// 缓存初始化</span></span><br><span class="line">        $type       =   <span class="keyword">isset</span>($name[<span class="string">'type'</span>])?$name[<span class="string">'type'</span>]:<span class="string">''</span>;</span><br><span class="line">        $cache      =   Think\Cache::getInstance($type,$name);</span><br><span class="line">        <span class="keyword">return</span> $cache;</span><br><span class="line">    &#125;<span class="keyword">elseif</span>(<span class="keyword">empty</span>($cache)) &#123; <span class="comment">// 自动初始化</span></span><br><span class="line">        $cache      =   Think\Cache::getInstance();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">''</span>=== $value)&#123; <span class="comment">// 获取缓存</span></span><br><span class="line">        <span class="keyword">return</span> $cache-&gt;get($name);</span><br><span class="line">    &#125;<span class="keyword">elseif</span>(is_null($value)) &#123; <span class="comment">// 删除缓存</span></span><br><span class="line">        <span class="keyword">return</span> $cache-&gt;rm($name);</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123; <span class="comment">// 缓存数据</span></span><br><span class="line">        <span class="keyword">if</span>(is_array($options)) &#123;</span><br><span class="line">            $expire     =   <span class="keyword">isset</span>($options[<span class="string">'expire'</span>])?$options[<span class="string">'expire'</span>]:<span class="keyword">NULL</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            $expire     =   is_numeric($options)?$options:<span class="keyword">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $cache-&gt;set($name, $value, $expire);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>跟进函数<code>set()</code>，缓存文件的操作类<code>./Library/Think/Cache/Driver/File.class.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 写入缓存</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@access</span> public</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> string $name 缓存变量名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> mixed $value  存储数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> int $expire  有效时间 0为永久</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> boolen</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span><span class="params">($name,$value,$expire=null)</span> </span>&#123;</span><br><span class="line">    N(<span class="string">'cache_write'</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span>(is_null($expire)) &#123;</span><br><span class="line">        $expire =  <span class="keyword">$this</span>-&gt;options[<span class="string">'expire'</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    $filename   =   <span class="keyword">$this</span>-&gt;filename($name);</span><br><span class="line">    $data   =   serialize($value);</span><br><span class="line">    <span class="keyword">if</span>( C(<span class="string">'DATA_CACHE_COMPRESS'</span>) &amp;&amp; function_exists(<span class="string">'gzcompress'</span>)) &#123;</span><br><span class="line">        <span class="comment">//数据压缩</span></span><br><span class="line">        $data   =   gzcompress($data,<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(C(<span class="string">'DATA_CACHE_CHECK'</span>)) &#123;<span class="comment">//开启数据校验</span></span><br><span class="line">        $check  =  md5($data);</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        $check  =  <span class="string">''</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    $data    = <span class="string">"&lt;?php\n//"</span>.sprintf(<span class="string">'%012d'</span>,$expire).$check.$data.<span class="string">"\n?&gt;"</span>;</span><br><span class="line">    $result  =   file_put_contents($filename,$data);</span><br><span class="line">    <span class="keyword">if</span>($result) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;options[<span class="string">'length'</span>]&gt;<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 记录缓存队列</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;queue($name);</span><br><span class="line">        &#125;</span><br><span class="line">        clearstatcache();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数用于写入缓存。关键代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$filename   =   <span class="keyword">$this</span>-&gt;filename($name);</span><br><span class="line">$data   =   serialize($value);</span><br><span class="line">$data    = <span class="string">"&lt;?php\n//"</span>.sprintf(<span class="string">'%012d'</span>,$expire).$check.$data.<span class="string">"\n?&gt;"</span>;</span><br><span class="line">$result  =   file_put_contents($filename,$data);</span><br></pre></td></tr></table></figure>
+
+<p>这个<code>filename()</code>如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 取得变量的存储文件名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@access</span> private</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> string $name 缓存变量名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">filename</span><span class="params">($name)</span> </span>&#123;</span><br><span class="line">    $name	=	md5($name);</span><br><span class="line">    <span class="keyword">if</span>(C(<span class="string">'DATA_CACHE_SUBDIR'</span>)) &#123;</span><br><span class="line">        <span class="comment">// 使用子目录</span></span><br><span class="line">        $dir   =<span class="string">''</span>;</span><br><span class="line">        <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;C(<span class="string">'DATA_PATH_LEVEL'</span>);$i++) &#123;</span><br><span class="line">            $dir	.=	$name&#123;$i&#125;.<span class="string">'/'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!is_dir(<span class="keyword">$this</span>-&gt;options[<span class="string">'temp'</span>].$dir)) &#123;</span><br><span class="line">            mkdir(<span class="keyword">$this</span>-&gt;options[<span class="string">'temp'</span>].$dir,<span class="number">0755</span>,<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $filename	=	$dir.<span class="keyword">$this</span>-&gt;options[<span class="string">'prefix'</span>].$name.<span class="string">'.php'</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        $filename	=	<span class="keyword">$this</span>-&gt;options[<span class="string">'prefix'</span>].$name.<span class="string">'.php'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;options[<span class="string">'temp'</span>].$filename;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们查看<code>./ThinkPHP/Conf/convertion.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 数据缓存设置 */</span></span><br><span class="line">....</span><br><span class="line"><span class="string">'DATA_CACHE_PATH'</span>       =&gt;  TEMP_PATH,<span class="comment">// 缓存路径设置 (仅对File方式缓存有效)</span></span><br><span class="line"><span class="string">'DATA_CACHE_SUBDIR'</span>     =&gt;  <span class="keyword">false</span>,    <span class="comment">// 使用子目录缓存 (自动根据缓存标识的哈希创建子目录)</span></span><br><span class="line"><span class="string">'DATA_PATH_LEVEL'</span>       =&gt;  <span class="number">1</span>,        <span class="comment">// 子目录缓存级别</span></span><br></pre></td></tr></table></figure>
+
+<p>查看<code>./ThinkPHP/ThinkPHP.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defined(<span class="string">'TEMP_PATH'</span>)    <span class="keyword">or</span> define(<span class="string">'TEMP_PATH'</span>,      RUNTIME_PATH.<span class="string">'Temp/'</span>); <span class="comment">// 项目缓存目录</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>所以最终文件存放位置就是<code>./Runtime/temp/md5($).php</code>由于这里的<code>$name</code>为<code>sys_active_user_list</code>，知道文件存放位置后，我们就可以去构造payload了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$data    = <span class="string">"&lt;?php\n//"</span>.sprintf(<span class="string">'%012d'</span>,$expire).$check.$data.<span class="string">"\n?&gt;"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们构造payload：<code>%0aphpinfo();#</code></p>
+<p><code>%0</code> 使得我们传入的参数不被注释，<code>#</code>使得序列化后的字符失效。</p>
+<p>注册一个用户，使得用户名为payload，不过在注册时，要抓包，将<code>%0a</code>解码一下。</p>
+<p>登录该用户，使得用户名为payload，不过在登录时，要抓包，将<code>%0a</code>解码一下。</p>
+<p>然后查看缓存文件</p>
+<p><img src="/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/2.png" alt></p>
+<p><img src="/.com//cookie/Pictures/blogs/onethink1.0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell%5B%E5%A4%8D%E7%8E%B0%5D/3.png" alt></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>漏洞不是很复杂，但是对tp的框架的理解还有待提高</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/19/onethink1-0%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6getshell-%E5%A4%8D%E7%8E%B0/" data-id="ck8sqr5jv0012kou59cytgckl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/29/NCTF2019-Misc-web/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          NCTF2019[Misc&amp;&amp;web]
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/19/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">排序算法总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

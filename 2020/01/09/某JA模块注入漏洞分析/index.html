@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>某JA模块注入漏洞分析 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言某JA模块注入漏洞分析 漏洞分析1.POC先注册一个账号，然后在用户的地址管理处，添加新的地址信息，并且payload为{$&#x3D;phpinfo()}  接着访问..&#x2F;wdja&#x2F;passport&#x2F;address&#x2F;manage.php  2.漏洞分析这是一个模块注入，导致的代码执行漏洞，从payload来看这里没有做出过滤等操作。 首先看到index.php，并且结合写入地址信息时，访问的url中的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某JA模块注入漏洞分析">
+<meta property="og:url" content="http://yoursite.com/2020/01/09/%E6%9F%90JA%E6%A8%A1%E5%9D%97%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言某JA模块注入漏洞分析 漏洞分析1.POC先注册一个账号，然后在用户的地址管理处，添加新的地址信息，并且payload为{$&#x3D;phpinfo()}  接着访问..&#x2F;wdja&#x2F;passport&#x2F;address&#x2F;manage.php  2.漏洞分析这是一个模块注入，导致的代码执行漏洞，从payload来看这里没有做出过滤等操作。 首先看到index.php，并且结合写入地址信息时，访问的url中的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//9.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="article:published_time" content="2020-01-09T06:37:54.000Z">
+<meta property="article:modified_time" content="2020-01-12T22:49:34.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-某JA模块注入漏洞分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/09/%E6%9F%90JA%E6%A8%A1%E5%9D%97%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2020-01-09T06:37:54.000Z" itemprop="datePublished">2020-01-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      某JA模块注入漏洞分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>某<code>JA</code>模块注入漏洞分析</p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><h2 id="1-POC"><a href="#1-POC" class="headerlink" title="1.POC"></a>1.POC</h2><p>先注册一个账号，然后在用户的地址管理处，添加新的地址信息，并且payload为<code>{$=phpinfo()}</code></p>
+<p><img src="/.com//1.png" alt="image-20200110021037161"></p>
+<p>接着访问<code>../wdja/passport/address/manage.php</code></p>
+<p><img src="/.com//2.png" alt="image-20200110021257624"></p>
+<h2 id="2-漏洞分析"><a href="#2-漏洞分析" class="headerlink" title="2.漏洞分析"></a>2.漏洞分析</h2><p>这是一个模块注入，导致的代码执行漏洞，从payload来看这里没有做出过滤等操作。</p>
+<p>首先看到<code>index.php</code>，并且结合写入地址信息时，访问的<code>url</code>中的<code>action=add</code>，在<code>index.php</code>中调用了<code>wdja_cms_module_action()</code></p>
+<p><img src="/.com//3.png" alt="image-20200110021950156"></p>
+<p>跟进看一下，这里可看到<code>action=add</code>的时候，将会调用<code>wdja_cms_module_adddisp()</code></p>
+<p><img src="/.com//4.png" alt="image-20200110022122198"></p>
+<p>跟进<code>wdja_cms_module_adddisp()</code>看一下，可见这是在往数据库中添加数据</p>
+<p><img src="/.com//5.png" alt="image-20200110022910798"></p>
+<p>我们在<code>sql语句</code>后debug一下，看看这个语句操作的是哪个数据表。</p>
+<p><img src="/.com//6.png" alt="image-20200110023054254"></p>
+<p>然后回显是如下数据表。也就是说用户的地址信息等将会被存入这个表中。</p>
+<p><img src="/.com//7.png" alt="image-20200110023149973"></p>
+<p>然后我们看向<code>manage.php</code>，然后我们跟进，<code>$mybody</code>是我们回显<code>phpinfo()</code>的位置</p>
+<p><img src="/.com//8.png" alt="image-20200110023642939"></p>
+<p>跟进<code>wdja_cms_admin_manage()</code></p>
+<p><img src="/.com//9.png" alt="image-20200110024319860"></p>
+<p><img src="/.com//10.png" alt="image-20200110024402703"></p>
+<p>然后跟进<code>wdja_cms_admin_manage_list()</code>,这里也用<code>die()</code>来看一下执行的<code>sql语句</code>是什么。</p>
+<p><img src="/.com//11.png" alt="image-20200110024521969"></p>
+<p><img src="/.com//12.png" alt="image-20200110025733103"></p>
+<p>同一个数据表。</p>
+<p>继续看到最下面，跟进<code>ii_creplace()</code></p>
+<p><img src="/.com//13.png" alt="image-20200110025902644"></p>
+<p><img src="/.com//14.png" alt="image-20200110030001499"></p>
+<p><code>ii_creplace()</code>中对传入参数的要求就只有要满足<code>{\$=(.[^\}]*)}</code></p>
+<p>跟进<code>ii_eval()</code>，发现漏洞触发点。</p>
+<p><img src="/.com//15.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/09/%E6%9F%90JA%E6%A8%A1%E5%9D%97%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" data-id="ck8sqr5ke001mkou50uefh3tz" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/10/pentests-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          pentests-Vulhub渗透测试
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/02/XXE-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">XXE-Vulhub渗透测试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

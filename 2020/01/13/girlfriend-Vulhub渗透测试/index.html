@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>girlfriend-Vulhub渗透测试 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言Vulnhub me-and-my-girlfriend渗透练习 渗透过程首先netdiscover扫描存活IP，发现靶机的IP就是192.168.43.160  然后使用nmap扫描一个该IP看看有哪些端口是开着的。 发现端口22(ssh服务)，还有端口80(http服务)是开着的。  访问80端口，看到信息，  然后添加x-forwarded-for,可这样，好像没啥用  扫描目录看到下面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="girlfriend-Vulhub渗透测试">
+<meta property="og:url" content="http://yoursite.com/2020/01/13/girlfriend-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言Vulnhub me-and-my-girlfriend渗透练习 渗透过程首先netdiscover扫描存活IP，发现靶机的IP就是192.168.43.160  然后使用nmap扫描一个该IP看看有哪些端口是开着的。 发现端口22(ssh服务)，还有端口80(http服务)是开着的。  访问80端口，看到信息，  然后添加x-forwarded-for,可这样，好像没啥用  扫描目录看到下面">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="og:image" content="http://yoursite.com/.com//18.png">
+<meta property="og:image" content="http://yoursite.com/.com//16.png">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="article:published_time" content="2020-01-13T06:41:45.000Z">
+<meta property="article:modified_time" content="2020-01-12T22:43:14.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-girlfriend-Vulhub渗透测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/13/girlfriend-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time datetime="2020-01-13T06:41:45.000Z" itemprop="datePublished">2020-01-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      girlfriend-Vulhub渗透测试
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Vulnhub me-and-my-girlfriend渗透练习</p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>首先netdiscover扫描存活IP，发现靶机的IP就是192.168.43.160</p>
+<p><img src="/.com//1.png" alt="image-20200107184552312"></p>
+<p>然后使用nmap扫描一个该IP看看有哪些端口是开着的。</p>
+<p>发现端口22(ssh服务)，还有端口80(http服务)是开着的。</p>
+<p><img src="/.com//2.png" alt="image-20200107185004063"></p>
+<p>访问80端口，看到信息，</p>
+<p><img src="/.com//3.png" alt="image-20200108075145663"></p>
+<p>然后添加x-forwarded-for,可这样，好像没啥用</p>
+<p><img src="/.com//4.png" alt="image-20200108075650502"></p>
+<p>扫描目录看到下面这些信息</p>
+<p><img src="/.com//7.png" alt></p>
+<p>然后扫目录除了使用dirsearch,还可以使用dirb</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirb http:<span class="comment">//192.168.43.160</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>看robots.txt</p>
+<p><img src="/.com//5.png" alt></p>
+<p>然后访问/heyhoo.txt，到这儿感觉暂时已经没有什么作用了，提示的东西就是这样</p>
+<p><img src="/.com//6.png" alt></p>
+<p>使用插件，添加XFF访问</p>
+<p><img src="/.com//8.png" alt="image-20200108094149666"></p>
+<p>然后可以注册登录，至profile页面，这里的url中存在信息读取漏洞，我们修改user_id就可以读取用户信息。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="comment">//192.168.43.160/index.php?page=profile&amp;user_id=1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//10.png" alt="image-20200108095027343"></p>
+<p>一个个去读，然后最终获得6个账号密码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## username.txt</span></span><br><span class="line">eweuhtandingan</span><br><span class="line">aingmaung</span><br><span class="line">sundatea</span><br><span class="line">sedihaingmah</span><br><span class="line">alice</span><br><span class="line">abdikasepak</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment">## password.txt</span></span><br><span class="line">skuyatuh</span><br><span class="line">qwerty!!!</span><br><span class="line">indONEsia</span><br><span class="line">cedihhihihi</span><br><span class="line"><span class="number">4</span>lic3</span><br><span class="line">dorrrrr</span><br></pre></td></tr></table></figure>
+
+
+
+<p>heyhoo.txt提示的reconn/attack，使用这些账号去爆破ssh登录，一个个去尝试，最终使用alice这个账号成功上位。</p>
+<p><img src="/.com//11.png" alt="image-20200108102311388"></p>
+<p>ssh连接</p>
+<p><img src="/.com//12.png" alt="image-20200108102457992"></p>
+<p>获得flag1.txt</p>
+<p><img src="/.com//13.png" alt="image-20200108102646443"></p>
+<p>第二个flag在数据库中，我们去查看config.php，然后连接数据库</p>
+<p><img src="/.com//14.png" alt="image-20200108102934261"></p>
+<p>但是数据库中没有数据</p>
+<p><img src="/.com//15.png" alt="image-20200108103234011"></p>
+<p>尝试sudo提权</p>
+<p><img src="/.com//18.png" alt="image-20200108104603796"></p>
+<p><img src="/.com//16.png" alt="image-20200108103634784"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CMD=<span class="string">"/bin/sh"</span></span><br><span class="line">sudo php -r <span class="string">"system('$CMD');"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//17.png" alt="image-20200108104528362"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个靶机的渗透属初级阶段，但是也有学到一些东西，比如信息的使用，提权…..</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/13/girlfriend-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" data-id="ck8sqr5jq000xkou53bki2zf4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          WeCenterv3.3.4前台SQL注入及前台RCE[复现]
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/12/emlog%E5%90%8E%E5%8F%B0getshell/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">emlog后台getshell</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

