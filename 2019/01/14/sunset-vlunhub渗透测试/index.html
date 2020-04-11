@@ -27,17 +27,17 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言靶机：vulnhub-sunset 目标：获得靶机中的flag.txt 靶机IP：192.168.1.153 攻击机IP：192.168.1.128">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png">
 <meta property="article:published_time" content="2019-01-14T01:48:37.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:13:25.335Z">
+<meta property="article:modified_time" content="2020-04-11T17:17:09.541Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="靶机渗透">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">
 
@@ -187,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:13:25" itemprop="dateModified" datetime="2020-04-10T17:13:25+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:17:09" itemprop="dateModified" datetime="2020-04-12T01:17:09+08:00">2020-04-12</time>
               </span>
 
           
@@ -210,11 +210,11 @@
 
 
 <h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>首先扫描靶机的端口</p>
-<p><img src="/.com//1.png" alt="image-20200121005036781"></p>
+<p><img src="/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png" alt="image-20200121005036781"></p>
 <p>发现21(<code>ftp</code>)号端口，和22(<code>ssh</code>)号端口是开放着的。</p>
 <p>然后<code>ftp</code>可匿名登陆</p>
 <p>发现这里有一个backup文件，里面是证书文件</p>
-<p><img src="/.com//2.png" alt="image-20200121010113050"></p>
+<p><img src="/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png" alt="image-20200121010113050"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">office:$<span class="number">6</span>$$<span class="number">9</span>ZYTy.VI0M7cG9tVcPl.QZZi2XHOUZ9hLsiCr/avWTajSPHqws7<span class="number">.75</span>I9ZjP4HwLN3Gvio5To4gjBdeDGzhq.X.                                                                                                                  </span><br><span class="line">datacenter:$<span class="number">6</span>$$<span class="number">3</span>QW/J4OlV3naFDbhuksxRXLrkR6iKo4gh.Zx1RfZC2OINKMiJ/<span class="number">6</span>Ffyl33OFtBvCI7S4N1b8vlDylF2hG2N0NN/                                                                                                              </span><br><span class="line">sky:$<span class="number">6</span>$$Ny8IwgIPYq5pHGZqyIXmoVRRmWydH7u2JbaTo.H2kNG7hFtR.pZb94.HjeTK1MLyBxw8PUeyzJszcwfH0qepG0                                                                                                             sunset:$<span class="number">6</span>$<span class="number">406</span>THujdibTNu./R$NzquK0QRsbAUUSrHcpR2QrrlU3fA/SJo7sPDPbP3xcCR/lpbgMXS67Y27KtgLZAcJq9KZpEKEqBHFLzFSZ9bo/</span><br><span class="line">space:$<span class="number">6</span>$$<span class="number">4</span>NccGQWPfiyfGKHgyhJBgiadOlP/FM4.Qwl1yIWP28ABx.YuOsiRaiKKU<span class="number">.4</span>A1HKs9XLXtq8qFuC3W6SCE4Ltx/</span><br></pre></td></tr></table></figure>
 
 
@@ -222,10 +222,10 @@
 <p>然后使用john来爆破一下，使用<code>rockyou.txt</code></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">john --wordlist=/usr/share/wordlists/rockyou.txt --format=sha512crypt sunset</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//3.png" alt="image-20200121104315831"></p>
+<p><img src="/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt="image-20200121104315831"></p>
 <p>然后用ssh连接</p>
-<p><img src="/.com//4.png" alt="image-20200121104458286"></p>
-<p><img src="/.com//5.png" alt="image-20200121104827798"></p>
+<p><img src="/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt="image-20200121104458286"></p>
+<p><img src="/2019/01/14/sunset-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt="image-20200121104827798"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>用<code>vbox</code>，千万别用<code>vm</code>.</p>
 <p><code>ftp</code>端口开着的，看他的开启的服务是否有漏洞，要么看看能不能匿名登陆</p>
 <p><code>ssh</code>服务一般用于提取使用，<code>sudo -l</code>看可用什么样的命令</p>
@@ -329,7 +329,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

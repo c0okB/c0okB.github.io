@@ -27,24 +27,24 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="BJDCTF[BJDCTF 2nd]-web&amp;&amp;misc">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//6.png">
-<meta property="og:image" content="http://yoursite.com/.com//7.png">
-<meta property="og:image" content="http://yoursite.com/.com//8.png">
-<meta property="og:image" content="http://yoursite.com/.com//9.png">
-<meta property="og:image" content="http://yoursite.com/.com//10.png">
-<meta property="og:image" content="http://yoursite.com/.com//11.png">
-<meta property="og:image" content="http://yoursite.com/.com//12.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/12.png">
 <meta property="article:published_time" content="2020-03-20T13:40:49.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:05:53.129Z">
+<meta property="article:modified_time" content="2020-04-11T17:15:16.819Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/20/BJDCTF-2nd/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/20/BJDCTF-2nd/">
 
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:05:53" itemprop="dateModified" datetime="2020-04-10T17:05:53+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:15:16" itemprop="dateModified" datetime="2020-04-12T01:15:16+08:00">2020-04-12</time>
               </span>
 
           
@@ -215,22 +215,22 @@
 
 <h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="BJDCTF-2nd-假猪套天下第一"><a href="#BJDCTF-2nd-假猪套天下第一" class="headerlink" title="[BJDCTF 2nd]假猪套天下第一"></a>[BJDCTF 2nd]假猪套天下第一</h2><p>考点：HTTP协议</p>
 <p>随便用个账号登陆，会在返回页面中发现</p>
-<p><img src="/.com//1.png" alt="image-20200326150351129"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/1.png" alt="image-20200326150351129"></p>
 <p>然后访问文件，根据它的提示添加一个个协议头</p>
-<p><img src="/.com//2.png" alt="image-20200326150549636"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/2.png" alt="image-20200326150549636"></p>
 <p>base64解码</p>
 <h2 id="BJDCTF-2nd-Schrödinger"><a href="#BJDCTF-2nd-Schrödinger" class="headerlink" title="[BJDCTF 2nd]Schrödinger"></a>[BJDCTF 2nd]Schrödinger</h2><p>考点：时间戳</p>
-<p><img src="/.com//3.png" alt="image-20200326153608641"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/3.png" alt="image-20200326153608641"></p>
 <p>题目hint有给了<code>test.php</code>，得去爆破这个页面</p>
-<p><img src="/.com//4.png" alt="image-20200326153713228"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/4.png" alt="image-20200326153713228"></p>
 <p>但是这个rate实在是增长得太慢了，抓包发现在cookie中有一个时间戳</p>
-<p><img src="/.com//5.png" alt="image-20200326153839712"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/5.png" alt="image-20200326153839712"></p>
 <p>发现这个时间戳是base64加密的过程，索性把这个时间戳给置空。</p>
-<p><img src="/.com//6.png" alt="image-20200326154113812"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/6.png" alt="image-20200326154113812"></p>
 <p>然后check一下，同样要置空时间戳</p>
-<p><img src="/.com//7.png" alt="image-20200326154153026"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/7.png" alt="image-20200326154153026"></p>
 <p>然后去<code>bilibili</code>找这个视频，量子力学…..评论中….</p>
-<p><img src="/.com//8.png" alt="image-20200326154444676"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/8.png" alt="image-20200326154444676"></p>
 <h2 id="BJDCTF-2nd-xss之光"><a href="#BJDCTF-2nd-xss之光" class="headerlink" title="[BJDCTF 2nd]xss之光"></a>[BJDCTF 2nd]xss之光</h2><p>考点：利用<code>php</code>内置类进行<code>xss</code> ，<code>.git</code>泄露</p>
 <p>首先git泄露获得源码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a = $_GET[<span class="string">'yds_is_so_beautiful'</span>];</span><br><span class="line"><span class="keyword">echo</span> unserialize($a);</span><br></pre></td></tr></table></figure>
@@ -240,11 +240,11 @@
 <p>使用内置类<code>Exception()</code>可以触发<code>XSS</code>，并且使用<code>windows.open()</code>带出cookie</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a = <span class="keyword">new</span> <span class="keyword">Exception</span>(<span class="string">"&lt;script&gt;windows.open(document.cookie)&lt;/script&gt;"</span>);</span><br><span class="line">$b = serialize($a);</span><br><span class="line"><span class="keyword">echo</span> urlencode($b);</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//9.png" alt="image-20200326161508395"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/9.png" alt="image-20200326161508395"></p>
 <h2 id="BJDCTF-2nd-文件探测"><a href="#BJDCTF-2nd-文件探测" class="headerlink" title="[BJDCTF 2nd]文件探测"></a>[BJDCTF 2nd]文件探测</h2><p>访问<code>robots.txt</code></p>
-<p><img src="/.com//10.png" alt="image-20200326170921061"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/10.png" alt="image-20200326170921061"></p>
 <p>然后访问index.php</p>
-<p><img src="/.com//11.png" alt="image-20200326170955058"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/11.png" alt="image-20200326170955058"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>($_COOKIE[<span class="string">'y1ng'</span>]) || $_COOKIE[<span class="string">'y1ng'</span>] !== sha1(md5(<span class="string">'y1ng'</span>))) &#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">"&lt;script&gt;alert('why you are here!');alert('fxck your scanner');alert('fxck you! get out!');&lt;/script&gt;"</span>;</span><br><span class="line">	header(<span class="string">"Refresh:0.1;url=index.php"</span>);</span><br><span class="line">	<span class="keyword">die</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$filter1 = <span class="string">'/^http:\/\/127\.0\.0\.1\//i'</span>;</span><br><span class="line">$filter2 = <span class="string">'/.?f.?l.?a.?g.?/i'</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">'q1'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'q2'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'q3'</span>]) ) &#123;</span><br><span class="line">	$url = $_POST[<span class="string">'q2'</span>].<span class="string">".y1ng.txt"</span>;</span><br><span class="line">	$method = $_POST[<span class="string">'q3'</span>];</span><br><span class="line">	$str1 = <span class="string">"~$ python fuck.py -u \""</span>.$url .<span class="string">"\" -M $method -U y1ng -P admin123123 --neglect-negative --debug --hint=xiangdemei&lt;br&gt;"</span>;</span><br><span class="line">	<span class="keyword">echo</span> $str1;</span><br><span class="line">	<span class="keyword">if</span> (!preg_match($filter1, $url) ) &#123;</span><br><span class="line">		<span class="keyword">die</span>($str2);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (preg_match($filter2, $url)) &#123;</span><br><span class="line">		<span class="keyword">die</span>($str3);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (!preg_match(<span class="string">'/^GET/i'</span>, $method) &amp;&amp; !preg_match(<span class="string">'/^POST/i'</span>, $method)) &#123;</span><br><span class="line">		<span class="keyword">die</span>($str4);</span><br><span class="line">	&#125;</span><br><span class="line">	$detect = @file_get_contents($url, <span class="keyword">false</span>);</span><br><span class="line">	<span class="keyword">print</span>(sprintf(<span class="string">"$url method&amp;content_size:$method%d"</span>, $detect));</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>首先<code>q1</code>没有要求</p>
@@ -267,7 +267,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">70</span>klfZeYC+WlC045CcKhtg==</span><br></pre></td></tr></table></figure>
 
 <p>这样子，在访问时删除cookie中的phpsession。</p>
-<p><img src="/.com//12.png" alt="image-20200326213049661"></p>
+<p><img src="/2020/03/20/BJDCTF-2nd/12.png" alt="image-20200326213049661"></p>
 
     </div>
 
@@ -371,7 +371,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

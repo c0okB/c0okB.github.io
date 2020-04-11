@@ -27,19 +27,19 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="GWCTF 2019-webGWCTF 2019-web">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//6.png">
-<meta property="og:image" content="http://yoursite.com/.com//7.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/7.png">
 <meta property="article:published_time" content="2020-02-21T13:41:04.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:05:40.621Z">
+<meta property="article:modified_time" content="2020-04-11T17:15:08.691Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/21/GWCTF-2019-web/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/02/21/GWCTF-2019-web/">
 
@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:05:40" itemprop="dateModified" datetime="2020-04-10T17:05:40+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:15:08" itemprop="dateModified" datetime="2020-04-12T01:15:08+08:00">2020-04-12</time>
               </span>
 
           
@@ -212,7 +212,7 @@
 
 
 
-<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><h2 id="GWCTF-2019-你的名字"><a href="#GWCTF-2019-你的名字" class="headerlink" title="[GWCTF 2019]你的名字"></a>[GWCTF 2019]你的名字</h2><p><img src="/.com//1.png" alt="image-20200324112248986"></p>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><h2 id="GWCTF-2019-你的名字"><a href="#GWCTF-2019-你的名字" class="headerlink" title="[GWCTF 2019]你的名字"></a>[GWCTF 2019]你的名字</h2><p><img src="/2020/02/21/GWCTF-2019-web/1.png" alt="image-20200324112248986"></p>
 <p>猜这里有SSTI</p>
 <p>发现这里强过滤了，</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#125;&#125;</span><br></pre></td></tr></table></figure>
@@ -231,7 +231,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">dic = [<span class="string">'class'</span>, <span class="string">'bases'</span>, <span class="string">'subclasses'</span>, <span class="string">'['</span>, <span class="string">'('</span>, <span class="string">'read'</span>, <span class="string">'mro'</span>, <span class="string">'init'</span>, <span class="string">'globals'</span>, <span class="string">'builtins'</span>, <span class="string">'file'</span>, <span class="string">'func_globals'</span>, <span class="string">'linecache'</span>, <span class="string">'system'</span>, <span class="string">'values'</span>, <span class="string">'import'</span>, <span class="string">'module'</span>, <span class="string">'call'</span>, <span class="string">'name'</span>, <span class="string">'getitem'</span>, <span class="string">'pop'</span>, <span class="string">'args'</span>, <span class="string">'path'</span>, <span class="string">'popen'</span>, <span class="string">'eval'</span>, <span class="string">'end'</span>, <span class="string">'for'</span>, <span class="string">'if'</span>, <span class="string">'config'</span>]</span><br><span class="line"></span><br><span class="line">url = <span class="string">"http://24702b70-5fd1-4537-9f46-e3826566a052.node3.buuoj.cn/"</span>        </span><br><span class="line">pass_dic = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">    data = &#123;</span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"ads"</span>+i+<span class="string">"ads"</span></span><br><span class="line">            &#125;</span><br><span class="line">    res = requests.post(url, data=data)</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> len(res.text) == <span class="number">1194</span>:</span><br><span class="line">        pass_dic.append(i)</span><br><span class="line">        print(pass_dic)</span><br></pre></td></tr></table></figure>
 
 <p>被过滤掉的字符有</p>
-<p><img src="/.com//2.png" alt="image-20200324191111500"></p>
+<p><img src="/2020/02/21/GWCTF-2019-web/2.png" alt="image-20200324191111500"></p>
 <p>发现<code>iconfigf</code>可以绕过对关键词的过滤</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconfigf ==&gt; if</span><br></pre></td></tr></table></figure>
 
@@ -249,7 +249,7 @@
 
 
 <h2 id="GWCTF-2019-我有一个数据库"><a href="#GWCTF-2019-我有一个数据库" class="headerlink" title="[GWCTF 2019]我有一个数据库"></a>[GWCTF 2019]我有一个数据库</h2><p>考点：CVE-2018-12613</p>
-<p><img src="/.com//3.png" alt="image-20200325083832042"></p>
+<p><img src="/2020/02/21/GWCTF-2019-web/3.png" alt="image-20200325083832042"></p>
 <h2 id="GWCTF-2019-枯燥的抽奖"><a href="#GWCTF-2019-枯燥的抽奖" class="headerlink" title="[GWCTF 2019]枯燥的抽奖"></a>[GWCTF 2019]枯燥的抽奖</h2><p>考点：随机数预测</p>
 <p><code>check.php</code>查看源码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">#这不是抽奖程序的源代码！不许看！</span></span><br><span class="line">header(<span class="string">"Content-Type: text/html;charset=utf-8"</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">'seed'</span>]))&#123;</span><br><span class="line">$_SESSION[<span class="string">'seed'</span>]=rand(<span class="number">0</span>,<span class="number">999999999</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mt_srand($_SESSION[<span class="string">'seed'</span>]);</span><br><span class="line">$str_long1 = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line">$str=<span class="string">''</span>;</span><br><span class="line">$len1=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $len1; $i++ )&#123;</span><br><span class="line">    $str.=substr($str_long1, mt_rand(<span class="number">0</span>, strlen($str_long1) - <span class="number">1</span>), <span class="number">1</span>);       </span><br><span class="line">&#125;</span><br><span class="line">$str_show = substr($str, <span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"&lt;p id='p1'&gt;"</span>.$str_show.<span class="string">"&lt;/p&gt;"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'num'</span>]))&#123;</span><br><span class="line">    <span class="keyword">if</span>($_POST[<span class="string">'num'</span>]===$str)&#123;x</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;p id=flag&gt;抽奖，就是那么枯燥且无味，给你flag&#123;xxxxxxxxx&#125;&lt;/p&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"&lt;p id=flag&gt;没抽中哦，再试试吧&lt;/p&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">show_source(<span class="string">"check.php"</span>);</span><br></pre></td></tr></table></figure>
@@ -261,15 +261,15 @@
 <p>先使用脚本把随机数转换一下</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">str1=<span class="string">'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span></span><br><span class="line">str2 = <span class="string">'MAijTMEfFK'</span></span><br><span class="line">res = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(str2)):  </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(str1)):</span><br><span class="line">        <span class="keyword">if</span> str2[i] == str1[j]:</span><br><span class="line">            res += str(j) + <span class="string">' '</span> + str(j) + <span class="string">' '</span> + <span class="string">'0'</span> + <span class="string">' '</span> + str(len(str1)<span class="number">-1</span>) + <span class="string">' '</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//4.png" alt="image-20200325085411806"></p>
+<p><img src="/2020/02/21/GWCTF-2019-web/4.png" alt="image-20200325085411806"></p>
 <p>接着是使用<code>php_mt_seed</code>将种子爆破出来</p>
-<p><img src="/.com//5.png" alt="image-20200325085757343"></p>
+<p><img src="/2020/02/21/GWCTF-2019-web/5.png" alt="image-20200325085757343"></p>
 <p>然后爆破</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">mt_srand(<span class="number">48815515</span>);</span><br><span class="line">$str_long1 = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>;</span><br><span class="line">$str = <span class="string">''</span>;</span><br><span class="line">$len1 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; $len1; $i++) &#123;</span><br><span class="line">    $str .= substr($str_long1, mt_rand(<span class="number">0</span>, strlen($str_long1) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"&lt;p id='p1'&gt;"</span> . $str . <span class="string">"&lt;/p&gt;"</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//6.png" alt="image-20200325090016209"></p>
+<p><img src="/2020/02/21/GWCTF-2019-web/6.png" alt="image-20200325090016209"></p>
 <p>提交获得flag</p>
-<p><img src="/.com//7.png" alt="image-20200325090046508"></p>
+<p><img src="/2020/02/21/GWCTF-2019-web/7.png" alt="image-20200325090046508"></p>
 
     </div>
 
@@ -373,7 +373,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

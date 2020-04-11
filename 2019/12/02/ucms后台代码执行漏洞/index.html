@@ -27,18 +27,18 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言ucms的一个后台漏洞,虽然比较鸡肋….但是好久没有练习代码审计了…找个简单的练练手">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
-<meta property="og:image" content="http://yoursite.com/.com//4.png">
-<meta property="og:image" content="http://yoursite.com/.com//5.png">
-<meta property="og:image" content="http://yoursite.com/.com//6.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/1.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/2.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/3.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/4.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/5.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/6.png">
 <meta property="article:published_time" content="2019-12-02T02:43:24.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:12:00.445Z">
+<meta property="article:modified_time" content="2020-04-11T17:16:14.728Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
 
@@ -188,7 +188,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:12:00" itemprop="dateModified" datetime="2020-04-10T17:12:00+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:16:14" itemprop="dateModified" datetime="2020-04-12T01:16:14+08:00">2020-04-12</time>
               </span>
 
           
@@ -207,21 +207,21 @@
 
 <p>ucms&lt;1.4.7</p>
 <p>php5.6</p>
-<h1 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h1><h2 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h2><p><img src="/.com//1.png" alt="1576291680142"></p>
+<h1 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h1><h2 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h2><p><img src="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/1.png" alt="1576291680142"></p>
 <p>随便找一个文件进行编辑</p>
-<p><img src="/.com//2.png" alt="1576291802970"></p>
+<p><img src="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/2.png" alt="1576291802970"></p>
 <p>保存,然后burp抓包</p>
-<p><img src="/.com//3.png" alt="1576291828266"></p>
+<p><img src="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/3.png" alt="1576291828266"></p>
 <p>访问phpinfo.php</p>
-<p><img src="/.com//4.png" alt="1576291902126"></p>
+<p><img src="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/4.png" alt="1576291902126"></p>
 <h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>文件修改这个路由:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="comment">//127.0.0.1/ucms146/ucms/index.php?do=sadmin_fileedit&amp;dir=/ucms146/&amp;file=index.php</span></span><br></pre></td></tr></table></figure>
 
 <p>在index.php中可以找到</p>
-<p><img src="/.com//5.png" alt="1576292237935"></p>
+<p><img src="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/5.png" alt="1576292237935"></p>
 <p>所以我们跟踪到<strong>./sadmin/fileedit.php</strong></p>
 <p>根据上面的路由,找到$file的写入点</p>
-<p><img src="/.com//6.png" alt="1576292474149"></p>
+<p><img src="/2019/12/02/ucms%E5%90%8E%E5%8F%B0%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/6.png" alt="1576292474149"></p>
 <p>主要在于:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$fp = @fopen($alldir.$filename,<span class="string">"w"</span>);</span><br></pre></td></tr></table></figure>
 
@@ -329,7 +329,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

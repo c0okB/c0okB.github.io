@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="一giao我里giao">
 <meta property="og:description" content="前言phpmyadmin4.8.1后台getshell">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/.com//1.png">
-<meta property="og:image" content="http://yoursite.com/.com//2.png">
-<meta property="og:image" content="http://yoursite.com/.com//3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/3.png">
 <meta property="article:published_time" content="2020-02-29T13:45:44.000Z">
-<meta property="article:modified_time" content="2020-04-10T09:16:12.494Z">
+<meta property="article:modified_time" content="2020-04-11T17:18:21.325Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="漏洞复现">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/1.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/">
 
@@ -185,7 +185,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-10 17:16:12" itemprop="dateModified" datetime="2020-04-10T17:16:12+08:00">2020-04-10</time>
+                <time title="Modified: 2020-04-12 01:18:21" itemprop="dateModified" datetime="2020-04-12T01:18:21+08:00">2020-04-12</time>
               </span>
 
           
@@ -204,9 +204,9 @@
 
 
 
-<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p><img src="/.com//1.png" alt="image-20200313065902595"></p>
+<h1 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h1><p><img src="/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/1.png" alt="image-20200313065902595"></p>
 <p>在index.php中有，关键代码在</p>
-<p><img src="/.com//2.png" alt="image-20200313070231479"></p>
+<p><img src="/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/2.png" alt="image-20200313070231479"></p>
 <p>其中的<code>Core::checkPageValidity()</code>，跟进一下</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">checkPageValidity</span><span class="params">(&amp;$page, array $whitelist = [])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>($whitelist)) &#123;</span><br><span class="line">        $whitelist = <span class="keyword">self</span>::$goto_whitelist;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (! <span class="keyword">isset</span>($page) || !is_string($page)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (in_array($page, $whitelist)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $_page = mb_substr(</span><br><span class="line">        $page,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        mb_strpos($page . <span class="string">'?'</span>, <span class="string">'?'</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span> (in_array($_page, $whitelist)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $_page = urldecode($page);</span><br><span class="line">    $_page = mb_substr(</span><br><span class="line">        $_page,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        mb_strpos($_page . <span class="string">'?'</span>, <span class="string">'?'</span>)</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span> (in_array($_page, $whitelist)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -214,7 +214,7 @@
 <p>我们<code>urlencode()</code>两次，绕过验证</p>
 <p>getshell的时候，现在写入一个列名为<code>&lt;?php phpinfo();?&gt;</code></p>
 <p>找到其位置，然后执行</p>
-<p><img src="/.com//3.png" alt="image-20200313071530353"></p>
+<p><img src="/2020/02/29/phpmyadmin4-8-1%E5%90%8E%E5%8F%B0getshell/3.png" alt="image-20200313071530353"></p>
 
     </div>
 
@@ -318,7 +318,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
