@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言上操作系统网课做的一些笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统之处理机调度与死锁">
+<meta property="og:url" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/index.html">
+<meta property="og:site_name" content="一giao我里giao">
+<meta property="og:description" content="前言上操作系统网课做的一些笔记">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C1.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C2.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C3.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C5.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C6.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C7.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C8.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C9.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C12.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C13.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C14.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C15.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C16.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C17.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C18.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C19.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C20.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C21.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C22.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C23.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C24.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C25.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C26.png">
+<meta property="article:published_time" content="2020-04-13T03:31:58.000Z">
+<meta property="article:modified_time" content="2020-04-13T03:33:43.090Z">
+<meta property="article:author" content="wuwuwu">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>操作系统之处理机调度与死锁 | 一giao我里giao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">一giao我里giao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wuwuwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一giao我里giao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统之处理机调度与死锁
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-04-13 11:31:58 / Modified: 11:33:43" itemprop="dateCreated datePublished" datetime="2020-04-13T11:31:58+08:00">2020-04-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上操作系统网课做的一些笔记</p>
+<a id="more"></a>
+
+<h1 id="1-操作系统之处理机调度"><a href="#1-操作系统之处理机调度" class="headerlink" title="1 操作系统之处理机调度"></a>1 操作系统之处理机调度</h1><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C1.png" alt="image-20200412202430168"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C2.png" alt="image-20200412202917963"></p>
+<h2 id="1-1-先来先服务算法（FCFS）"><a href="#1-1-先来先服务算法（FCFS）" class="headerlink" title="1.1 先来先服务算法（FCFS）"></a>1.1 先来先服务算法（FCFS）</h2><p>按照作业进入系统的先后次序来挑选作业</p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C3.png" alt="image-20200412211410773"></p>
+<p>周转时间：完成时间-提交时间</p>
+<p>带权周转时间：周转时间/运行时间</p>
+<p>平均周转时间：周转时间之和/作业数</p>
+<p>平均带权周转时间：带权周转时间之和/作业数</p>
+<p>缺点：没有考虑到作业运行的时间</p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C4.png" alt="image-20200412214159990"></p>
+<p>所以需要服务时间短的先做。</p>
+<h2 id="1-2-最短作业优先算法（SJF）"><a href="#1-2-最短作业优先算法（SJF）" class="headerlink" title="1.2 最短作业优先算法（SJF）"></a>1.2 最短作业优先算法（SJF）</h2><p>算法的基本思想：SJF算法以进入系统的作业所要求的的CPU时间为标准，总选取估计计算时间最短的作业投入运行</p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C5.png" alt="image-20200412224309664"></p>
+<p>作业次序：A,D,B,C</p>
+<p>A提交时，其他的作业还未到达。</p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C6.png" alt="image-20200412224632704"></p>
+<h3 id="变形：最短剩余时间优先"><a href="#变形：最短剩余时间优先" class="headerlink" title="变形：最短剩余时间优先"></a>变形：最短剩余时间优先</h3><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C7.png" alt="image-20200412225037079"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C8.png" alt="image-20200412225419763"></p>
+<p>作业次序：A，B，D，A，C</p>
+<h2 id="1-3-最高响应比优先（HRRF）"><a href="#1-3-最高响应比优先（HRRF）" class="headerlink" title="1.3 最高响应比优先（HRRF）"></a>1.3 最高响应比优先（HRRF）</h2><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C9.png" alt="image-20200412230305911"></p>
+<p>使用动态的优先权</p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C12.png" alt="image-20200412231458738"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C13.png" alt="image-20200412232005669"></p>
+<h2 id="1-4-时间片轮转算法（RR）"><a href="#1-4-时间片轮转算法（RR）" class="headerlink" title="1.4 时间片轮转算法（RR）"></a>1.4 时间片轮转算法（RR）</h2><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C14.png" alt="image-20200413093231371"></p>
+<p>确定时间片困难，切换作业的开销比较大</p>
+<p>不同的作业数，时间片不同。</p>
+<h3 id="变形：多队列反馈调度算法"><a href="#变形：多队列反馈调度算法" class="headerlink" title="变形：多队列反馈调度算法"></a>变形：多队列反馈调度算法</h3><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C15.png" alt="image-20200413093931709"></p>
+<h2 id="1-5-小结"><a href="#1-5-小结" class="headerlink" title="1.5 小结"></a>1.5 小结</h2><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C16.png" alt="image-20200413094246367"></p>
+<h1 id="2-操作系统之死锁"><a href="#2-操作系统之死锁" class="headerlink" title="2 操作系统之死锁"></a>2 操作系统之死锁</h1><p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C17.png" alt="image-20200413101032315"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C18.png" alt="image-20200413101525277"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C19.png" alt="image-20200413101914811"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C20.png" alt="image-20200413102358950"></p>
+<p><strong>有死锁一定有环路，有环路不一定有死锁</strong></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C21.png" alt="image-20200413103110955"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C22.png" alt="image-20200413103225433"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C23.png" alt="image-20200413104158691"></p>
+<p>曲线4：<code>p1申请R1，p2申请R1，p1申请R2，p2申请R2</code>，将产生死锁</p>
+<p>曲线1,2：均无死锁</p>
+<p>曲线3：红圈处，<code>p2申请R2时出现等待R2资源，等p1释放后，即可申请</code></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C24.png" alt="image-20200413104915922"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C25.png" alt="image-20200413110734595"></p>
+<p><img src="/2020/04/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81/C:%5CUsers%5Ccookie%5CPictures%5Cblog%5C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%5C26.png" alt="image-20200413110935308"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/10/EIS-2019-web/" rel="prev" title="EIS-2019-web">
+      <i class="fa fa-chevron-left"></i> EIS-2019-web
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-操作系统之处理机调度"><span class="nav-number">2.</span> <span class="nav-text">1 操作系统之处理机调度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-先来先服务算法（FCFS）"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 先来先服务算法（FCFS）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-最短作业优先算法（SJF）"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 最短作业优先算法（SJF）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变形：最短剩余时间优先"><span class="nav-number">2.2.1.</span> <span class="nav-text">变形：最短剩余时间优先</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-最高响应比优先（HRRF）"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 最高响应比优先（HRRF）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-时间片轮转算法（RR）"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 时间片轮转算法（RR）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变形：多队列反馈调度算法"><span class="nav-number">2.4.1.</span> <span class="nav-text">变形：多队列反馈调度算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-小结"><span class="nav-number">2.5.</span> <span class="nav-text">1.5 小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-操作系统之死锁"><span class="nav-number">3.</span> <span class="nav-text">2 操作系统之死锁</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wuwuwu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wuwuwu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
