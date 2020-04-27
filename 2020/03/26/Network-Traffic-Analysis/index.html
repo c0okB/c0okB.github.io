@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="前言最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。 参考：https:&#x2F;&#x2F;jwt1399.top&#x2F;2019&#x2F;07&#x2F;29&#x2F;ctf-liu-liang-fen-xi-zong-jie&#x2F;#toc-heading-15 入门题Cephalopodhint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag 根据hint，分组字节">
+  <meta name="description" content="前言流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Network-Traffic-Analysis">
 <meta property="og:url" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/index.html">
 <meta property="og:site_name" content="一giao我里giao">
-<meta property="og:description" content="前言最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。 参考：https:&#x2F;&#x2F;jwt1399.top&#x2F;2019&#x2F;07&#x2F;29&#x2F;ctf-liu-liang-fen-xi-zong-jie&#x2F;#toc-heading-15 入门题Cephalopodhint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag 根据hint，分组字节">
+<meta property="og:description" content="前言流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/1.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/2.png">
@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/37.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/26/Network-Traffic-Analysis/38.png">
 <meta property="article:published_time" content="2020-03-26T03:50:00.000Z">
-<meta property="article:modified_time" content="2020-04-27T01:06:52.542Z">
+<meta property="article:modified_time" content="2020-04-27T02:59:08.224Z">
 <meta property="article:author" content="wuwuwu">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -220,7 +220,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-27 09:06:52" itemprop="dateModified" datetime="2020-04-27T09:06:52+08:00">2020-04-27</time>
+                <time title="Modified: 2020-04-27 10:59:08" itemprop="dateModified" datetime="2020-04-27T10:59:08+08:00">2020-04-27</time>
               </span>
 
           
@@ -234,7 +234,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近对流量分析产生了浓厚的兴趣,做些题，学习一下，流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>流量分析，重点在于对流量数据的提取，工具基本就是wireshark了。</p>
+<a id="more"></a>
+
 <p>参考：<a href="https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15" target="_blank" rel="noopener"><a href="https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15" target="_blank" rel="noopener">https://jwt1399.top/2019/07/29/ctf-liu-liang-fen-xi-zong-jie/#toc-heading-15</a></a></p>
 <h1 id="入门题"><a href="#入门题" class="headerlink" title="入门题"></a>入门题</h1><h2 id="Cephalopod"><a href="#Cephalopod" class="headerlink" title="Cephalopod"></a>Cephalopod</h2><p>hint:我们发现一些奇怪的网络流量，我们怀疑它包含一个flag</p>
 <p>根据hint，分组字节流查找flag字段</p>
