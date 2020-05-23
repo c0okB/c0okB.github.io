@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="内网渗透之信息收集"><meta name="keywords" content="内网渗透"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>内网渗透之信息收集 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#内网信息收集"><span class="toc-number">2.</span> <span class="toc-text">内网信息收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-概述"><span class="toc-number">2.1.</span> <span class="toc-text">1. 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-收集本机信息"><span class="toc-number">2.2.</span> <span class="toc-text">2. 收集本机信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1手动收集本机信息"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.1手动收集本机信息</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">69</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">7</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">内网渗透之信息收集</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-05-22</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​        内网渗透的过程中，通过收集信息，可以洞察内网拓扑结构，找出内网中最薄弱的环节。</p>
+<p>​    信息收集的深度，直接关系到内网渗透测试的成败</p>
+<a id="more"></a>
+
+
+
+<h1 id="内网信息收集"><a href="#内网信息收集" class="headerlink" title="内网信息收集"></a>内网信息收集</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>​        进入内网后，要对环境有所判断。主要包括</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>) 对当前机器角色的判断</span><br><span class="line">(<span class="number">2</span>) 对当前机器所在网络环境的拓扑结构进行分析和判断</span><br><span class="line">(<span class="number">3</span>) 对当前机器所处区域的判断</span><br></pre></td></tr></table></figure>
+
+<p>​        对当前机器角色的判断,指判断当前机器是普通web服务器，开发测试服务器，公共服务器，文件服务器，代理服务器，DNS服务器还是存储服务器等，具体的判断过程，是根据机器的<code>主机名，文件，网络连接</code>等情况综合完成的。</p>
+<p>​        对当前机器所在网络环境的拓扑结构进行分析和判断,指对所处内网进行全面的数据收集和分析整理，绘制出大致的内网整体拓扑结构图</p>
+<p>​        对当前机器所处区域的判断是指机器处于网络拓扑中的那个区域，是在DMZ，办公区还是核心区。</p>
+<h2 id="2-收集本机信息"><a href="#2-收集本机信息" class="headerlink" title="2. 收集本机信息"></a>2. 收集本机信息</h2><h3 id="2-1手动收集本机信息"><a href="#2-1手动收集本机信息" class="headerlink" title="2.1手动收集本机信息"></a>2.1手动收集本机信息</h3><p>​        本机信息包括操作系统，权限，内网IP地址段，杀软，端口，服务，补丁更新频率，网络连接，共享，会话等。如果是域内主机，操作系统，应用软件，补丁，服务，杀软一般都是批量安装的。</p>
+<p>​        </p>
+<p>​        <strong>1.查询本机网络配置</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​        <strong>2.查询操作系统及软件的信息</strong></p>
+<p>​            （1）查询操作系统的版本信息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systeminfo | findstr /B /C:<span class="string">"OS 名称"</span> /C:<span class="string">"OS 版本"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systeminfo | findstr /B /C:<span class="string">"OS Name"</span> /C:<span class="string">"OS Version"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/1.png" alt="image-20200523091942157"></p>
+<p>​            </p>
+<p>​            （2）查看系统体系结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo %PROCESSOR_ARCHITECTURE%</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/2.png" alt="image-20200523092311657"></p>
+<p>​            </p>
+<p>​            （3）查看安装的软件及版本，路径等</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic product get name,version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/3.png" alt="image-20200523092509673"></p>
+<p>因为服务器中尚未安装任何软件，所以就显示如上图。</p>
+<p>​        </p>
+<p>​       <strong>3. 查询本机服务信息</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic service <span class="keyword">list</span> brief</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/5.png" alt="image-20200523093455077"></p>
+<p>​         <strong>4. 查询进程列表</strong></p>
+<p>​            执行如下命令，可以查看当前进程列表的进程用户，分析软件，邮件客户端，VPN和杀软等进程</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasklist</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/4.png" alt="image-20200523093401608"></p>
+<p>​              查看进程信息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic process <span class="keyword">list</span> brief</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/6.png" alt="image-20200523094007096"></p>
+<p>​            </p>
+<p>​            <strong>5. 查看启动程序信息</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic startup command,caption</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/7.png" alt="image-20200523094306188"></p>
+<p>​             <strong>6. 查看计划任务</strong>    </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /query /fo <span class="keyword">LIST</span> /v</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/8.png" alt="image-20200523094558304"></p>
+<p>​                *<em>7. 查看开机时间 *</em></p>
+<p>执行如下命令，查看开机时间</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net statistics workstation</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/9.png" alt="image-20200523094910357"></p>
+<p>​                <strong>8.  查询用户列表</strong></p>
+<p>​        执行如下命令，查看本机用户列表</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net user</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/10.png" alt="image-20200523095346301"></p>
+<p>​        通过分析本机用户列表，可以找出内网机器的命名规则。特别是个人机器的名称，可以用来推测整个域的用户命令方式</p>
+<p>​        执行如下命令，获取本地管理员（通常包含域用户）信息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net localgroup administrators</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/11.png" alt="image-20200523095728956"></p>
+<p>​        可以看到，本地管理员有一个组，一个用户，如图2-13所示。默认Dmain Admins组中为域内机器的本地管理员用户。在真实的环境中，为了方便管理，会有域用户被添加为域机器的本地管理用户。</p>
+<p>​        </p>
+<p>​        执行如下命令，查看当前在线用户</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">query user || qwinsta</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/12.png" alt="image-20200523100902647"></p>
+<pre><code>**9. 列出或断开本地计算机与所连接的客户端之间的会话**</code></pre><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net session</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​            <strong>10. 查询端口列表</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/13.png" alt="image-20200523101851074"></p>
+<p>​             <strong>11. 查看补丁列表</strong></p>
+<p>​                执行如下命令，查看系统的详细信息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systeminfo</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/14.png" alt="image-20200523102149634"></p>
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/15.png" alt="image-20200523102307651"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：需注意系统的版本，位数，补丁信息及更新频率等。域主机的补丁通常是批量安装的，通过查看本机补丁列表，就可以找到未打补丁的漏洞。可以看到，当前系统更新了九个补丁</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>使用wmic命令查看安装在系统中的补丁，具体如下：</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic qfe get Caption,Description,HotFixID,InstalledOn</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/16.png" alt="image-20200523103330515"></p>
+<p>​         <strong>12. 查询本机共享列表</strong></p>
+<p>​           执行如下命令，查看本机共享列表和可访问的域共享列表（域共享在很多时候是相同的）</p>
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200523105616990.png" alt="image-20200523105616990"></p>
+<p>​             利用wmic命令查找共享列表，具体如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic share get name,path,status</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/18.png" alt="image-20200523110932455"></p>
+<p>​        <strong>13. 查询路由表级所有可用接口的ARP缓存表</strong></p>
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/19.png" alt="image-20200523113029832"></p>
+<p><img src="/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/20.png" alt="image-20200523113715849"></p>
+<p>​        <strong>14. 查询防火墙相关配置</strong></p>
+<p>​            （1）关闭防火墙</p>
+<p>​         Windows Server 2003以及之前的版本</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh firewall set opmode disable</span><br></pre></td></tr></table></figure>
+
+<p>​        </p>
+<p>​        Windows  Server 2003之后的版本</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall set allprofiles state off</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​            （2）查看防火墙配置</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh firewall show config</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​            （3）修改防火墙配置</p>
+<p>​            Windows Server 2003及之前的版本，允许指定的程序全部连接</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh firewall add allowdprogram c:\nc.exe <span class="string">"allow nc"</span> enable</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​            Windows Server 2003之后版本，情况如下。</p>
+<p>​                    允许指定程序进入，命令如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=<span class="string">"pass nc"</span> dir=in action=allow program=<span class="string">"C: \nc.exe"</span></span><br></pre></td></tr></table></figure>
+
+<p>​                    </p>
+<p>​                    允许指定程序退出，命令如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=<span class="string">"Allow nc"</span> dir=out action=allow program=<span class="string">"C: \nc.exe"</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>​                    允许3389端口放行，命令如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall firewall add rule name=<span class="string">"Remote Desktop"</span> protocal=TCP dir=in localport=<span class="number">3389</span> action=allow</span><br></pre></td></tr></table></figure>
+
+
+
+<p>​                    自定义防火墙日志的存储位置</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netsh advfirewall set currentprofile logging filename <span class="string">"C:\windows\temp\fw.log"</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>​                <strong>15. 查看代理配置情况</strong></p>
+<p>​                    执行如下命令，可以看到服务器127.0.0.1的1080端口的代理配置信息，如图2-22所示</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg query <span class="string">"HKEY_CURRENT_USESoftware\Microsoft\Windows\CurrentVersion\Internet Settings"</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>​                <strong>16. 查询并开启远程连接服务</strong></p>
+<p>​            （1）查看远程连接端口</p>
+<p>​                 在命令行环境中执行注册表查询语句，命令如下。连接的端口为0xd3d，转换后为3389，如图2-23所            示。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REG QUERY <span class="string">"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStation\RDP-Tcp"</span> /V PortnNumber</span><br></pre></td></tr></table></figure>
+
+<p>​            （2）在Windows Server 2003 中开启3389端口</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic path win32_terminalservicesetting where (__CLASS != <span class="string">""</span>) call setallowtsconnections <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>​            （3）在Windows Server 2008和Windows Server 2012中开启3389端口</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic /<span class="keyword">namespace</span>:\\<span class="title">root</span>\<span class="title">cimv2</span>\<span class="title">terminalservices</span> <span class="title">path</span> <span class="title">win32_terminalservicesetting</span> <span class="title">where</span> (<span class="title">__CLASS</span> !="") <span class="title">call</span> <span class="title">setallowtsconnections</span> 1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<p>​                </p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">http://yoursite.com/2020/05/22/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/05/17/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><span>内网渗透之基础知识</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
