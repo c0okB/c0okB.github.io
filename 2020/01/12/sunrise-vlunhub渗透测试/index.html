@@ -12,6 +12,9 @@
 <p>攻击机IP:192.168.1.117</p>
 <a id="more"></a>
 
+<p>考点：</p>
+<p>​    nikto扫描web服务</p>
+<p>​    msf反弹windwos-shell</p>
 <h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>nmap扫描一下</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS -A -Pn <span class="number">192.168</span><span class="number">.1</span><span class="number">.118</span></span><br></pre></td></tr></table></figure>
 
@@ -41,7 +44,7 @@
 <p><img src="/2020/01/12/sunrise-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/8.png" alt="image-20200119235622002"></p>
 <p>然后看看数据库的操作历史</p>
 <p><img src="/2020/01/12/sunrise-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/9.png" alt="image-20200119235723958"></p>
-<p><strong>尝试连接数据库无果，尝试ssh连接</strong></p>
+<p><strong>尝试连接数据库无果，尝试ssh连接</strong>（因为有ssh的端口方法，所以就要试试有没有撞库的操作）</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh weborf@<span class="number">192.168</span><span class="number">.1</span><span class="number">.118</span></span><br><span class="line">password: iheartrainbows44</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2020/01/12/sunrise-vlunhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/10.png" alt="image-20200120000734981"></p>
