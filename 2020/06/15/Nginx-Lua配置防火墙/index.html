@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Nginx+Lua配置防火墙"><meta name="keywords" content="杂文随笔"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>Nginx+Lua配置防火墙 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#配置过程"><span class="toc-number">2.</span> <span class="toc-text">配置过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#前期配置"><span class="toc-number">2.1.</span> <span class="toc-text">前期配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装防火墙"><span class="toc-number">2.2.</span> <span class="toc-text">安装防火墙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置防火墙"><span class="toc-number">2.3.</span> <span class="toc-text">配置防火墙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证"><span class="toc-number">2.4.</span> <span class="toc-text">验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XSS攻击"><span class="toc-number">2.4.1.</span> <span class="toc-text">XSS攻击</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL注入攻击"><span class="toc-number">2.4.2.</span> <span class="toc-text">SQL注入攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">77</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">7</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a><a class="author-info-links__name text-center" href="https://github.com/Bypass007" target="_blank" rel="noopener">Bypass师傅</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">Nginx+Lua配置防火墙</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-06-15</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​        利用Nginx服务器的Lua模块搭建网站防火墙。</p>
+<p>​        配置目标：对XSS攻击，SQL注入起一定的防护作用</p>
+<p>​        环境：Ubuntu18.04    （192.168.1.141）</p>
+<h1 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h1><h2 id="前期配置"><a href="#前期配置" class="headerlink" title="前期配置"></a>前期配置</h2><p>​        <strong>（1）安装Nginx服务器</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx-full</span><br></pre></td></tr></table></figure>
+
+<p>​        安装完Nginx服务器后，关于Nginx服务器的信息在目录<code>/etc/nginx</code>下，其中<code>Nginx.conf</code>为Nginx服务器的配置信息。</p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/1.png" alt="image-20200615192818044"></p>
+<p>​        在安装完之后，查看配置信息，在<code>Nginx.conf</code>中可以看到关于端口等配置信息的设置是在<code>/etc/nginx/sites-enabled/*</code>中</p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/3.png" alt="image-20200615194017591"></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/2.png" alt="image-20200615193745419"></p>
+<p>​            可以看到这里Nginx服务器的端口是设置成<code>80</code>端口，web的根目录设置为<code>/var/www/html</code></p>
+<p>​            <strong>注意：如果系统开启了防火墙，那么防火墙需放行80端口</strong></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/4.png" alt="image-20200615194308401"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw allow <span class="number">80</span> <span class="comment">#允许外部访问80端口</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/5.png" alt="image-20200615195252407"></p>
+<p>​        如图，Nginx服务器正常工作。</p>
+<p>​        <strong>（2）安装Lua及其相关组件</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install lua5<span class="number">.2</span> lua5<span class="number">.2</span>-doc liblua5<span class="number">.2</span>-dev</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>（3）安装LuaJIT</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install LuaJIT</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>（4）安装nginx的lua模块Lua-nginx-module</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libnginx-mod-http-lua</span><br></pre></td></tr></table></figure>
+
+<p>​        验证Lua模块是否成功安装</p>
+<p>​        在<code>/etc/nginx/sites-enabled/default</code>中修改<code>server</code>模块，添加如下内容,重新加载配置<code>nginx -t -c /etc/nginx/nginx.conf</code></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/6.png" alt="image-20200615200031112"></p>
+<p>​        然后访问<code>http://192.168.1.141/hello</code></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/7.png" alt="image-20200615200137535"></p>
+<p>​        <strong>（5）配置php环境</strong></p>
+<p>​            安装<code>php-fpm</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install php-fpm</span><br></pre></td></tr></table></figure>
+
+<p>​            然后配置<code>nginx.conf</code>如下，重新加载配置<code>nginx -t -c /etc/nginx/nginx.conf</code></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/11.png" alt="image-20200615204942539"></p>
+<p>​            关于nginx如何调用php参考文章：<a href="http://www.cnblogs.com/echojson/p/10830302.html" target="_blank" rel="noopener">http://www.cnblogs.com/echojson/p/10830302.html</a></p>
+<p>​            在根目录下创建<code>phpinfo.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> phpinfo(); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>​            <img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/12.png" alt="image-20200615205551760"></p>
+<h2 id="安装防火墙"><a href="#安装防火墙" class="headerlink" title="安装防火墙"></a>安装防火墙</h2><p>​        防火墙选择开源项目<code>ngx_lua_waf</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="comment">//github.com/loveshell/ngx_lua_waf</span></span><br></pre></td></tr></table></figure>
+
+<p>​        这款waf在可拓展性和性能上有很好的平衡</p>
+<p>​        安装命令如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> https:<span class="comment">//github.com/loveshell/ngx_lua_waf.git #下载waf源码</span></span><br><span class="line">cd ngx_lua_waf</span><br><span class="line">mkdir /etc/nginx/waf</span><br><span class="line">mv * /etc/nginx/waf</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/8.png" alt="image-20200615201614638"></p>
+<p>​        其中<code>config.lua</code>中是防火墙的配置文件，<code>wafconf</code>中是各种防护规则，可以自行添加。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wafconf有以下几个防护规则：</span><br><span class="line">	args	对get参数进行过滤</span><br><span class="line">	url		只在get请求url过滤的规则</span><br><span class="line">	post	只在post请求过滤的规则</span><br><span class="line">	whitelist	白名单，里面的url匹配不做过滤</span><br><span class="line">	user-agent	对user-agent的过滤规则</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="配置防火墙"><a href="#配置防火墙" class="headerlink" title="配置防火墙"></a>配置防火墙</h2><p>​    （1）修改防火墙配置<code>config.lua</code></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/9.png" alt="image-20200615203546604"></p>
+<p>​    （2）修改Nginx服务器的<code>nginx.conf</code>配置,在<code>http</code>模块中添加如下内容，重新加载配置<code>nginx -t -c /etc/nginx/nginx.conf</code></p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/10.png" alt="image-20200615204053770"></p>
+<p>​        </p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>​    在根目录创建<code>test.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> $_GET[<span class="string">'id'</span>]; <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="XSS攻击"><a href="#XSS攻击" class="headerlink" title="XSS攻击"></a>XSS攻击</h3><p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/14.png" alt="image-20200615204053770"></p>
+<h3 id="SQL注入攻击"><a href="#SQL注入攻击" class="headerlink" title="SQL注入攻击"></a>SQL注入攻击</h3><p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/15.png" alt="image-20200615204053770"></p>
+<p>​        查看日志</p>
+<p><img src="/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/13.png" alt="image-20200615210419222"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​        开源项目<code>ngx_lua_waf</code>实际上是存在一些误报等问题，对防火墙进行修改，参考文章：<a href="https://www.leavesongs.com/OTHERLAN/diy-my-nginx-lua-waf.html" target="_blank" rel="noopener">https://www.leavesongs.com/OTHERLAN/diy-my-nginx-lua-waf.html</a></p>
+<p>​        </p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/">http://yoursite.com/2020/06/15/Nginx-Lua%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9D%82%E6%96%87%E9%9A%8F%E7%AC%94/">杂文随笔</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/06/14/HW-BlueTeam-StudyDocument/"><span>HW-BlueTeam-StudyDocument</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
