@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="应急响应初涉"><meta name="keywords" content="杂文随笔"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>应急响应初涉 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#靶机一：挖矿肉鸡的自救"><span class="toc-number">2.</span> <span class="toc-text">靶机一：挖矿肉鸡的自救</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#过程"><span class="toc-number">2.1.</span> <span class="toc-text">过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.2.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#靶机二：Nginx服务器的求生之路"><span class="toc-number">3.</span> <span class="toc-text">靶机二：Nginx服务器的求生之路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言-1"><span class="toc-number">3.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结-1"><span class="toc-number">3.2.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后话"><span class="toc-number">4.</span> <span class="toc-text">后话</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">81</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">7</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a><a class="author-info-links__name text-center" href="https://github.com/Bypass007" target="_blank" rel="noopener">Bypass师傅</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">应急响应初涉</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-07-26</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>溯源清除的入门尝试…..</p>
+<p>墙裂推荐：Bypass大佬的应急响应笔记</p>
+<a id="more"></a>
+
+
+
+<h1 id="靶机一：挖矿肉鸡的自救"><a href="#靶机一：挖矿肉鸡的自救" class="headerlink" title="靶机一：挖矿肉鸡的自救"></a>靶机一：挖矿肉鸡的自救</h1><p>场景：<code>ubuntu</code>上的<code>redis</code>服务被攻击以至于被作为挖矿用的肉鸡，对挖矿服务进行溯源清除</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p><code>redis</code>服务在docker中运行</p>
+<p>在进入docker后，正常情况下，如果中了挖矿病毒，那么第一步就是定位，查看进程运行情况</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -c</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/1.png" alt="image-20200726180620971"></p>
+<p>可以看到这里一直在运行<code>/usr/share/UlordRig/ulordrig</code></p>
+<p>查看定时任务，关于定时任务参考文章：</p>
+<p><a href="https://zhidao.baidu.com/question/1946278177198010348.html" target="_blank" rel="noopener">https://zhidao.baidu.com/question/1946278177198010348.html</a></p>
+<p><a href="https://blog.csdn.net/shi588266/article/details/81514689" target="_blank" rel="noopener">https://blog.csdn.net/shi588266/article/details/81514689</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/crontab</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/2.png" alt="image-20200726181314003"></p>
+<p>可以看到在定时任务中将会执行<code>/usr/share/UlordRig/ulordrig</code></p>
+<p>访问<code>/usr/share/UlordRig</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/3.png" alt="image-20200726181451139"></p>
+<p>因为<code>cron</code>服务会定期访问<code>/var/spool/cron</code>的文件，所以有必要查看一下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /<span class="keyword">var</span>/spool/cron</span><br><span class="line">cat root</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/4.png" alt="image-20200726182047563"></p>
+<p>这个文件中将会定期执行<code>/usr/share/mycoin</code>，将挖到的矿，放入指定的用户账户。</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/9.png" alt="image-20200726182813265"></p>
+<p>查找一下<code>config.jso</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /</span><br><span class="line">find / | grep <span class="string">"config.jso"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/5.png" alt="image-20200726182446275"></p>
+<p>也不知道这些<code>config.json</code>的内容，就都查看下</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/6.png" alt="image-20200726182627145"></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/7.png" alt="image-20200726182656465"></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/8.png" alt="image-20200726182734617"></p>
+<p>这些配置文件<code>config.json</code>，记录了矿池地址和挖矿的账户，此时我们可以利用这些信息反打一波，比如登录矿池把对应账户的余额转走，当然最稳妥的方式还是<code>保留证据，制作快照方便日后取证</code></p>
+<p>清除挖矿服务的点有</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除文件/etc/crontab中的关于挖矿服务的定时任务</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除文件/<span class="keyword">var</span>/spool/cron/root中的关于挖矿服务的内容</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除文件夹/usr/share/UlordRig</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除文件夹/etc/mine_srv</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除文件夹/usr/share/mycoin</span><br></pre></td></tr></table></figure>
+
+<p>但是当我删除了这些文件后，发现进程中依然在执行<code>ulordrig</code>，猜测可能是内存中的木马还未被清除掉</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kill <span class="number">56</span> 删除定时任务进程</span><br><span class="line">killall ulordrig 删除所有ulordrig的进程</span><br></pre></td></tr></table></figure>
+
+
+
+<p>再次查看进程和网络连接</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/31.png" alt="image-20200729154733809"></p>
+<p>如果还是存在可疑进程，杀掉，然后再次查看本机服务。</p>
+<p>从<code>redis</code>的攻击手法来看，写<code>shell</code>，写定时任务，写<code>ssh</code>等</p>
+<p>分别去找这些地方是否有问题，<code>crontab</code>里的定时任务可能就是通过<code>redis</code>的攻击面写入的，挖矿程序可能是通过后门用户或者后门木马等上传的。</p>
+<p>先查看<code>/etc/passwd</code>以及<code>/etc/shadow</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/10.png" alt="image-20200726184013061"></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/11.png" alt="image-20200726184046401"></p>
+<p>但是当我们将此用户删掉时整个docker就关闭了，所以可见这个用户是这个docker的入口进程….</p>
+<p>这里的root用户如果在获得shell的情况下，也是可以获取到并爆破的，并且ssh连接，姑且意淫一下，查看一下<code>/var/log</code>文件夹中的内容</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/12.png" alt="image-20200726184511316"></p>
+<p>一无所获</p>
+<p>查看一下<code>.ssh</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/32.png" alt="image-20200729155224325"></p>
+<p><code>注意：这个公钥文件没有不可见字符，说明不是redis写进去的，攻击者拿到权限后，再回头修改这个文件的可能性不大，所以这个时候最好的解决办法是主动联系网站管理员询问这个公钥的信息，并协助管理员更换密钥</code></p>
+<p>对于<code>redis</code>服务的攻击，查看<code>redis.conf</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/14.png" alt="image-20200726190250600"></p>
+<p>这里的<code>redis</code>服务对公网开放，并且使用默认端口，并且<code>redis</code>服务由于配置中未<code>requirepass</code>，使得攻击者对此有机可乘</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#过滤掉危险命令</span></span><br><span class="line">rename-command FLUSHALL <span class="string">""</span></span><br><span class="line">rename-command FLUSHDB <span class="string">""</span></span><br><span class="line">rename-command CONFIG <span class="string">""</span></span><br><span class="line">rename-command KEYS <span class="string">""</span></span><br><span class="line">rename-command SHUTDOWN <span class="string">""</span></span><br><span class="line">rename-command DEL <span class="string">""</span></span><br><span class="line">rename-command <span class="keyword">EVAL</span> <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止外网访问</span></span><br><span class="line">bind <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加口令</span></span><br><span class="line">requirepass cookie123</span><br><span class="line"></span><br><span class="line"><span class="comment">#更换端口</span></span><br><span class="line">port <span class="number">5353</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>参考文章：<a href="http://www.safe6.cn/article/39" target="_blank" rel="noopener">http://www.safe6.cn/article/39</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>由于挖矿程序并是完好可运行的，因此绝对不是攻击者通过 <code>redis</code> 写进来的，所以攻击者很可能有 主机的shell（ 而且是 root 权限的 shell）应该及时通知管理员更换登录公钥，并检查整个内网段内有无跟本机相同的口令，建议整个内网更新口令</p>
+<p>查看<code>/etc/passwd</code>,有个<code>backdoor</code>用户的<code>euid</code>是0，但是删掉后整个<code>docker</code>都关了，这个是docker的入口进程</p>
+<p>给<code>redis</code>加口令，口令长度不小于10位，并且同时有大小写数字和字母</p>
+<p>修改<code>redis.conf</code>的内容</p>
+<p>建议修改<code>redis</code>和<code>ssh</code>的默认端口</p>
+<p><code>redis</code>不要暴露在公网中</p>
+<p>不要使用<code>root</code>权限启动<code>redis</code></p>
+<h1 id="靶机二：Nginx服务器的求生之路"><a href="#靶机二：Nginx服务器的求生之路" class="headerlink" title="靶机二：Nginx服务器的求生之路"></a>靶机二：Nginx服务器的求生之路</h1><h2 id="前言-1"><a href="#前言-1" class="headerlink" title="前言"></a>前言</h2><p>场景：一个web服务器，目前已经被黑客攻击，对木马文件进行溯源分析和清除。</p>
+<p>过程</p>
+<p>这是一台<code>Nginx</code>的<code>web</code>服务器，首先我们做一下常规的检查，查看进程，查看定时任务，查看<code>/etc/passwd</code>等。看看有没有异常之处。</p>
+<p>可以参考：<a href="https://github.com/Bypass007/Emergency-Response-Notes" target="_blank" rel="noopener">bypass应急响应笔记</a></p>
+<p>一顿寻找，暂时没有发现什么可疑的点</p>
+<p>既然是从web服务器进行入侵的，那么我们试着从入侵者的角度进行攻击</p>
+<p><code>Nginx</code>服务器在服务器配置不正确的情况下存在目录穿越漏洞</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/15.png" alt="image-20200729071921939"></p>
+<p>这里的<code>/images</code>没有闭合，所以存在目录穿越漏洞</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/16.png" alt="image-20200729072157276"></p>
+<p>在<code>www</code>文件下，我们可以发现这里有一个<code>backup.zip</code>，这里存在代码泄露的问题</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/17.png" alt="image-20200729072332164"></p>
+<p>下一步我们就是要去寻找如何能够<code>getshell</code>，因为我们作为排查人员，要学会排查查看日志</p>
+<p>我们查看<code>nginx</code>的<code>access.log</code></p>
+<p>这样子我们就能对攻击者所做的操作有个更清晰一点的了解</p>
+<p>将<code>/var/log/nginx/access.log</code>下载到本地</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/18.png" alt="image-20200729073539308"></p>
+<p>这里可以看到攻击者发现了目录穿越漏洞</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/19.png" alt="image-20200729073717507"></p>
+<p>攻击者访问<code>/backend/ping</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/20.png" alt="image-20200729074250868"></p>
+<p>攻击者应该是通过此次写入<code>shell</code></p>
+<p>继续看日志</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/21.png" alt="image-20200729074636922"></p>
+<p>攻击者之后访问了<code>2.php</code>，<code>.shell.php</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/22.png" alt="image-20200729074932994"></p>
+<p>访问<code>2.php</code>，目录中出现<code>.wenshell.php</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/23.png" alt="image-20200729075438911"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">删除.webshell.php,.shell.php</span><br></pre></td></tr></table></figure>
+
+<p>但是删除后，再次访问该目录，以及再次访问<code>2.php</code>后出现<code>404</code></p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/24.png" alt="image-20200729080008845"></p>
+<p>目测这是一个不死马，删除不死马，参考:<a href="https://blog.csdn.net/LTtiandd/article/details/103239411" target="_blank" rel="noopener">如何删除不死马</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>sh</span><br><span class="line">rm .webshell.php</span><br><span class="line">mkdir .webshell.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/25.png" alt="image-20200729080604462"></p>
+<p>除了不死马以外，可能还在<code>webshell</code>写缓存的问题</p>
+<p>一个是查看<code>Nginx服务器</code>的缓存，一个是查看<code>框架本身的缓存文件</code></p>
+<p>在后者发现了shell文件，这个靶机是使用<code>laravel</code>框架，查看<code>/www/config/session.php</code>得到session文件的存放位置</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/26.png" alt="image-20200729081621555"></p>
+<p>这里也只是正常的session文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /www/storage | xargs grep <span class="string">"eval("</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/27.png" alt="image-20200729081834117"></p>
+<p>清除视图缓存文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php artisan view:clear</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/28.png" alt="image-20200729082954170"></p>
+<p>在手动排查后之后，以防万一，使用D盾对网站源码进行扫描</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/29.png" alt="image-20200729100943313"></p>
+<p>第一个后门文件：</p>
+<p>参考:<a href="https://blog.csdn.net/csacs/article/details/90640601" target="_blank" rel="noopener">https://blog.csdn.net/csacs/article/details/90640601</a></p>
+<p>第二个后门文件：误报吧</p>
+<p>第三个后门文件：写入缓存木马的触发点</p>
+<p>其余为框架正常功能点</p>
+<p><img src="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/30.png" alt="image-20200729102652919"></p>
+<p><code>ping</code>功能的过滤是使用黑名单过滤，所以将会出现绕过过滤，命令执行的问题。</p>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>目录穿越漏洞</span><br><span class="line">	修改nignx配置文件，将/images和/build/assets改成/images/和/build/assets，并重启</span><br><span class="line"><span class="number">2.</span>日志</span><br><span class="line">    建议设置nginx记录post的数据，从而方便复现和修复漏洞</span><br><span class="line"><span class="number">3.</span>代码泄露</span><br><span class="line">    删除/www下的backup.zip</span><br><span class="line"><span class="number">4.</span>后门</span><br><span class="line">    删除/www/<span class="keyword">public</span>/下的所有php木马文件</span><br><span class="line">    竞争脚本删除不死马，或者重启nginx来杀不死马（如果生产环境允许）</span><br><span class="line"><span class="number">5.</span>命令执行代码：</span><br><span class="line">    ping功能的黑名单换成正则匹配</span><br><span class="line"><span class="number">6.</span>laravel功能：</span><br><span class="line">    建议写个计划任务定时清除缓存</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h1><p>应急响应的时候，常规查进程，查定时任务，查网络连接等，对<code>各类日志</code>要足够敏感，不能放过日志的审计，在溯源过程中，思考在攻击者攻击过程中可能会利用到的攻击面，从攻击者的思路入手。不管是攻击还是防守应急，最重要的还是思路的把握，希望能有更多的大佬赐教，弟弟实在太菜了。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/">http://yoursite.com/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9D%82%E6%96%87%E9%9A%8F%E7%AC%94/">杂文随笔</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/07/19/sunset-decoy-vulnhub%E9%9D%B6%E6%9C%BA%E6%B8%97%E9%80%8F/"><span>sunset:decoy-vulnhub靶机渗透</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
