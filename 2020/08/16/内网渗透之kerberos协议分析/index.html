@@ -98,7 +98,7 @@
 <p><img src="/2020/08/16/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/15.png" alt="image-20200819094302206"></p>
 <p>这一系列解密成功的话，<strong>将会验证对方的身份，验证时间戳是否在范围内，并且检查TG中的时间戳是否过期，且原始地址是否和TGT中保存的地址相同</strong></p>
 <p>完成认证后，TGS生成<strong>ST票据（包括客户端信息和原始Server Session key，整个ST服务票据使用该服务的NTML hash加密</strong>以及一个<strong>AS-REP返回的Login-Session-Key加密的Server Session Key</strong>。这两个将在响应包中发送给Client</p>
-<p><img src="/2020/08/16/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/16.png" alt></p>
+<p><img src="/2020/08/16/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90%5C16.png" alt="image-20200819115006724"></p>
 <p>PS:在这一步中，不论用户是否有权限访问服务，只要TGT解密无误，都将返回ST服务票据。<strong>任何一个用户，只要hash正确，就可以请求域内任何一个服务的票据</strong></p>
 <h2 id="ST票据通过认证访问服务"><a href="#ST票据通过认证访问服务" class="headerlink" title="ST票据通过认证访问服务"></a>ST票据通过认证访问服务</h2><p><strong>使用ST票据通过认证访问服务</strong></p>
 <p><img src="/2020/08/16/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/17.png" alt="image-20200819103656434"></p>
